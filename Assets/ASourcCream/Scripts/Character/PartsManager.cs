@@ -18,7 +18,7 @@ public class PartsManager : MonoBehaviour
         // wings.SetLinks();
     }
 
-    public void Update() {
+    public void FixedUpdate() {
         torso.UpdateLinks();
         head.UpdateLinks();
         arms.UpdateLinks();
