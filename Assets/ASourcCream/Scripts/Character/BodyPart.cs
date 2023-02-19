@@ -5,19 +5,23 @@ using UnityEngine;
 [System.Serializable]
 public class SlotLink {
     private Vector3 ctrlPrevFrame;
-    public GameObject controller;
-    public GameObject puppet;
 
-    public SlotLink Init()
+    [SerializeField]
+    private GameObject controller;
+    [SerializeField]
+    private GameObject puppet;
+
+    public SlotLink(GameObject controller, GameObject puppet)
     {
+        this.controller = controller;
+        this.puppet = puppet;
+
         this.ctrlPrevFrame = new Quaternion(
             controller.transform.rotation.x,
             controller.transform.rotation.y,
             controller.transform.rotation.z,
             controller.transform.rotation.w
         ).eulerAngles;
-
-        return this;
     }
 
     // Note: Rotation cannot be set directly, as it is relative to other bones
@@ -41,9 +45,19 @@ public class SlotLink {
     }
 }
 
-public abstract class BodyPart
+[System.Serializable]
+public class BodyPart
 {
+    [SerializeField]
     protected List<SlotLink> links;
+
+    protected string rigName;
+    protected string[] partLinks;
+
+    public BodyPart(string rigName, string[] partLinks) {
+        this.rigName = rigName;
+        this.partLinks = partLinks;
+    }
 
     public void UpdateLinks()
     {
@@ -53,75 +67,47 @@ public abstract class BodyPart
         }
     }
 
-    public abstract void SetLinks();
-}
-
-[System.Serializable]
-public class Torso : BodyPart {
-    public SlotLink neck;
-    public SlotLink leftArm;
-    public SlotLink rightArm;
-    public SlotLink leftLeg;
-    public SlotLink rightLeg;
-    // public SlotLink wings;
-
-    public override void SetLinks() {
+    public void SetLinks() {
         links = new List<SlotLink>();
-        links.Add(neck.Init());
-        links.Add(leftArm.Init());
-        links.Add(rightArm.Init());
-        links.Add(leftLeg.Init());
-        links.Add(rightLeg.Init());
-        // links.Add(wings.Init());
-    }
-}
 
-[System.Serializable]
-public class Head : BodyPart {
-    public SlotLink spine;
-    public SlotLink leftShoulder;
-    public SlotLink rightShoulder;
+        // Get main rig which will mimic partLinks movements
+        var mainRig = GameObject.Find(rigName);
+        if(mainRig == null) {
+            Debug.LogError("Failed to find main torso rig: " + rigName);
+            return;
+        }
 
-    public override void SetLinks() {
-        links = new List<SlotLink>();
-        links.Add(spine.Init());
-        links.Add(leftShoulder.Init());
-        links.Add(rightShoulder.Init());
-    }
-}
+        foreach (var link in partLinks)
+        {
+            // Parse link string names
+            var names = link.Split(";");
+            if(names.Length != 2) {
+                Debug.LogError("Invalid torsoLinks input. Expected string format of \"<rig_name>;<bone_name>\"");
+                continue;
+            };
 
-[System.Serializable]
-public class Arms : BodyPart {
-    public SlotLink leftShoulder;
-    public SlotLink rightShoulder;
+            // Get other part/bone to link to torso
+            var partRig = GameObject.Find(names[0]);
+            if(partRig == null) {
+                Debug.LogError("Failed to find named rig: " + link);
+                continue;
+            };
 
-    public override void SetLinks() {
-        links = new List<SlotLink>();
-        links.Add(leftShoulder.Init());
-        links.Add(rightShoulder.Init());
-    }
-}
+            var linkBone = GenericHelper.RecursiveFindChild(partRig.transform, names[1]);
+            if(linkBone == null) {
+                Debug.LogError("Failed to find named bone in specified rig: " + link);
+                continue;
+            }
 
-[System.Serializable]
-public class Legs : BodyPart {
-    public SlotLink spine;
-    public SlotLink hipLeft;
-    public SlotLink hipRight;
+            // Get torso bone to link
+            var mainBone = GenericHelper.RecursiveFindChild(mainRig.transform, names[1]);
+            if(mainBone == null) {
+                Debug.LogError("Failed to find named torso bone: " + link);
+                continue;
+            }
 
-    public override void SetLinks() {
-        links = new List<SlotLink>();
-        links.Add(spine.Init());
-        links.Add(hipLeft.Init());
-        links.Add(hipRight.Init());
-    }
-}
-
-[System.Serializable]
-public class Wings : BodyPart {
-    public SlotLink spine;
-
-    public override void SetLinks() {
-        links = new List<SlotLink>();
-        links.Add(spine.Init());
+            // Link parts
+            links.Add(new SlotLink(linkBone.gameObject, mainBone.gameObject));
+        }
     }
 }

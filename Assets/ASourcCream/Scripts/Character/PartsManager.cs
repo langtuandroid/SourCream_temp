@@ -4,25 +4,31 @@ using UnityEngine;
 
 public class PartsManager : MonoBehaviour
 {
-    public Torso torso;
-    public Head head;
-    public Arms arms;
-    public Legs legs;
-    // public Wings wings;
+    [SerializeField]
+    private RigData data;
+
+    [SerializeField]
+    private List<BodyPart> parts = new List<BodyPart>();
 
     public void Start() {
-        torso.SetLinks();
-        head.SetLinks();
-        arms.SetLinks();
-        legs.SetLinks();
-        // wings.SetLinks();
+        parts.Add(new BodyPart(data.rigHead, data.linksHead));
+        parts.Add(new BodyPart(data.rigBody, data.linksBody));
+        parts.Add(new BodyPart(data.rigArmLeft, data.linksArmLeft));
+        parts.Add(new BodyPart(data.rigArmRight, data.linksArmRight));
+        parts.Add(new BodyPart(data.rigLegs, data.linksLegs));
+        // TODO - Add wings
+
+        foreach (var part in parts)
+        {
+            part.SetLinks();
+        }
     }
 
     public void FixedUpdate() {
-        torso.UpdateLinks();
-        head.UpdateLinks();
-        arms.UpdateLinks();
-        legs.UpdateLinks();
-        // wings.UpdateLinks();
+        foreach (var part in parts)
+        {
+            part.UpdateLinks();
+        }
+        // TODO - Update wings
     }
 }
