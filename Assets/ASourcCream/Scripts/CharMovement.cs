@@ -37,8 +37,7 @@ public class CharMovement : MonoBehaviour
     [SerializeField, Range(.0f, 1.0f)]
     private float airTurnSpeed = 0.5f;
 
-    private bool movementPressed;
-    private bool isJumpPresssed;
+    private bool isJumpPressed;
 
     private Vector2 lateralAirVelocity; // Current velocity in the X,Z plane
     private Vector3 inputVelocity; // Movement keys input in X,Z plane (0-1f)
@@ -197,11 +196,11 @@ public class CharMovement : MonoBehaviour
     {
         if (ctx.started)
         {
-            isJumpPresssed = true;
+            isJumpPressed = true;
         }
         if (ctx.canceled)
         {
-            isJumpPresssed = false;
+            isJumpPressed = false;
         }
         if (ctx.performed && charController.isGrounded)
         {

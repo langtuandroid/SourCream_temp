@@ -10,7 +10,9 @@ public class PartsManager : MonoBehaviour
     [SerializeField]
     private List<BodyPart> parts = new List<BodyPart>();
 
-    public void Start() {
+    public void Awake()
+    {
+        // Attach body part links
         parts.Add(new BodyPart(data.rigHead, data.linksHead));
         parts.Add(new BodyPart(data.rigBody, data.linksBody));
         parts.Add(new BodyPart(data.rigArmLeft, data.linksArmLeft));
@@ -22,9 +24,15 @@ public class PartsManager : MonoBehaviour
         {
             part.SetLinks();
         }
+
+        // Initialize target transforms in respective scripts
+        var legL = GameObject.Find(data.legLeft);
+        var legR = GameObject.Find(data.legRight);
+        this.GetComponent<WalkIK>().Init(legL.transform, legR.transform);
     }
 
-    public void FixedUpdate() {
+    public void FixedUpdate()
+    {
         foreach (var part in parts)
         {
             part.UpdateLinks();

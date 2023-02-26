@@ -5,6 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/RigData", order = 1)]
 public class RigData : ScriptableObject
 {
+    /*** Bone placements & links ***/
+    // rig variable determines who is the puppet
+    // links variable determines which rig controls which bones
+
     // Body
     public string rigBody = "rig_body";
     public string[] linksBody = {
@@ -44,4 +48,18 @@ public class RigData : ScriptableObject
     };
 
     // Wings
+
+    /*** Rig target links ***/
+    public string head = "head_target";
+    public string torso = "spine.003";
+    public string armRight = "arm_target.R";
+    public string armLeft = "arm_target.L";
+    public string hip = "spine.001";
+    public string legRight = "leg_target.R";
+    public string legLeft = "leg_target.L";
+
+    // Target Position constraints
+
+    // Target Rotation constraints
+
 }
