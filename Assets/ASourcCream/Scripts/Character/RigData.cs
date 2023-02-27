@@ -51,10 +51,10 @@ public class RigData : ScriptableObject
 
     /*** Rig target links ***/
     public string head = "head_target";
-    public string torso = "spine.003";
+    public string body = "spine.003";
     public string armRight = "arm_target.R";
     public string armLeft = "arm_target.L";
-    public string hip = "spine.001";
+    public string hip = "spine";
     public string legRight = "leg_target.R";
     public string legLeft = "leg_target.L";
 

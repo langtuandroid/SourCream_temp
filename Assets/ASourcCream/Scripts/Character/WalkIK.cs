@@ -8,12 +8,13 @@ public class WalkIK : MonoBehaviour
     // IK Controls & Parameters
     public LayerMask terrainLayer;
     public float footSpacing = 0.5f;
-    public float stepDistance = 1.0f;
+    public Vector3 stepDistance = new Vector3(1.0f, 0.0f ,0.5f);
 
     private Vector3 oldPosL;
     private Vector3 oldPosR;
 
     private Transform charT;
+    private Transform root;
     private Transform legL;
     private Transform legR;
 
@@ -31,16 +32,21 @@ public class WalkIK : MonoBehaviour
     private bool movementKeyPressed = false;
     private bool isJumpPressed = false;
 
+    private float currentRotation;
+    [SerializeField]
+    private float rotationSpeed = 10.0f;
+
     // Physics
     [SerializeField]
     private float gravity = -40.0f;
 
     private float groundedGravity = -0.5f;
 
-    public void Init(Transform legL, Transform legR)
+    public void Init(Transform legL, Transform legR, Transform root)
     {
         this.legL = legL;
         this.legR = legR;
+        this.root = root;
     }
 
     void Awake()
@@ -57,26 +63,30 @@ public class WalkIK : MonoBehaviour
 
     void Update()
     {
+        HandleRotation();
         HandleGravity();
         HandleMovement();
-
-        var pos = charT.position;
-        pos.y += 5;
 
         // Get input walking direction
         var walkingDir = new Vector3();
 
-        this.UpdateLeg(pos, ref oldPosL, ref legL, walkingDir, -1);
-        this.UpdateLeg(pos, ref oldPosR, ref legR, walkingDir, 1);
+        this.UpdateLeg(charT.position, ref oldPosL, ref legL, walkingDir, -1);
+        this.UpdateLeg(charT.position, ref oldPosR, ref legR, walkingDir, 1);
     }
 
     void UpdateLeg(Vector3 origin, ref Vector3 oldPos, ref Transform currTrans, Vector3 direction, int side)
     {
         currTrans.position = oldPos;
 
-        Ray ray = new Ray(origin + (charT.right * side * footSpacing), Vector3.down);
+        Ray ray = new Ray(new Vector3(origin.x, origin.y+5, origin.z) + (charT.right * side * footSpacing), Vector3.down);
         if(Physics.Raycast(ray, out RaycastHit info, 10, terrainLayer.value)) {
-            if(Vector3.Distance(oldPos, info.point) > stepDistance) {
+            float inEllipseX = ((info.point.x - oldPos.x)*(info.point.x - oldPos.x)) / (stepDistance.x*stepDistance.x);
+            float inEllipseZ = ((info.point.z - oldPos.z)*(info.point.z - oldPos.z)) / (stepDistance.z*stepDistance.z);
+
+            bool inEllipse = (inEllipseX + inEllipseZ) <= 1.0f;
+            Debug.Log("Point: "+  info.point + ", X " + inEllipseX + ", Y: " + inEllipseZ);
+
+            if(!inEllipse) {
                 oldPos = info.point;
                 currTrans.position = info.point;
             }
@@ -92,6 +102,21 @@ public class WalkIK : MonoBehaviour
         } else {
             inputVelocity.y += gravity * Time.deltaTime;
         }
+    }
+
+    void HandleRotation()
+    {
+        Vector3 mousePosition;
+        Vector3 objPosition;
+        float angle;
+        mousePosition = Input.mousePosition;
+        mousePosition.z = 10.0f;
+        objPosition = Camera.main.WorldToScreenPoint(root.position);
+        mousePosition.x = mousePosition.x - objPosition.x;
+        mousePosition.y = mousePosition.y - objPosition.y;
+        angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
+        var rotation = Quaternion.Slerp(root.rotation, Quaternion.Euler(new Vector3(0, -angle + 90, 0)), Time.deltaTime * rotationSpeed);
+        root.rotation = rotation;
     }
 
     public void HandleMovement()

@@ -28,7 +28,8 @@ public class PartsManager : MonoBehaviour
         // Initialize target transforms in respective scripts
         var legL = GameObject.Find(data.legLeft);
         var legR = GameObject.Find(data.legRight);
-        this.GetComponent<WalkIK>().Init(legL.transform, legR.transform);
+        var hip = GameObject.Find(data.hip);
+        this.GetComponent<WalkIK>().Init(legL.transform, legR.transform, hip.transform);
     }
 
     public void FixedUpdate()

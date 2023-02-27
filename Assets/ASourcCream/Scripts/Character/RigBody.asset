@@ -30,8 +30,15 @@ MonoBehaviour:
   rigArmRight: rig_arm_R
   linksArmRight:
   - rig_body;shoulder.R
-  rigLegs: rig_body
+  rigLegs: rig_legs
   linksLegs:
   - rig_body;spine
   - rig_body;pelvis.L
   - rig_body;pelvis.R
+  head: head_target
+  body: spine.003
+  armRight: arm_target.R
+  armLeft: arm_target.L
+  hip: spine
+  legRight: leg_target.R
+  legLeft: leg_target.L
