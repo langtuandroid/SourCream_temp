@@ -3,28 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class WalkIK : MonoBehaviour
+public class Walk : MonoBehaviour
 {
-    // IK Controls & Parameters
-    public LayerMask terrainLayer;
-    public float footSpacing = 0.5f;
-    public Vector3 stepDistance = new Vector3(1.0f, 0.0f ,0.5f);
-
-    private Vector3 oldPosL;
-    private Vector3 oldPosR;
-
-    private Transform charT;
-    private Transform root;
-    private Transform legL;
-    private Transform legR;
+    // IK & Walk
+    private UpdateLegIK[] legs;
+    private Vector3 lastInput = new Vector3();
 
     // Input Movement Controls & Parameters
-    [SerializeField]
-    private float movementSpeed = 1.0f;
-    [SerializeField]
-    private float jumpVelocity = 10.0f;
-    [SerializeField, Range(.0f, 1.0f)]
-    private float airTurnSpeed = 0.5f;
+    [SerializeField] private float movementSpeed = 1.0f;
+    [SerializeField] private float jumpVelocity = 10.0f;
+    [SerializeField, Range(.0f, 1.0f)] private float airTurnSpeed = 0.5f;
 
     private CharacterController charCtrl;
     private Vector2 lateralAirVelocity; // Current velocity in the X,Z plane
@@ -33,32 +21,21 @@ public class WalkIK : MonoBehaviour
     private bool isJumpPressed = false;
 
     private float currentRotation;
-    [SerializeField]
-    private float rotationSpeed = 10.0f;
+    [SerializeField] private float rotationSpeed = 10.0f;
 
     // Physics
-    [SerializeField]
-    private float gravity = -40.0f;
-
+    [SerializeField] private float gravity = -40.0f;
     private float groundedGravity = -0.5f;
-
-    public void Init(Transform legL, Transform legR, Transform root)
-    {
-        this.legL = legL;
-        this.legR = legR;
-        this.root = root;
-    }
 
     void Awake()
     {
-        charT = this.GetComponent<Transform>();
         charCtrl = this.GetComponent<CharacterController>();
-    }
-
-    void Start()
-    {
-        oldPosL = legL.position;
-        oldPosR = legR.position;
+        legs = this.GetComponentsInChildren<UpdateLegIK>();
+        if (legs.Length == 2)
+        {
+            legs[0].Init(transform, 1.0f);
+            legs[1].Init(transform, 0.0f);
+        }
     }
 
     void Update()
@@ -66,34 +43,20 @@ public class WalkIK : MonoBehaviour
         HandleRotation();
         HandleGravity();
         HandleMovement();
-
-        // Get input walking direction
-        var walkingDir = new Vector3();
-
-        this.UpdateLeg(charT.position, ref oldPosL, ref legL, walkingDir, -1);
-        this.UpdateLeg(charT.position, ref oldPosR, ref legR, walkingDir, 1);
+        HandleStep();
     }
 
-    void UpdateLeg(Vector3 origin, ref Vector3 oldPos, ref Transform currTrans, Vector3 direction, int side)
+    void HandleStep()
     {
-        currTrans.position = oldPos;
-
-        Ray ray = new Ray(new Vector3(origin.x, origin.y+5, origin.z) + (charT.right * side * footSpacing), Vector3.down);
-        if(Physics.Raycast(ray, out RaycastHit info, 10, terrainLayer.value)) {
-            float inEllipseX = ((info.point.x - oldPos.x)*(info.point.x - oldPos.x)) / (stepDistance.x*stepDistance.x);
-            float inEllipseZ = ((info.point.z - oldPos.z)*(info.point.z - oldPos.z)) / (stepDistance.z*stepDistance.z);
-
-            bool inEllipse = (inEllipseX + inEllipseZ) <= 1.0f;
-            Debug.Log("Point: "+  info.point + ", X " + inEllipseX + ", Y: " + inEllipseZ);
-
-            if(!inEllipse) {
-                oldPos = info.point;
-                currTrans.position = info.point;
-            }
+        if (legs.Length == 2)
+        {
+            legs[0].UpdateVars(inputVelocity);
+            legs[1].UpdateVars(inputVelocity);
         }
+        lastInput = inputVelocity;
     }
 
-    public void HandleGravity()
+    void HandleGravity()
     {    
         if (charCtrl.isGrounded) {
             if (inputVelocity.y > -20.0f) {
@@ -111,12 +74,12 @@ public class WalkIK : MonoBehaviour
         float angle;
         mousePosition = Input.mousePosition;
         mousePosition.z = 10.0f;
-        objPosition = Camera.main.WorldToScreenPoint(root.position);
+        objPosition = Camera.main.WorldToScreenPoint(transform.position);
         mousePosition.x = mousePosition.x - objPosition.x;
         mousePosition.y = mousePosition.y - objPosition.y;
         angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
-        var rotation = Quaternion.Slerp(root.rotation, Quaternion.Euler(new Vector3(0, -angle + 90, 0)), Time.deltaTime * rotationSpeed);
-        root.rotation = rotation;
+        var rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, -angle + 90, 0)), Time.deltaTime * rotationSpeed);
+        transform.rotation = rotation;
     }
 
     public void HandleMovement()
@@ -151,7 +114,6 @@ public class WalkIK : MonoBehaviour
             Vector3 velocity = new Vector3(incVelocity.x, inputVelocity.y, incVelocity.y);
 
             inputVelocity = velocity;
-        
         }
     }
 
@@ -168,22 +130,6 @@ public class WalkIK : MonoBehaviour
         if (ctx.performed && charCtrl.isGrounded)
         {
             inputVelocity.y = jumpVelocity;
-        }
-    }
-
-    void OnDrawGizmos()
-    {
-        if(this.oldPosL != null) {
-            Gizmos.DrawSphere(oldPosL, .2f);
-        }
-        if(this.oldPosR != null) {
-            Gizmos.DrawSphere(oldPosR, .2f);
-        }
-        if(this.legL != null) {
-            Gizmos.DrawSphere(legL.position, .25f);
-        }
-        if(this.legR != null) {
-            Gizmos.DrawSphere(legR.position, .25f);
         }
     }
 }

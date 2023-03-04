@@ -20,35 +20,6 @@ public class RigData : ScriptableObject
         // Wing link/bone/rig
     };
 
-    // Head
-    public string rigHead = "rig_head";
-    public string[] linksHead = {
-        "rig_body;spine.003",       // Neck
-        "rig_body;shoulder.L",      // Left Shoulder
-        "rig_body;shoulder.R",      // Right Shoulder
-    };
-
-    // Arms
-    public string rigArmLeft = "rig_arm_L";
-    public string[] linksArmLeft = {
-        "rig_body;shoulder.L",      // Left Shoulder
-    };
-
-    public string rigArmRight = "rig_arm_R";
-    public string[] linksArmRight = {
-        "rig_body;shoulder.R",      // Right Shoulder
-    };
-
-    // Legs
-    public string rigLegs = "rig_legs";
-    public string[] linksLegs = {
-        "rig_body;spine",           // Lower back
-        "rig_body;pelvis.L",        // Left hip
-        "rig_body;pelvis.R",        // Right hip
-    };
-
-    // Wings
-
     /*** Rig target links ***/
     public string head = "head_target";
     public string body = "spine.003";
