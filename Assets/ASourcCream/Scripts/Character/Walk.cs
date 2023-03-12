@@ -5,10 +5,6 @@ using UnityEngine.InputSystem;
 
 public class Walk : MonoBehaviour
 {
-    // IK & Walk
-    private UpdateLegIK[] legs;
-    private Vector3 lastInput = new Vector3();
-
     // Input Movement Controls & Parameters
     [SerializeField] private float movementSpeed = 1.0f;
     [SerializeField] private float jumpVelocity = 10.0f;
@@ -30,12 +26,6 @@ public class Walk : MonoBehaviour
     void Awake()
     {
         charCtrl = this.GetComponent<CharacterController>();
-        legs = this.GetComponentsInChildren<UpdateLegIK>();
-        if (legs.Length == 2)
-        {
-            legs[0].Init(transform, 1.0f);
-            legs[1].Init(transform, 0.0f);
-        }
     }
 
     void Update()
@@ -43,17 +33,6 @@ public class Walk : MonoBehaviour
         HandleRotation();
         HandleGravity();
         HandleMovement();
-        HandleStep();
-    }
-
-    void HandleStep()
-    {
-        if (legs.Length == 2)
-        {
-            legs[0].UpdateVars(inputVelocity);
-            legs[1].UpdateVars(inputVelocity);
-        }
-        lastInput = inputVelocity;
     }
 
     void HandleGravity()
