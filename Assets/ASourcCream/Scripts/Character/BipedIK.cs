@@ -76,6 +76,7 @@ public class BipedIK : MonoBehaviour
         Vector3 desiredPositionLeft = leftFootTarget.position;
         Vector3 desiredPositionRight = rightFootTarget.position;
 
+        // Set to raycast hit if y > spin y position
         // Update left leg
         Vector3[] posNormLeft = CastOnSurface(desiredPositionLeft, 2f, Vector3.up, terrain);
         if (posNormLeft[0].y > desiredPositionLeft.y)

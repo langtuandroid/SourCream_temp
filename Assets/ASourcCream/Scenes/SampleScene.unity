@@ -541,7 +541,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 217885320}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1696,7 +1696,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231752340}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.4, y: 0, z: 1}
+  m_LocalPosition: {x: 0.35, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2506,7 +2506,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2120382544}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: 0, z: -1}
+  m_LocalPosition: {x: -0.35, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7341,7 +7341,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 3.8
+  m_Height: 3.2
   m_Radius: 0.75
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -7370,10 +7370,10 @@ MonoBehaviour:
   pivot: {fileID: 623586784}
   scaler: {fileID: 217885321}
   smoothness: 5
-  stepHeight: 0.6
-  stepLength: 2
-  angularSpeed: 11
-  velocityMultiplier: 6
+  stepHeight: 0.8
+  stepLength: 1.6
+  angularSpeed: 12
+  velocityMultiplier: 7
 --- !u!1 &9109293173668223416
 GameObject:
   m_ObjectHideFlags: 0
