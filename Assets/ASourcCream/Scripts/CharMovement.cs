@@ -9,14 +9,13 @@ public class CharMovement : MonoBehaviour
 {   
     private IndicatorController indicatorController;
     private SkillsController skillsController;
+    private Movement movementController;
     // <------------------------------- SETTINGS ------------------------------- //
     [SerializeField]
     private bool lookAtMouse = true;
 
     // <------------------------------- ATTACK ------------------------------- //
     private bool isAttacking;
-    [SerializeField]
-    private float inAttackSlowAmount = 2.0f;
 
     [SerializeField]
     private GameObject projectile;
@@ -25,17 +24,9 @@ public class CharMovement : MonoBehaviour
     private Transform projectileStartLocation;
 
     private Vector3 gizmoThing;
-    private Ray gizmoLine;
 
     private Dictionary<string, Action> abilityList;
 
-    // <------------------------------- MOVEMENT ------------------------------- //
-    [SerializeField]
-    private float movementSpeed = 1.0f;
-    [SerializeField]
-    private float jumpVelocity = 10.0f;
-    [SerializeField, Range(.0f, 1.0f)]
-    private float airTurnSpeed = 0.5f;
 
     private bool isJumpPressed;
 
@@ -43,17 +34,6 @@ public class CharMovement : MonoBehaviour
     private Vector3 inputVelocity; // Movement keys input in X,Z plane (0-1f)
     private CharacterController charController;
 
-    private bool movementKeyPressed = false;
-
-    private float currentRotation;
-    [SerializeField]
-    private float rotationSpeed = 10.0f;
-
-    // ------------------------------- PHYSICS ------------------------------- //
-    [SerializeField]
-    private float gravity = -5.0f;
-
-    private float groundedGravity = -0.5f;
 
 
     // ------------------------------- ANIMATION ------------------------------- //
@@ -62,7 +42,8 @@ public class CharMovement : MonoBehaviour
     int isRunningHash;
     int forward;
     int right;
-
+    int inAir;
+    int isMoving;
 
     private float nextActionTime = 0.0f;
     private float period = 0.5f;
@@ -75,8 +56,8 @@ public class CharMovement : MonoBehaviour
         isRunningHash = Animator.StringToHash("isRunning");
         forward = Animator.StringToHash("forward");
         right = Animator.StringToHash("right");
-        
-        
+        inAir = Animator.StringToHash("inAir");
+        isMoving = Animator.StringToHash("isMoving");
     }
 
     void Awake()
@@ -84,16 +65,14 @@ public class CharMovement : MonoBehaviour
         charController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
         skillsController = GetComponent<SkillsController>();
+        movementController = GetComponent<Movement>();
     }
 
     // Update is called once per frame
     void Update()
     {   
-        HandleRotation();
         HandleAttackAction();
         HandleMovementAnims();
-        HandleGravity();
-        HandleMovement();
     }
 
     public void HandleAttackAction() {
@@ -105,70 +84,22 @@ public class CharMovement : MonoBehaviour
         } 
     }
 
-    public void HandleMovement()
-    {
-        var lateralVelocity = new Vector2(inputVelocity.x, inputVelocity.z).normalized;
-        if (charController.isGrounded) {   
-            lateralAirVelocity = new Vector2(inputVelocity.x, inputVelocity.z).normalized;
-            //Stop movement after key canceled
-            if (!movementKeyPressed) {
-                lateralVelocity = new Vector2(0.0f, 0.0f); 
-            }
-        } else {
-            lateralVelocity = Vector2.Lerp(lateralAirVelocity, lateralVelocity, airTurnSpeed);
-        }
-
-        if (isAttacking) {
-            var movementSpeedAfterSlow = movementSpeed - inAttackSlowAmount;
-            lateralVelocity *= movementSpeedAfterSlow;
-        } else {
-            lateralVelocity *= movementSpeed;
-        }
-        charController.Move(new Vector3(lateralVelocity.x, inputVelocity.y, lateralVelocity.y) * Time.deltaTime);
-    }
-
-    public void HandleGravity()
-    {    
-        if (charController.isGrounded) {
-            if (inputVelocity.y > -20.0f) {
-                inputVelocity.y += groundedGravity * Time.deltaTime;
-            }
-        } else {
-            inputVelocity.y += gravity * Time.deltaTime;
-        }
-    }
-
-    public void OnMovement(InputAction.CallbackContext ctx) // TODO: these events run 2-3 times on click consider doing only once through logic
-    {   
-        var incVelocity = ctx.ReadValue<Vector2>().normalized;
-        if(ctx.canceled) {
-            movementKeyPressed = false;
-        } 
-        if(ctx.started) {
-           movementKeyPressed = true; 
-        }
-        // If in the air (!grounded), and not moving (x,y both less than 0.2) -> Don't do anything
-        if (!(incVelocity.x == 0 && incVelocity.y == 0 && !charController.isGrounded))
-        {
-            Vector3 velocity = new Vector3(incVelocity.x, inputVelocity.y, incVelocity.y);
-
-            inputVelocity = velocity;
-        
-        }
-    }
-
     void HandleMovementAnims()
-    {
-        if (charController.isGrounded)
+    {   
+        
+        animator.SetBool(inAir, !movementController.trackedIsGrounded);
+        if (charController.isGrounded && !movementController.inDash && movementController.movementInput)
         {   
+            animator.SetBool(isMoving, true);
             var multiplier = isAttacking ? 3 : 10;
-            
             //TODO: => smooth value update / lerp? 
-            var tempForward = Vector3.Dot(transform.forward, new Vector3(inputVelocity.x, 0.0f,inputVelocity.z)) * multiplier;
-            var tempRight = Vector3.Dot(transform.right, new Vector3(inputVelocity.x, 0.0f,inputVelocity.z)) * multiplier;
+            var tempForward = Vector3.Dot(transform.forward, new Vector3(movementController.movementInputVelocity.x, 0.0f, movementController.movementInputVelocity.y)) * multiplier;
+            var tempRight = Vector3.Dot(transform.right, new Vector3(movementController.movementInputVelocity.x, 0.0f, movementController.movementInputVelocity.y)) * multiplier;
 
             animator.SetFloat(forward, tempForward);
             animator.SetFloat(right, tempRight);
+        } else if (!movementController.movementInput) {
+            animator.SetBool(isMoving, false);
         }
     }
 
@@ -264,7 +195,6 @@ public class CharMovement : MonoBehaviour
     public void onColide(Collider colider) {
         //Debug.Log(colider.transform.gameObject.layer);
         if (colider.transform.gameObject.layer == 6 && isAttacking) {
-            //Debug.Log("HIt");
             var stats = colider.GetComponent<StatsComponent>();
             stats.Damage(20.0f);
         }
