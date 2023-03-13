@@ -16,7 +16,6 @@ public class Walk : MonoBehaviour
     private bool movementKeyPressed = false;
     private bool isJumpPressed = false;
 
-    private float currentRotation;
     [SerializeField] private float rotationSpeed = 10.0f;
 
     // Physics

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 
 public class CharMovement : MonoBehaviour
-{   
+{
     private IndicatorController indicatorController;
     private SkillsController skillsController;
     private Movement movementController;
@@ -29,6 +29,8 @@ public class CharMovement : MonoBehaviour
 
 
     private bool isJumpPressed;
+    [SerializeField] private float rotationSpeed = 10.0f;
+    [SerializeField] private float jumpVelocity = 10.0f;
 
     private Vector2 lateralAirVelocity; // Current velocity in the X,Z plane
     private Vector3 inputVelocity; // Movement keys input in X,Z plane (0-1f)
@@ -135,7 +137,7 @@ public class CharMovement : MonoBehaviour
         }
         if (ctx.performed && charController.isGrounded)
         {
-            inputVelocity.y = jumpVelocity;
+            // inputVelocity.y = jumpVelocity;
         }
     }
     
