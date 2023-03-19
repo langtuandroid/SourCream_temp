@@ -41,25 +41,19 @@ public class UpdateLegIK : MonoBehaviour
 
         var findNewPos = false;
         var charRay = this.GetCharRay();
-        if (Physics.Raycast(charRay, out RaycastHit charInfo, 2f, terrainLayer.value))
-        {
-            if (Vector3.Distance(oldPos, charInfo.point) > stepDistance)
-            {
+        if (Physics.Raycast(charRay, out RaycastHit charInfo, 2f, terrainLayer.value)) {
+            if (Vector3.Distance(oldPos, charInfo.point) > stepDistance) {
                 findNewPos = true;
             }
         }
 
-        if (findNewPos)
-        {
+        if (findNewPos) {
             var nextRay = this.GetNextRay();
-            if (Physics.Raycast(nextRay, out RaycastHit nextInfo, 2f, terrainLayer.value))
-            {
+            if (Physics.Raycast(nextRay, out RaycastHit nextInfo, 2f, terrainLayer.value)) {
                 lerp = 0;
                 oldPos = charInfo.point;
                 newPos = nextInfo.point;
-            }
-            else
-            {
+            } else {
                 lerp = 0;
                 oldPos = charInfo.point;
                 newPos = charInfo.point;

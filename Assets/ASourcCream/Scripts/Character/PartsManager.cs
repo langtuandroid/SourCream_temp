@@ -15,18 +15,15 @@ public class PartsManager : MonoBehaviour
         // Attach body part links
         parts.Add(new BodyPart(data.rigBody, data.linksBody));
 
-        foreach (var part in parts)
-        {
+        foreach (var part in parts) {
             part.SetLinks();
         }
     }
 
     public void FixedUpdate()
     {
-        foreach (var part in parts)
-        {
+        foreach (var part in parts) {
             part.UpdateLinks();
         }
-        // TODO - Update wings
     }
 }

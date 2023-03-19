@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SlotLink {
+public class SlotLink
+{
     private Vector3 ctrlPrevFrame;
 
     [SerializeField]
@@ -54,7 +55,8 @@ public class BodyPart
     protected string rigName;
     protected string[] partLinks;
 
-    public BodyPart(string rigName, string[] partLinks) {
+    public BodyPart(string rigName, string[] partLinks)
+    {
         this.rigName = rigName;
         this.partLinks = partLinks;
     }
@@ -67,7 +69,8 @@ public class BodyPart
         }
     }
 
-    public void SetLinks() {
+    public void SetLinks()
+    {
         links = new List<SlotLink>();
 
         // Get main rig which will mimic partLinks movements

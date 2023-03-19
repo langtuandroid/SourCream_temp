@@ -87,8 +87,7 @@ public class Walk : MonoBehaviour
            movementKeyPressed = true; 
         }
         // If in the air (!grounded), and not moving (x,y both less than 0.2) -> Don't do anything
-        if (!(incVelocity.x == 0 && incVelocity.y == 0 && !charCtrl.isGrounded))
-        {
+        if (!(incVelocity.x == 0 && incVelocity.y == 0 && !charCtrl.isGrounded)) {
             Vector3 velocity = new Vector3(incVelocity.x, inputVelocity.y, incVelocity.y);
 
             inputVelocity = velocity;
@@ -97,16 +96,13 @@ public class Walk : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
-        {
+        if (ctx.started) {
             isJumpPressed = true;
         }
-        if (ctx.canceled)
-        {
+        if (ctx.canceled) {
             isJumpPressed = false;
         }
-        if (ctx.performed && charCtrl.isGrounded)
-        {
+        if (ctx.performed && charCtrl.isGrounded) {
             inputVelocity.y = jumpVelocity;
         }
     }

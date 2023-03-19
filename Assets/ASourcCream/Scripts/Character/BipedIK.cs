@@ -4,30 +4,6 @@ using UnityEngine;
 
 public class BipedIK : MonoBehaviour
 {
-
-    /* Some useful functions we may need */
-
-    static Vector3[] CastOnSurface(Vector3 point, float halfRange, Vector3 up, LayerMask layer)
-    {
-        Vector3[] res = new Vector3[2];
-        RaycastHit hit;
-        Ray ray = new Ray(new Vector3(point.x, point.y + halfRange, point.z), -up);
-
-        if (Physics.Raycast(ray, out hit, 2f * halfRange, layer.value))
-        {
-            res[0] = hit.point;
-            // res[1] = hit.normal;
-        }
-        else
-        {
-            res[0] = point;
-        }
-        return res;
-    }
-
-    /*************************************/
-
-
     public LayerMask terrain;
     public Transform leftFootTarget;
     public Transform rightFootTarget;
@@ -61,8 +37,9 @@ public class BipedIK : MonoBehaviour
         velocity *= velocityMultiplier;
         velocity = (velocity + smoothness * lastVelocity) / (smoothness + 1f);
 
-        if (velocity.magnitude < 0.00025f * velocityMultiplier)
+        if (velocity.magnitude < 0.00025f * velocityMultiplier) {
             velocity = lastVelocity;
+        }
         lastVelocity = velocity;
 
         scaler.localScale = new Vector3(scaler.localScale.x, stepHeight * 2f * velocity.magnitude, stepLength * velocity.magnitude);
@@ -79,35 +56,42 @@ public class BipedIK : MonoBehaviour
         // Set to raycast hit if y > spin y position
         // Update left leg
         Vector3[] posNormLeft = CastOnSurface(desiredPositionLeft, 2f, Vector3.up, terrain);
-        if (posNormLeft[0].y > desiredPositionLeft.y)
-        {
+        if (posNormLeft[0].y > desiredPositionLeft.y) {
             leftFootTargetRig.position = posNormLeft[0];
-        }
-        else
-        {
+        } else {
             leftFootTargetRig.position = desiredPositionLeft;
         }
-        if (posNormLeft[1] != Vector3.zero)
-        {
+        if (posNormLeft[1] != Vector3.zero) {
             leftFootTargetRig.rotation = Quaternion.LookRotation(sign * velocity.normalized, posNormLeft[1]);
         }
 
         // Update right leg
         Vector3[] posNormRight = CastOnSurface(desiredPositionRight, 2f, Vector3.up, terrain);
-        if (posNormRight[0].y > desiredPositionRight.y)
-        {
+        if (posNormRight[0].y > desiredPositionRight.y) {
             rightFootTargetRig.position = posNormRight[0];
-        }
-        else
-        {
+        } else {
             rightFootTargetRig.position = desiredPositionRight;
         }
-        if(posNormRight[1] != Vector3.zero)
-        {
+        if(posNormRight[1] != Vector3.zero) {
             rightFootTargetRig.rotation = Quaternion.LookRotation(sign * velocity.normalized, posNormRight[1]);
         }
 
         lastBodyPos = transform.position;
+    }
+
+    private Vector3[] CastOnSurface(Vector3 point, float halfRange, Vector3 up, LayerMask layer)
+    {
+        Vector3[] res = new Vector3[2];
+        RaycastHit hit;
+        Ray ray = new Ray(new Vector3(point.x, point.y + halfRange, point.z), -up);
+
+        if (Physics.Raycast(ray, out hit, 2f * halfRange, layer.value)) {
+            res[0] = hit.point;
+            // res[1] = hit.normal;
+        } else {
+            res[0] = point;
+        }
+        return res;
     }
     
     private void OnDrawGizmosSelected()
