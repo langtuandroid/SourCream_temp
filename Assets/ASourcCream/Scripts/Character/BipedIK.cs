@@ -11,7 +11,7 @@ public class BipedIK : MonoBehaviour
     public Transform rightFootTargetRig;
     public Transform pivot;
     public Transform scaler;
-    
+
     public float smoothness = 2f;
     public float stepHeight = 0.2f;
     public float stepLength = 1f;
@@ -43,7 +43,7 @@ public class BipedIK : MonoBehaviour
         lastVelocity = velocity;
 
         scaler.localScale = new Vector3(scaler.localScale.x, stepHeight * 2f * velocity.magnitude, stepLength * velocity.magnitude);
-        
+
         int sign = (Vector3.Dot(velocity.normalized, transform.forward) < 0 ? -1 : 1);
         // Rotate root scaler in direction of movement (sign) (around y axis)
         scaler.LookAt(transform.position + (velocity * sign));
@@ -72,7 +72,7 @@ public class BipedIK : MonoBehaviour
         } else {
             rightFootTargetRig.position = desiredPositionRight;
         }
-        if(posNormRight[1] != Vector3.zero) {
+        if (posNormRight[1] != Vector3.zero) {
             rightFootTargetRig.rotation = Quaternion.LookRotation(sign * velocity.normalized, posNormRight[1]);
         }
 
@@ -93,7 +93,7 @@ public class BipedIK : MonoBehaviour
         }
         return res;
     }
-    
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(leftFootTarget.position, 0.2f);

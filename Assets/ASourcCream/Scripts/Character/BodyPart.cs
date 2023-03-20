@@ -63,8 +63,7 @@ public class BodyPart
 
     public void UpdateLinks()
     {
-        foreach (var link in links)
-        {
+        foreach (var link in links) {
             link.UpdatePuppet();
         }
     }
@@ -75,36 +74,35 @@ public class BodyPart
 
         // Get main rig which will mimic partLinks movements
         var mainRig = GameObject.Find(rigName);
-        if(mainRig == null) {
+        if (mainRig == null) {
             Debug.LogError("Failed to find main torso rig: " + rigName);
             return;
         }
 
-        foreach (var link in partLinks)
-        {
+        foreach (var link in partLinks) {
             // Parse link string names
             var names = link.Split(";");
-            if(names.Length != 2) {
+            if (names.Length != 2) {
                 Debug.LogError("Invalid torsoLinks input. Expected string format of \"<rig_name>;<bone_name>\"");
                 continue;
             };
 
             // Get other part/bone to link to torso
             var partRig = GameObject.Find(names[0]);
-            if(partRig == null) {
+            if (partRig == null) {
                 Debug.LogError("Failed to find named rig: " + link);
                 continue;
             };
 
             var linkBone = GenericHelper.RecursiveFindChild(partRig.transform, names[1]);
-            if(linkBone == null) {
+            if (linkBone == null) {
                 Debug.LogError("Failed to find named bone in specified rig: " + link);
                 continue;
             }
 
             // Get torso bone to link
             var mainBone = GenericHelper.RecursiveFindChild(mainRig.transform, names[1]);
-            if(mainBone == null) {
+            if (mainBone == null) {
                 Debug.LogError("Failed to find named torso bone: " + link);
                 continue;
             }

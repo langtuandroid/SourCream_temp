@@ -60,7 +60,7 @@ public class UpdateLegIK : MonoBehaviour
             }
         }
 
-        if(lerp < 1) {
+        if (lerp < 1) {
             Vector3 tempPosition = Vector3.Lerp(oldPos, newPos, lerp);
             tempPosition.y += Mathf.Sin(lerp * Mathf.PI) * stepHeight;
 
@@ -76,14 +76,14 @@ public class UpdateLegIK : MonoBehaviour
 
     Ray GetCharRay()
     {
-        var charPos = new Vector3(charT.position.x, charT.position.y+1, charT.position.z);
+        var charPos = new Vector3(charT.position.x, charT.position.y + 1, charT.position.z);
         var posSpaced = charPos + (charT.right * footSpacing);
         Debug.DrawRay(posSpaced, Vector3.down * 3f, Color.magenta, .001f);
         return new Ray(posSpaced, Vector3.down);
     }
     Ray GetNextRay()
     {
-        var charPos = new Vector3(charT.position.x, charT.position.y+1, charT.position.z);
+        var charPos = new Vector3(charT.position.x, charT.position.y + 1, charT.position.z);
         var nextPos = charPos + (charT.right * footSpacing) + (moveDir * stepDistance);
         Debug.DrawRay(nextPos, Vector3.down * 3f, Color.cyan, .001f);
         return new Ray(nextPos, Vector3.down);

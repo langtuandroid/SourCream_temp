@@ -35,7 +35,7 @@ public class Walk : MonoBehaviour
     }
 
     void HandleGravity()
-    {    
+    {
         if (charCtrl.isGrounded) {
             if (inputVelocity.y > -20.0f) {
                 inputVelocity.y += groundedGravity * Time.deltaTime;
@@ -63,11 +63,11 @@ public class Walk : MonoBehaviour
     public void HandleMovement()
     {
         var lateralVelocity = new Vector2(inputVelocity.x, inputVelocity.z).normalized;
-        if (charCtrl.isGrounded) {   
+        if (charCtrl.isGrounded) {
             lateralAirVelocity = new Vector2(inputVelocity.x, inputVelocity.z).normalized;
             //Stop movement after key canceled
             if (!movementKeyPressed) {
-                lateralVelocity = new Vector2(0.0f, 0.0f); 
+                lateralVelocity = new Vector2(0.0f, 0.0f);
             }
         } else {
             lateralVelocity = Vector2.Lerp(lateralAirVelocity, lateralVelocity, airTurnSpeed);
@@ -78,13 +78,13 @@ public class Walk : MonoBehaviour
     }
 
     public void OnMovement(InputAction.CallbackContext ctx) // TODO: these events run 2-3 times on click consider doing only once through logic
-    {   
+    {
         var incVelocity = ctx.ReadValue<Vector2>().normalized;
-        if(ctx.canceled) {
+        if (ctx.canceled) {
             movementKeyPressed = false;
-        } 
-        if(ctx.started) {
-           movementKeyPressed = true; 
+        }
+        if (ctx.started) {
+            movementKeyPressed = true;
         }
         // If in the air (!grounded), and not moving (x,y both less than 0.2) -> Don't do anything
         if (!(incVelocity.x == 0 && incVelocity.y == 0 && !charCtrl.isGrounded)) {
