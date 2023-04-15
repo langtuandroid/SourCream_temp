@@ -28,21 +28,23 @@ public class SlotLink
     // Note: Rotation cannot be set directly, as it is relative to other bones
     public void UpdatePuppet()
     {
-        // Calculate relative rotation from previous frame
-        var currentCtrl = controller.transform.rotation.eulerAngles;
-        var relativeRotation = new Vector3(
-            currentCtrl.x - this.ctrlPrevFrame.x,
-            currentCtrl.y - this.ctrlPrevFrame.y,
-            currentCtrl.z - this.ctrlPrevFrame.z
-        );
-        ctrlPrevFrame = currentCtrl;
+        if (controller && puppet) {
+            // Calculate relative rotation from previous frame
+            var currentCtrl = controller.transform.rotation.eulerAngles;
+            var relativeRotation = new Vector3(
+                currentCtrl.x - this.ctrlPrevFrame.x,
+                currentCtrl.y - this.ctrlPrevFrame.y,
+                currentCtrl.z - this.ctrlPrevFrame.z
+            );
+            ctrlPrevFrame = currentCtrl;
 
-        // Apply relative rotation to puppet
-        var currentPuppet = puppet.transform.rotation.eulerAngles;
-        puppet.transform.rotation = Quaternion.Euler(currentPuppet + relativeRotation);
+            // Apply relative rotation to puppet
+            var currentPuppet = puppet.transform.rotation.eulerAngles;
+            puppet.transform.rotation = Quaternion.Euler(currentPuppet + relativeRotation);
 
-        // Set puppet world position to controller world position
-        puppet.transform.position = controller.transform.position;
+            // Set puppet world position to controller world position
+            puppet.transform.position = controller.transform.position;
+        }
     }
 }
 

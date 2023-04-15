@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,6 @@ public class RigData : ScriptableObject
         "rig_arm_R;upper_arm.R",    // Right Arm
         "rig_legs;thigh.L",         // Left Leg
         "rig_legs;thigh.R"          // Right Leg
-        // Wing link/bone/rig
     };
 
     /*** Rig target links ***/
@@ -29,8 +29,10 @@ public class RigData : ScriptableObject
     public string legRight = "leg_target.R";
     public string legLeft = "leg_target.L";
 
-    // Target Position constraints
-
-    // Target Rotation constraints
-
+    /*** IK Tips ***/
+    public Dictionary<BodySlot, Tuple<string, string>> tipsAndRoots = new Dictionary<BodySlot, Tuple<string, string>> {
+        { BodySlot.HEAD, Tuple.Create("face", "spine.004") },
+        { BodySlot.ARMS, Tuple.Create("hand.X", "upper_arm.X") },
+        { BodySlot.LEGS, Tuple.Create("foot.X", "thigh.X") },
+    };
 }

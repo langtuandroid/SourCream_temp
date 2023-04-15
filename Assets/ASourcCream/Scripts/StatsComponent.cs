@@ -8,20 +8,22 @@ public class StatsComponent : MonoBehaviour
     public Health health = new Health();
 
     [SerializeField]
-    private Dictionary<string, Modifier> modifiers;
+    private Dictionary<string, StatModifier> modifiers;
 
 
     [InspectorButton("ApplyModifier")]
     public bool applyModifier;
-    public void ApplyModifier() {
+    public void ApplyModifier()
+    {
         Debug.Log("Clicked");
-        var mod = new Modifier(ModifierType.HEALTH, 1.0f);
+        var mod = new StatModifier(StatModifierType.HEALTH, 1.0f);
         mod.AddToModifier(0.5f, 5);
-        
+
 
     }
 
-    public void Damage(float amount) {
+    public void Damage(float amount)
+    {
         health.UpdateHealth(-amount);
     }
 
