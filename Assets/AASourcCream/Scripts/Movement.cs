@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    
+
     // ------------------------------- Controllers ------------------------------- //
     private CharacterController charController;
     private SkillsController skillsController;
@@ -23,13 +23,13 @@ public class Movement : MonoBehaviour
 
     private float verticalVelocity;
 
-    public bool trackedIsGrounded {get; private set;}
+    public bool trackedIsGrounded { get; private set; }
 
     private float lastUngroundedTime = 0.0f;
 
     private Stopwatch stopwatch;
 
-        //----------------> JUMP
+    //----------------> JUMP
     [SerializeField]
     private float maxJumpHeight = 2.6f;
     private float maxJumpTime = 0.7f;
@@ -37,8 +37,8 @@ public class Movement : MonoBehaviour
     private float initialJumpVelocity;
 
     // ------------------------------- INPUT HANDLING ------------------------------- //
-    public Vector2 movementInputVelocity {get; private set;}
-    public bool movementInput {get; private set;}
+    public Vector2 movementInputVelocity { get; private set; }
+    public bool movementInput { get; private set; }
 
     private Vector2 lastMovementInputVelocity;
 
@@ -46,7 +46,7 @@ public class Movement : MonoBehaviour
 
     private bool dodgeInput;
 
-    public bool inDash {get; private set;}
+    public bool inDash { get; private set; }
     [SerializeField]
     private float movementSpeed;
     private float dashTime = 0.1f;
@@ -67,7 +67,8 @@ public class Movement : MonoBehaviour
         setupJumpVars();
     }
 
-    private void setupJumpVars() {
+    private void setupJumpVars()
+    {
         float timeToApex = maxJumpTime / 2;
         gravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
         initialJumpVelocity = (2 * maxJumpHeight) / timeToApex;
@@ -87,7 +88,8 @@ public class Movement : MonoBehaviour
         SetTrackedIsGrounded();
     }
 
-    private void SetTrackedIsGrounded() {
+    private void SetTrackedIsGrounded()
+    {
         if (!charController.isGrounded && !stopwatch.IsRunning) {
             stopwatch.Start();
         }
@@ -102,14 +104,13 @@ public class Movement : MonoBehaviour
 
     }
 
-    private void HandleMovement() 
-    {   
+    private void HandleMovement()
+    {
         movementVector = new Vector3(0.0f, verticalVelocity, 0.0f);
         if (inDash) {
             movementVector.x = dashVelocity.x;
             movementVector.z = dashVelocity.y;
-        }
-        else if (!trackedIsGrounded) {
+        } else if (!trackedIsGrounded) {
             var lateralMovement = new Vector2(movementInputVelocity.x * movementSpeed, movementInputVelocity.y * movementSpeed);
             if (lastMovementInputVelocity != Vector2.zero) {
                 var lerpedMovement = Vector2.Lerp(lastMovementInputVelocity, lateralMovement, 0.8f);
@@ -118,8 +119,7 @@ public class Movement : MonoBehaviour
                 movementVector.x = lateralMovement.x;
                 movementVector.z = lateralMovement.y;
             }
-        }
-        else if (movementInput) {
+        } else if (movementInput) {
             movementVector.x = movementInputVelocity.x * movementSpeed;
             movementVector.z = movementInputVelocity.y * movementSpeed;
         }
@@ -128,23 +128,23 @@ public class Movement : MonoBehaviour
 
     }
 
-    public void OnMovementPressed(InputAction.CallbackContext ctx) {
+    public void OnMovementPressed(InputAction.CallbackContext ctx)
+    {
         if (ctx.started) {
             movementInput = true;
-        }
-        else if (ctx.canceled) {
+        } else if (ctx.canceled) {
             movementInput = false;
             movementInputVelocity = ctx.ReadValue<Vector2>().normalized;
-        }
-        else if (ctx.performed) {
+        } else if (ctx.performed) {
             movementInputVelocity = ctx.ReadValue<Vector2>().normalized;
             lastMovementInputVelocity = Vector2.zero;
 
         }
-       
-    } 
 
-    public void OnJumpPressed(InputAction.CallbackContext ctx) {
+    }
+
+    public void OnJumpPressed(InputAction.CallbackContext ctx)
+    {
         if (ctx.started && trackedIsGrounded && !jumpInput) {
             //UnityEngine.Debug.Log("STARTED");
 
@@ -158,19 +158,18 @@ public class Movement : MonoBehaviour
             } else {
                 lastMovementInputVelocity = Vector2.zero;
             }
-        }
-        else if (ctx.canceled) {
+        } else if (ctx.canceled) {
             //UnityEngine.Debug.Log("CANCELED");
             jumpInput = false;
         }
     }
 
-    public void OnDodgePressed(InputAction.CallbackContext ctx) {
+    public void OnDodgePressed(InputAction.CallbackContext ctx)
+    {
         if (ctx.started) {
             StartCoroutine(DashCoroutine());
             dodgeInput = true;
-        }
-        else if (ctx.canceled) {
+        } else if (ctx.canceled) {
             dodgeInput = false;
         }
     }
@@ -178,7 +177,8 @@ public class Movement : MonoBehaviour
 
 
     //TODO FIND A WAY TO DO THIS WHILE NOT ALSO PRESSING A MOVEMENT KEY I don't even know what this means anymore
-    private IEnumerator DashCoroutine() {
+    private IEnumerator DashCoroutine()
+    {
         float startTime = Time.time;
         inDash = true;
         var forward = movementInput ? movementInputVelocity : new Vector2(transform.forward.x, transform.forward.z);
@@ -208,7 +208,7 @@ public class Movement : MonoBehaviour
     }
 
     public void UpdateGravity()
-    {    
+    {
         if (charController.isGrounded) {
             verticalVelocity = groundedGravity * Time.deltaTime;
         } else {

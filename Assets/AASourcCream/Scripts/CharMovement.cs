@@ -28,6 +28,12 @@ public class CharMovement : MonoBehaviour
     private Dictionary<string, Action> abilityList;
 
 
+    private bool isJumpPressed;
+    [SerializeField] private float rotationSpeed = 10.0f;
+    [SerializeField] private float jumpVelocity = 10.0f;
+
+    private Vector2 lateralAirVelocity; // Current velocity in the X,Z plane
+    private Vector3 inputVelocity; // Movement keys input in X,Z plane (0-1f)
     private CharacterController charController;
 
 
@@ -104,6 +110,56 @@ public class CharMovement : MonoBehaviour
         }
     }
 
+    void HandleRotation()
+    {
+        if (lookAtMouse) {
+            Vector3 mousePosition;
+            Vector3 objPosition;
+            Transform target = transform;
+            float angle;
+            mousePosition = Input.mousePosition;
+            mousePosition.z = 10.0f;
+            objPosition = Camera.main.WorldToScreenPoint(target.position);
+            mousePosition.x = mousePosition.x - objPosition.x;
+            mousePosition.y = mousePosition.y - objPosition.y;
+            angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
+            var roatation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, -angle + 90, 0)), Time.deltaTime * rotationSpeed);
+            target.rotation = roatation;
+        } else {
+
+        }
+    }
+
+    public void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            isJumpPressed = true;
+        }
+        if (ctx.canceled)
+        {
+            isJumpPressed = false;
+        }
+        if (ctx.performed && charController.isGrounded)
+        {
+            // inputVelocity.y = jumpVelocity;
+        }
+    }
+    
+    public void lookTowardCursor() {
+        Vector3 mousePosition;
+        Vector3 objPosition;
+        Transform target = transform;
+        float angle;
+        mousePosition = Input.mousePosition;
+        mousePosition.z = 10.0f;
+        objPosition = Camera.main.WorldToScreenPoint(target.position);
+        mousePosition.x = mousePosition.x - objPosition.x;
+        mousePosition.y = mousePosition.y - objPosition.y;
+        angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
+        var roatation = Quaternion.Euler(new Vector3(0, -angle + 90, 0));
+        target.rotation = Quaternion.Lerp(transform.rotation, roatation, 5f * Time.deltaTime);
+    }
 
     public void OnFire(InputAction.CallbackContext ctx)
     {
