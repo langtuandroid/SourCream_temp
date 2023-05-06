@@ -9,10 +9,8 @@ public class GenericMonoHelper : MonoBehaviour
 
     public static GenericMonoHelper Instance
     {
-        get
-        {
-            if (_instance is null)
-            {
+        get {
+            if (_instance is null) {
                 Debug.Log("Generic Mono helper is Null");
             }
             return _instance;

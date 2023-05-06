@@ -21,8 +21,7 @@ public class Weapon : MonoBehaviour
     public void OnTriggerEnter(Collider collider)
     {
         Debug.Log("enter");
-        if (collider.transform.gameObject.layer == 6)
-        {
+        if (collider.transform.gameObject.layer == 6) {
             Debug.Log("DO dmg");
             var statsComponent = collider.transform.gameObject.GetComponent<StatsComponent>();
             statsComponent.Damage(new DamageInformation(DamageTypes.Physical, 20.0f));

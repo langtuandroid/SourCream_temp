@@ -20,10 +20,8 @@ public class GenericColliderHelper : SerializedMonoBehaviour
     private static GenericColliderHelper _instance;
     public static GenericColliderHelper Instance
     {
-        get
-        {
-            if (_instance is null)
-            {
+        get {
+            if (_instance is null) {
                 Debug.Log("Generic collider helper is Null");
             }
             return _instance;
@@ -44,8 +42,7 @@ public class GenericColliderHelper : SerializedMonoBehaviour
     {
 
         GameObject collider = null;
-        switch (colliderType)
-        {
+        switch (colliderType) {
             case ColliderTypes.SimpleSquare:
                 collider = ParamInstantiate.InstantiateColliderWithInfo(colliders[ColliderTypes.SimpleSquare], location.position, location.rotation, location.transform, dmgInfo);
                 break;
@@ -65,8 +62,7 @@ public class GenericColliderHelper : SerializedMonoBehaviour
                 break;
         }
 
-        if (collider != null)
-        {
+        if (collider != null) {
             StartCoroutine(GenericMonoHelper.Instance.DestroyAfterDelay(duration, collider));
         }
     }
@@ -82,8 +78,7 @@ public static class ParamInstantiate
     {
         var returnValue = UnityEngine.Object.Instantiate(original, position, rotation, parent);
         CollisionDetection collision = returnValue.GetComponent<CollisionDetection>();
-        if (collision)
-        {
+        if (collision) {
             collision.SetDamageInfo(dmgInfo);
             return returnValue;
         }

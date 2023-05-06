@@ -22,8 +22,7 @@ public class WeightedList<T> : IEnumerable<T>
     public WeightedList(ICollection<WeightedListItem<T>> listItems, Random rand = null)
     {
         _rand = rand ?? new Random();
-        foreach (WeightedListItem<T> item in listItems)
-        {
+        foreach (WeightedListItem<T> item in listItems) {
             _list.Add(item._item);
             _weights.Add(item._weight);
         }
@@ -45,8 +44,7 @@ public class WeightedList<T> : IEnumerable<T>
     {
         if (weight + _minWeight <= 0 && BadWeightErrorHandling == ThrowExceptionOnAdd)
             throw new ArgumentException($"Subtracting {-1 * weight} from all items would set weight to non-positive for at least one element.");
-        for (int i = 0; i < Count; i++)
-        {
+        for (int i = 0; i < Count; i++) {
             _weights[i] = FixWeight(_weights[i] + weight);
         }
         Recalculate();
@@ -88,8 +86,7 @@ public class WeightedList<T> : IEnumerable<T>
 
     public void Add(ICollection<WeightedListItem<T>> listItems)
     {
-        foreach (WeightedListItem<T> listItem in listItems)
-        {
+        foreach (WeightedListItem<T> listItem in listItems) {
             _list.Add(listItem._item);
             _weights.Add(FixWeight(listItem._weight));
         }
@@ -158,8 +155,7 @@ public class WeightedList<T> : IEnumerable<T>
         sb.Append(", Count:");
         sb.Append(Count);
         sb.Append(", {");
-        for (int i = 0; i < _list.Count; i++)
-        {
+        for (int i = 0; i < _list.Count; i++) {
             sb.Append(_list[i].ToString());
             sb.Append(":");
             sb.Append(_weights[i].ToString());
@@ -196,10 +192,8 @@ public class WeightedList<T> : IEnumerable<T>
         List<int> scaledProbabilityNumerator = new List<int>(Count);
         List<int> small = new List<int>(Count); // STEP 2
         List<int> large = new List<int>(Count); // STEP 2
-        foreach (int weight in _weights)
-        {
-            if (isFirst)
-            {
+        foreach (int weight in _weights) {
+            if (isFirst) {
                 _minWeight = _maxWeight = weight;
                 isFirst = false;
             }
@@ -212,15 +206,13 @@ public class WeightedList<T> : IEnumerable<T>
         }
 
         // Degenerate case, all probabilities are equal.
-        if (_minWeight == _maxWeight)
-        {
+        if (_minWeight == _maxWeight) {
             _areAllProbabilitiesIdentical = true;
             return;
         }
 
         // STEP 4
-        for (int i = 0; i < Count; i++)
-        {
+        for (int i = 0; i < Count; i++) {
             if (scaledProbabilityNumerator[i] < _totalWeight)
                 small.Add(i);
             else
@@ -228,8 +220,7 @@ public class WeightedList<T> : IEnumerable<T>
         }
 
         // STEP 5
-        while (small.Count > 0 && large.Count > 0)
-        {
+        while (small.Count > 0 && large.Count > 0) {
             int l = small[^1]; // 5.1
             small.RemoveAt(small.Count - 1);
             int g = large[^1]; // 5.2
@@ -245,8 +236,7 @@ public class WeightedList<T> : IEnumerable<T>
         }
 
         // STEP 6
-        while (large.Count > 0)
-        {
+        while (large.Count > 0) {
             int g = large[^1]; // 6.1
             large.RemoveAt(large.Count - 1);
             _probabilities[g] = _totalWeight; //6.1

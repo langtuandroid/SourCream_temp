@@ -18,12 +18,10 @@ public class Health
     public void UpdateHealth(float amount)
     {
         this.currentHealth += amount;
-        if (this.currentHealth > maxHealth)
-        {
+        if (this.currentHealth > maxHealth) {
             this.currentHealth = maxHealth;
         }
-        if (this.currentHealth + amount < 0)
-        {
+        if (this.currentHealth + amount < 0) {
             this.currentHealth = 0;
         }
         onHealthChanged(currentHealth, maxHealth);
@@ -31,14 +29,11 @@ public class Health
 
     public void SetHealth(float newhealth)
     {
-        if (newhealth > maxHealth)
-        {
+        if (newhealth > maxHealth) {
 
             this.currentHealth = maxHealth;
             onHealthChanged(currentHealth, maxHealth);
-        }
-        else
-        {
+        } else {
             this.currentHealth = newhealth;
             onHealthChanged(currentHealth, maxHealth);
         }

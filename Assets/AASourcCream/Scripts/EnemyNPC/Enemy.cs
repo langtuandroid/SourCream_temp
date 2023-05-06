@@ -91,8 +91,7 @@ public class Enemy : SerializedMonoBehaviour
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        if (agent)
-        {
+        if (agent) {
             agent.autoBraking = true;
         }
         spawnLocation = transform.position;
@@ -113,21 +112,15 @@ public class Enemy : SerializedMonoBehaviour
         playerInAttackRange = Physics.CheckSphere(heightAdjustedPosition, attackRange, whatIsPlayer);
 
         //Seems kinda cringe to do this, could also just set it constantly unsure which to prefer
-        if (!isAttacking)
-        {
-            if (!playerInSightRange)
-            {
+        if (!isAttacking) {
+            if (!playerInSightRange) {
                 nextActionTime = 0;
                 Patroling();
                 currentState = EnemyState.Patrolling;
-            }
-            else if (playerInAttackRange)
-            {
+            } else if (playerInAttackRange) {
                 AttackPlayer();
                 currentState = EnemyState.Engaged;
-            }
-            else if (playerInSightRange && !playerInAttackRange)
-            {
+            } else if (playerInSightRange && !playerInAttackRange) {
                 nextActionTime = 0;
                 ChasePlayer();
                 currentState = EnemyState.Chasing;
@@ -145,18 +138,15 @@ public class Enemy : SerializedMonoBehaviour
         agent.velocity = agent.desiredVelocity / 2f;
         //animationCtrl.PlayAnimation(walkAnimation);
         //If there is no point to walk towards and is not resting after reaching the point Search for a random location to walk towards and go after 1-4s
-        if (!walkPointSet && !walkPointResting)
-        {
+        if (!walkPointSet && !walkPointResting) {
             walkPointResting = true;
             agent.isStopped = false;
             StartCoroutine(GenericMonoHelper.Instance.GenericWait(Random.Range(1, 4), () => SearchWalkPoint()));
         }
         //If point to walk towards exists go there and check collision
-        if (walkPointSet && currentState == EnemyState.Patrolling)
-        {
+        if (walkPointSet && currentState == EnemyState.Patrolling) {
             agent.SetDestination(walkPoint);
-            if (Physics.CheckSphere(walkPoint, 2.0f, NPCitself))
-            {
+            if (Physics.CheckSphere(walkPoint, 2.0f, NPCitself)) {
                 agent.isStopped = true;
                 walkPointSet = false;
             }
@@ -207,13 +197,11 @@ public class Enemy : SerializedMonoBehaviour
     //SET up weights for prefered attacks i.e only meele, prefers meele, only range, prefers rangee etc and then deeper for singulars
     private void Attack()
     {
-        if (Time.time > nextActionTime)
-        {
+        if (Time.time > nextActionTime) {
             nextActionTime += timeBetweenAttacks;
             WeightedList<string> weightedList = new();
 
-            for (int i = 0; i < regularMeeles.Count; i++)
-            {
+            for (int i = 0; i < regularMeeles.Count; i++) {
                 var item = regularMeeles.ElementAt(i);
                 weightedList.Add(item.Key, item.Value);
             }
@@ -228,9 +216,7 @@ public class Enemy : SerializedMonoBehaviour
             Debug.Log(animationLength);
             isAttacking = true;
             StartCoroutine(GenericMonoHelper.Instance.GenericWait(Random.Range(animationLength + 0.2f, animationLength + 0.4f), () => ResetAttack()));
-        }
-        else
-        {
+        } else {
             return;
         }
     }

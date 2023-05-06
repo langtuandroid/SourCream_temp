@@ -17,7 +17,7 @@ public class SpawnEnemyInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerEnter()

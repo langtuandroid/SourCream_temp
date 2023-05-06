@@ -47,8 +47,7 @@ public class EnemyAnimationCtrl : SerializedMonoBehaviour
 
     public void changeAnimationState(string newState)
     {
-        if (newState == _currentState)
-        {
+        if (newState == _currentState) {
             return;
         }
         _animator.Play(newState);
