@@ -8,9 +8,10 @@ public class StatsComponent : MonoBehaviour
     public Health health = new Health();
 
     [SerializeField]
-    private Dictionary<string, Modifier> modifiers;
+    private Dictionary<string, StatModifier> modifiers;
 
     private float armor = 10.0f;
+
 
 
     [InspectorButton("ApplyModifier")]
@@ -18,7 +19,7 @@ public class StatsComponent : MonoBehaviour
     public void ApplyModifier()
     {
         Debug.Log("Clicked");
-        var mod = new Modifier(ModifierType.HEALTH, 1.0f);
+        var mod = new StatModifier(StatModifierType.HEALTH, 1.0f);
         mod.AddToModifier(0.5f, 5);
     }
 
@@ -30,14 +31,11 @@ public class StatsComponent : MonoBehaviour
 
     public float CalculateDamage(DamageInformation dmgInfo)
     {
-        switch (dmgInfo.dmgType)
-        {
-            case DamageTypes.Physical:
-                {
+        switch (dmgInfo.dmgType) {
+            case DamageTypes.Physical: {
                     return dmgInfo.amount - armor;
                 }
-            case DamageTypes.Magical:
-                {
+            case DamageTypes.Magical: {
                     return 2;
                 }
             default: return 1;

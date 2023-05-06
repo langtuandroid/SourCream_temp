@@ -11,7 +11,6 @@ public class ColliderController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -25,8 +24,7 @@ public class ColliderController : MonoBehaviour
 
         Collider colliderObject = null;
         GameObject spawnedObject = null;
-        switch (shape)
-        {
+        switch (shape) {
             case IndicatorShape.Square:
                 spawnedObject = Instantiate<GameObject>(SimpleCollider);
                 colliderObject = spawnedObject.AddComponent<BoxCollider>();
@@ -44,8 +42,7 @@ public class ColliderController : MonoBehaviour
                 spawnedObject.transform.localScale = new Vector3(50.0f, 50.0f, 50.0f);
                 break;
         }
-        if (colliderObject)
-        {
+        if (colliderObject) {
             colliderObject.isTrigger = true;
         }
         spawnedObject.transform.position = new Vector3(location.x, location.y, location.z);

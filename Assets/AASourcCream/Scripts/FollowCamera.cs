@@ -24,7 +24,6 @@ public class FollowCamera : MonoBehaviour
         UpdateCameraAngle();
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -52,5 +51,6 @@ public class FollowCamera : MonoBehaviour
         var ray2 = new Vector3(ray.direction.x, ray.direction.y - 20, ray.direction.z);
         var angle = Vector3.Angle(ray.direction, ray2);
         mainCamera.transform.rotation = Quaternion.Euler(90.0f - angle - rotationXoffset, 0, 0);
+
     }
 }
