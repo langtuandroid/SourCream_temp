@@ -9,7 +9,7 @@ LightmapParameters:
   m_Name: cliff_LM
   serializedVersion: 3
   resolution: 1
-  clusterResolution: 0.5
+  clusterResolution: 0.533
   irradianceBudget: 128
   irradianceQuality: 8192
   backFaceTolerance: 0

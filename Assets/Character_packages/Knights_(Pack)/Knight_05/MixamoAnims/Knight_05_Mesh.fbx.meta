@@ -1,8 +1,11 @@
 fileFormatVersion: 2
-guid: a9d428ff753589546b03d437c50c00ff
+guid: 65e88e137a563d34a9314104e45b7ca2
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable:
+  - first:
+      74: 8993902097722301239
+    second: Unreal Take
   - first:
       74: -203655887218126122
     second: mixamo.com

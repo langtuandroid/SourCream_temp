@@ -5,10 +5,10 @@ using System;
 public class Health
 {
     [SerializeField]
-    private float maxHealth = 100.0f;
+    public float maxHealth = 100.0f;
 
     [SerializeField]
-    private float currentHealth = 100.0f;
+    public float currentHealth = 100.0f;
 
     public int healthPct = 100;
 
@@ -27,7 +27,8 @@ public class Health
         onHealthChanged(currentHealth, maxHealth);
     }
 
-    public void SetHealth(float newhealth) {
+    public void SetHealth(float newhealth)
+    {
         if (newhealth > maxHealth) {
 
             this.currentHealth = maxHealth;
@@ -36,7 +37,7 @@ public class Health
             this.currentHealth = newhealth;
             onHealthChanged(currentHealth, maxHealth);
         }
-        
+
     }
 
 }

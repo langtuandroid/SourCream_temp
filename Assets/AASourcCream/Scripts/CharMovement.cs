@@ -72,26 +72,26 @@ public class CharMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
         HandleAttackAction();
         HandleMovementAnims();
     }
 
-    public void HandleAttackAction() {
+    public void HandleAttackAction()
+    {
         if (Time.time > nextActionTime) { //TODO: FEEL FREE TO UNDO THIS DUMB SHIT also remove nextActionTime += period; in OnFire
             nextActionTime += period;
             if (isAttacking) {
                 isAttacking = animator.GetCurrentAnimatorStateInfo(1).IsName("attack");
             }
-        } 
+        }
     }
 
     void HandleMovementAnims()
-    {   
-        
+    {
+
         animator.SetBool(inAir, !movementController.trackedIsGrounded);
-        if (charController.isGrounded && !movementController.inDash && movementController.movementInput)
-        {   
+        if (charController.isGrounded && !movementController.inDash && movementController.movementInput) {
             animator.SetBool(isMoving, true);
             var multiplier = isAttacking ? 3 : 10;
             //TODO: => smooth value update / lerp? 
@@ -127,21 +127,19 @@ public class CharMovement : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
-        {
+        if (ctx.started) {
             isJumpPressed = true;
         }
-        if (ctx.canceled)
-        {
+        if (ctx.canceled) {
             isJumpPressed = false;
         }
-        if (ctx.performed && charController.isGrounded)
-        {
+        if (ctx.performed && charController.isGrounded) {
             // inputVelocity.y = jumpVelocity;
         }
     }
-    
-    public void lookTowardCursor() {
+
+    public void lookTowardCursor()
+    {
         Vector3 mousePosition;
         Vector3 objPosition;
         Transform target = transform;
@@ -167,21 +165,20 @@ public class CharMovement : MonoBehaviour
         }
     }
     //MOVE THIS to attack related
-    public void onMbR(InputAction.CallbackContext ctx) 
+    public void onMbR(InputAction.CallbackContext ctx)
     {
         if (ctx.started) {
             Vector3 mousePosition = Input.mousePosition;
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            
+
             LayerMask mask = LayerMask.GetMask("Terrain");
             if (Physics.Raycast(ray, out hit, mask)) {
-                Debug.Log(projectileStartLocation.localPosition.y);
                 float yPositon = hit.point.y + projectileStartLocation.localPosition.y + 1.0f;
 
                 if (yPositon > projectileStartLocation.transform.position.y + 1.0f) {
                     yPositon = projectileStartLocation.transform.position.y + 1.0f;
-                } else if (yPositon < projectileStartLocation.transform.position.y - 1.0f ) {
+                } else if (yPositon < projectileStartLocation.transform.position.y - 1.0f) {
                     yPositon = projectileStartLocation.transform.position.y - 2.0f;
                 }
 
@@ -194,13 +191,14 @@ public class CharMovement : MonoBehaviour
 
     }
     //MOVE THIS
-    public void onColide(Collider colider) {
+    public void onColide(Collider colider)
+    {
         //Debug.Log(colider.transform.gameObject.layer);
         if (colider.transform.gameObject.layer == 6 && isAttacking) {
             var stats = colider.GetComponent<StatsComponent>();
-            stats.Damage(20.0f);
+            stats.Damage(new DamageInformation(DamageTypes.Physical, 10.0f));
         }
-        
+
     }
     //MOVE THIS
     void OnDrawGizmos()
@@ -211,18 +209,18 @@ public class CharMovement : MonoBehaviour
     }
 
     public void OnAbility1(InputAction.CallbackContext ctx)
-    {   
+    {
         CommonParams commonParams = new CommonParams();
 
         var mousePos = GenericHelper.GetMousePostion();
         var rotation = new Vector3(this.transform.rotation.x, this.transform.rotation.y, this.transform.rotation.z);
-        var mousePosWithY = new Vector3 (mousePos.x, mousePos.y + 0.5f, mousePos.z);
+        var mousePosWithY = new Vector3(mousePos.x, mousePos.y + 0.5f, mousePos.z);
 
         //Setting the world parameters for the skill
         commonParams.SetValues(IndicatorShape.Circle, new Vector3(10.0f, 10.0f, 10.0f), mousePosWithY, rotation);
 
         //Currently being used in order to click and drag indicator, and do skill upon release rather than hold 
-        if(ctx.phase == InputActionPhase.Started) {
+        if (ctx.phase == InputActionPhase.Started) {
             skillsController.UseAOESkill(commonParams, Phase.Start);
         }
         if (ctx.phase == InputActionPhase.Canceled) {

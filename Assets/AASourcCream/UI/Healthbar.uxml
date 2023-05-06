@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/what.uss?fileID=7433441132597879392&amp;guid=db67083c41496ae43b9ecfb017b504a7&amp;type=3#what" />
+    <ui:VisualElement style="flex-grow: 1; flex-shrink: 0; justify-content: flex-start;">
+        <ui:VisualElement style="justify-content: center; left: 20px; top: 20px; bottom: auto; width: 30%;">
+            <ui:ProgressBar title="my-progress" name="ProgressBar" style="-unity-font-style: bold; color: rgb(0, 0, 0); -unity-font: url(&apos;project://database/Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-MediumItalic.ttf?fileID=12800000&amp;guid=d93c1bc57fdf1ac4dad1bf04fac05464&amp;type=3#Roboto-MediumItalic&apos;); -unity-background-image-tint-color: rgb(209, 209, 209); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

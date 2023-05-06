@@ -11,36 +11,36 @@ public class ColliderController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void SpawnCollider(Vector3 location, IndicatorShape shape, float timer, float width, float height, float? length) {
-        
+    public void SpawnCollider(Vector3 location, IndicatorShape shape, float timer, float width, float height, float? length)
+    {
+
         Collider colliderObject = null;
         GameObject spawnedObject = null;
-        switch(shape) {
+        switch (shape) {
             case IndicatorShape.Square:
-            spawnedObject = Instantiate<GameObject>(SimpleCollider);
-            colliderObject = spawnedObject.AddComponent<BoxCollider>();
-            (colliderObject as BoxCollider).size = new Vector3(width, height, (float)(length == null ? length : 1.0f));
-            break;
+                spawnedObject = Instantiate<GameObject>(SimpleCollider);
+                colliderObject = spawnedObject.AddComponent<BoxCollider>();
+                (colliderObject as BoxCollider).size = new Vector3(width, height, (float)(length == null ? length : 1.0f));
+                break;
             case IndicatorShape.Circle:
-            spawnedObject = Instantiate<GameObject>(SimpleCollider);
-            colliderObject = spawnedObject.AddComponent<CapsuleCollider>();
-            (colliderObject as CapsuleCollider).height = height;
-            (colliderObject as CapsuleCollider).radius = width;
-            break;
+                spawnedObject = Instantiate<GameObject>(SimpleCollider);
+                colliderObject = spawnedObject.AddComponent<CapsuleCollider>();
+                (colliderObject as CapsuleCollider).height = height;
+                (colliderObject as CapsuleCollider).radius = width;
+                break;
             case IndicatorShape.Cone:
-            spawnedObject = Instantiate<GameObject>(ConeColliderGameObject);
-            colliderObject = spawnedObject.GetComponent<MeshCollider>();
-            spawnedObject.transform.localScale = new Vector3(50.0f, 50.0f, 50.0f);
-            break;
+                spawnedObject = Instantiate<GameObject>(ConeColliderGameObject);
+                colliderObject = spawnedObject.GetComponent<MeshCollider>();
+                spawnedObject.transform.localScale = new Vector3(50.0f, 50.0f, 50.0f);
+                break;
         }
         if (colliderObject) {
             colliderObject.isTrigger = true;
