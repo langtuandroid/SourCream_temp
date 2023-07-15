@@ -149,7 +149,6 @@ public class Movement : MonoBehaviour
             //UnityEngine.Debug.Log("STARTED");
 
             jumpInput = true;
-            UnityEngine.Debug.Log(verticalVelocity);
             if (verticalVelocity < 5.0f) { //Disabled double jump if you click twice faster than trackedIsGrounded :(
                 verticalVelocity = initialJumpVelocity;
             }

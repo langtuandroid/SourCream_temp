@@ -196,7 +196,7 @@ public class CharMovement : MonoBehaviour
         //Debug.Log(colider.transform.gameObject.layer);
         if (colider.transform.gameObject.layer == 6 && isAttacking) {
             var stats = colider.GetComponent<StatsComponent>();
-            stats.Damage(new DamageInformation(DamageTypes.Physical, 10.0f));
+            stats.Damage(new DamageInformation(ScalingTypes.PHYSICAL, 10.0f));
         }
 
     }

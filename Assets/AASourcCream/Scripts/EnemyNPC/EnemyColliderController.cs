@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionDetection : MonoBehaviour
+public class EnemyColliderController : MonoBehaviour
 {
-    public DamageInformation damageInfo { get; set; }
-
-    public StatsComponent statsComponent { get; set; }
-
     private bool collisionOccured = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,10 +20,13 @@ public class CollisionDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
+        Debug.Log("DOOOOOOOOOOOOOOIIIIIIIING DAMAGE");
+
         if (collisionOccured) return;
         if (collider.transform.gameObject.layer == 7) {
             collisionOccured = true;
-            statsComponent.Damage(damageInfo);
+            var statsComponent = collider.transform.gameObject.GetComponent<StatsComponent>();
+            statsComponent.Damage(new DamageInformation(ScalingTypes.PHYSICAL, 20));
         }
     }
 
@@ -36,11 +36,4 @@ public class CollisionDetection : MonoBehaviour
             collisionOccured = false;
         }
     }
-
-    public void SetDamageInfo(DamageInformation dmgInfo)
-    {
-        damageInfo = dmgInfo;
-    }
 }
-
-
