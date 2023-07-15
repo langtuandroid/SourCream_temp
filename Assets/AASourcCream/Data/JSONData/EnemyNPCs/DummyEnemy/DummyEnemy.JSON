@@ -1,0 +1,56 @@
+{    
+    "name" : "Dummy",
+    "healthPoints": "1000",
+    "manaPoints" : "200",
+    "attackDamage" : "10",
+    "attacks" : [
+        {
+            "name" : "RegularSwing",
+            "scallingType" : "PHYSICAL",
+            "abilityTimer" : "INSTANT",
+            "range" : "2",
+            "value" : "1.2",
+            "castTime" : "0.5",
+            "target" : "ENEMY"
+
+        },
+        {
+            "name" :  "HookShot",
+            "scallingType" : "PHYSICAL",
+            "abilityTimer" : "INSTANT",
+            "range" : "2",
+            "value" : "1.4",
+            "castTime" : "1",
+            "target" : "ENEMY"
+
+        }
+    ],
+    "buffs" : [
+        {       
+            "name" : "DrinkPotion",
+            "scallingType" : "MAGICAL",
+            "abilityTimer" : "CHANNEL",
+            "range": "1",
+            "value" : "1.5",
+            "castTime" : "2",
+            "target" : "SELF"
+        }
+    ],
+    "movementActions" : [
+        {
+            "name" : "Dash",
+            "distance" : "5",
+            "direction" : "SIDEWAY"
+        },
+        {
+            "name" : "DashForward",
+            "distance" : "5",
+            "direction" : "FORWARD"
+        },
+        {
+            "name" : "DashBackward",
+            "distance" : "5",
+            "direction" : "BACKWARD"
+        }
+    ]
+}
