@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -18,12 +19,16 @@ public class AbilityController : SerializedMonoBehaviour
     public bool abilityInProgress = false;
     //this is supposed to be adaptable rather than hardset
     public FighterController fighterController;
+    //TODO this shouldn't be here and instead be in archType classes like Fighter controller etc.
+    public StatsComponent statsComponent;
 
 
     // Start is called before the first frame update
     void Start()
     {
         fighterController = gameObject.GetComponent<FighterController>();
+        statsComponent = gameObject.GetComponent<StatsComponent>();
+
     }
 
     // Update is called once per frame
@@ -36,21 +41,35 @@ public class AbilityController : SerializedMonoBehaviour
     {
         currentCombatAction = actionData;
         abilityInProgress = true;
-        switch (actionData.attackType) {
-            case AttackType.INSTANT:
-                instantAttack(actionData, player);
-                break;
-            case AttackType.PROJECTILE:
-                projectileAttack(actionData, player);
-                break;
-            case AttackType.RANGEINSTANT:
-                instantRangeAttack(actionData, player);
-                break;
-            case AttackType.CHANNEL:
-                channelAttack(actionData, player);
-                break;
-            default:
-                break;
+        if (actionData.target == TargetTypes.ALLY || actionData.target == TargetTypes.SELF) {
+            switch (actionData.target) {
+                case TargetTypes.ALLY:
+                    buffAlly(actionData);
+                    break;
+                case TargetTypes.SELF:
+                    buffSelf(actionData);
+                    break;
+                default:
+                    break;
+            }
+
+        } else {
+            switch (actionData.attackType) {
+                case AttackType.INSTANT:
+                    instantAttack(actionData, player);
+                    break;
+                case AttackType.PROJECTILE:
+                    projectileAttack(actionData, player);
+                    break;
+                case AttackType.RANGEINSTANT:
+                    instantRangeAttack(actionData, player);
+                    break;
+                case AttackType.CHANNEL:
+                    channelAttack(actionData, player);
+                    break;
+                default:
+                    break;
+            }
         }
 
     }
@@ -133,10 +152,52 @@ public class AbilityController : SerializedMonoBehaviour
         }
     }
 
+    public void buffSelf(EnemyCombatAction actionData)
+    {
+        Debug.Log("BUFF SELLF");
+        StartCoroutine(CallMethodForDuration(actionData.castTime, (actionData.castTime / 2), () => statsComponent.Heal(100)));
+        CallMethodWithDelay(actionData.castTime + 0.2f, () => abilityFinished());
+    }
+
+    public void buffAlly(EnemyCombatAction actionData)
+    {
+        // TODO IMPLEMENT
+    }
+
+
+    private IEnumerator CallMethodForDuration(float duration, float interval, Action callback)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration) {
+            // Call your method here
+            callback();
+
+            yield return new WaitForSeconds(interval);
+
+            elapsedTime += interval;
+        }
+
+        // Coroutine finished, perform any necessary clean-up or actions
+        // This is where you can handle what happens after the desired duration
+    }
+
+
     private void abilityFinished()
     {
+        Debug.Log("ABILITY FINISHED");
+        var shouldReset = false;
         abilityInProgress = false;
-        fighterController.setNextPreferedAction();
+        if (statsComponent.health.currentHealth < (statsComponent.health.maxHealth / 2)) {
+            fighterController.UpdateActionTypeWeights(Actions.BUFF, 1000);
+            shouldReset = true;
+        } else {
+            fighterController.UpdateActionTypeWeights(Actions.ATTACK, 10000);
+            shouldReset = true;
+        }
+        Debug.Log(fighterController.actionTypeWeightedList.GetWeightAtIndex(0));
+        Debug.Log(fighterController.actionTypeWeightedList.GetWeightAtIndex(1));
+        fighterController.setNextPreferedAction(shouldReset, false);
     }
 
     private void SetupCollisionDetection(EnemyCombatAction actionData, GameObject colliderToUse, GameObject target)

@@ -33,6 +33,7 @@ public class StatsComponent : MonoBehaviour
     {
         var amount = CalculateDamage(dmgInfo);
         damageNumber.enableCombination = true;
+        damageNumber.SetColor(Color.red);
         damageNumber.Spawn(transform.position, amount);
         health.UpdateHealth(-amount);
     }
@@ -48,6 +49,15 @@ public class StatsComponent : MonoBehaviour
                 }
             default: return 1;
         }
+    }
+
+    public void Heal(float amount)
+    {
+        damageNumber.enableCombination = true;
+        damageNumber.SetColor(Color.green);
+        damageNumber.Spawn(transform.position, amount);
+        health.UpdateHealth(amount);
+
     }
 
 }

@@ -601,9 +601,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health:
-    maxHealth: 100
-    currentHealth: 100
-    healthPct: 100
+    maxHealth: 1000
+    currentHealth: 550
+    healthPct: 55
   damageNumber: {fileID: 5870411131112059259, guid: 9d22d855b624f5840b44950070d27d76,
     type: 3}
   attackDamge: 20
@@ -759,6 +759,7 @@ MonoBehaviour:
   dataLocation: Assets/AASourcCream/Resources/JSONData/EnemyNPCs/DummyEnemy
   abilityInProgress: 0
   fighterController: {fileID: 0}
+  statsComponent: {fileID: 0}
 --- !u!850595691 &790520168
 LightingSettings:
   m_ObjectHideFlags: 0

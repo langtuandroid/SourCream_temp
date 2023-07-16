@@ -45,7 +45,7 @@ public class EnemyController : MonoBehaviour
 
     private EventCustom currentEvent;
 
-    private int nextBehaviorRange;
+    private float nextBehaviorRange;
 
     //needs to be generic
     private FighterController fighterController;
@@ -281,12 +281,14 @@ public class EnemyController : MonoBehaviour
     private void callBehavior()
     {
         var nextAction = fighterController.nextAction;
-        Debug.Log(nextAction.CombatAction.name);
         if (nextAction.CombatAction != null) {
             var actionToCall = nextAction.CombatAction;
             invokeCombatAction(actionToCall);
             SetActionState(ActionState.inAbility);
         } else {
+            var actionToCall = fighterController.attacks[0];
+            invokeCombatAction(actionToCall);
+            SetActionState(ActionState.inAbility);
             // var movementToCall = fighterController.nextAction.MovementAction;
             // invokeMovementAction(movementToCall);
             // SetActionState(ActionState.inAbility);
@@ -296,7 +298,9 @@ public class EnemyController : MonoBehaviour
     private void invokeMovementAction(EnemyMovementAction movementAction)
     {
         Debug.Log(movementAction.direction);
+        // abilityController.callBuffAction();
         dashMovement.Dash(movementAction.direction, movementAction.distance);
+
     }
 
     private void invokeCombatAction(EnemyCombatAction combatAction)

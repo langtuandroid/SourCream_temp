@@ -33,7 +33,7 @@ public class EnemyCombatAction
     [Key(2)]
     public AttackType attackType;
     [Key(3)]
-    public int range;
+    public float range;
     [Key(4)]
     public float value;
     [Key(5)]

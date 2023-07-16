@@ -30,7 +30,7 @@
             "name" : "DrinkPotion",
             "scallingType" : "MAGICAL",
             "attackType" : "CHANNEL",
-            "range": "1",
+            "range": "1000",
             "value" : "1.5",
             "castTime" : "2",
             "target" : "SELF"

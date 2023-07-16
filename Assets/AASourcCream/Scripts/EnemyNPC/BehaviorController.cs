@@ -12,14 +12,17 @@ public interface BehaviorController
     WeightedList<string> actionTypeWeightedList { get; set; }
 
     void InitializeWeights();
-    void UpdateWeights(Actions actionType, AttackUpdateTypes attackUpdate, float preferenceAmount);
+    void UpdateWeights(Actions actionType, AttackUpdateTypes attackUpdate, int preferenceAmount);
 
-    void UpdateBuffWeights(AttackUpdateTypes attackUpdate, float preferenceAmount);
-    void UpdateAttackWeights(AttackUpdateTypes attackUpdate, float preferenceAmount);
-    void UpdateMovementWeights(AttackUpdateTypes attackUpdate, float preferenceAmount);
+    void UpdateBuffWeights(AttackUpdateTypes attackUpdate, int preferenceAmount);
+    void UpdateAttackWeights(AttackUpdateTypes attackUpdate, int preferenceAmount);
+    void UpdateMovementWeights(AttackUpdateTypes attackUpdate, int preferenceAmount);
+
+    void UpdateActionTypeWeights(Actions actionType, int preferenceAmount);
     EnemyActions getNextPreferedAction();
 
-
+    void ResetActionTypeWeights();
+    void ResetWeights();
 
     //Something with enemy(main character) state
 }

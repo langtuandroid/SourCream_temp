@@ -44,9 +44,9 @@ public class FighterController : MonoBehaviour, BehaviorController
     public void InitializeWeights()
     {
         List<WeightedListItem<string>> actionTypes = new() {
-            new WeightedListItem<string>("attacks", 900),
-            new WeightedListItem<string>("buffs", 1),
-            new WeightedListItem<string>("movementActions", 1),
+            new WeightedListItem<string>("attacks", 100),
+            new WeightedListItem<string>("buffs", 100),
+            new WeightedListItem<string>("movementActions", 100),
 
         };
         actionTypeWeightedList = new(actionTypes);
@@ -55,7 +55,8 @@ public class FighterController : MonoBehaviour, BehaviorController
         if (behaviors.attacks.Length > 0) {
             for (int i = 0; i < behaviors.attacks.Length; i++) {
                 var stringVal = behaviors.attacks[i].name;
-                attacksTemp.Add(new WeightedListItem<EnemyCombatAction>(behaviors.attacks[i], 1));
+
+                attacksTemp.Add(new WeightedListItem<EnemyCombatAction>(behaviors.attacks[i], 100));
             }
         }
         attacks = new(attacksTemp);
@@ -64,7 +65,7 @@ public class FighterController : MonoBehaviour, BehaviorController
         if (behaviors.buffs.Length > 0) {
             for (int i = 0; i < behaviors.buffs.Length; i++) {
                 var stringVal = behaviors.buffs[i].name;
-                buffsTemp.Add(new WeightedListItem<EnemyCombatAction>(behaviors.buffs[i], 1));
+                buffsTemp.Add(new WeightedListItem<EnemyCombatAction>(behaviors.buffs[i], 100));
             }
         }
 
@@ -75,17 +76,46 @@ public class FighterController : MonoBehaviour, BehaviorController
             if (behaviors.movementActions.Length > 0) {
                 for (int i = 0; i < behaviors.movementActions.Length; i++) {
                     var stringVal = behaviors.movementActions[i].name;
-                    movements.Add(new WeightedListItem<EnemyMovementAction>(behaviors.movementActions[i], 1));
+                    movements.Add(new WeightedListItem<EnemyMovementAction>(behaviors.movementActions[i], 100));
                 }
             }
         };
         movementActions = new(movements);
 
-        setNextPreferedAction();
+        setNextPreferedAction(false, false);
     }
 
+    public void UpdateActionTypeWeights(Actions actionType, int preferenceAmount)
+    {
+        //actionTypeWeightedList
+        switch (actionType) {
+            case Actions.ATTACK:
+                actionTypeWeightedList.SetWeight("attacks", 100 + preferenceAmount);
+                break;
+            case Actions.BUFF:
+                actionTypeWeightedList.SetWeight("buffs", 100 + preferenceAmount);
+                break;
+            case Actions.MOVEMT:
+                actionTypeWeightedList.SetWeight("movementActions", 100 + preferenceAmount);
+                break;
+            default:
+                break;
+        }
+    }
 
-    public void UpdateWeights(Actions actionType, AttackUpdateTypes attackUpdate, float preferenceAmount)
+    public void ResetActionTypeWeights()
+    {
+        actionTypeWeightedList.SetWeightOfAll(100);
+    }
+
+    public void ResetWeights()
+    {
+        attacks.SetWeightOfAll(100);
+        buffs.SetWeightOfAll(100);
+        movementActions.SetWeightOfAll(100);
+    }
+
+    public void UpdateWeights(Actions actionType, AttackUpdateTypes attackUpdate, int preferenceAmount)
     {
         switch (actionType) {
             case Actions.ATTACK:
@@ -101,41 +131,74 @@ public class FighterController : MonoBehaviour, BehaviorController
 
     }
 
-    public void UpdateAttackWeights(AttackUpdateTypes attackUpdate, float preferenceAmount)
+    public void UpdateAttackWeights(AttackUpdateTypes attackUpdate, int preferenceAmount)
     {
+        (float value, int index) largest = (0, 0);
+        (float value, int index) second = (0, 0);
+        var length = attacks.Count;
+
         switch (attackUpdate) {
             case AttackUpdateTypes.PreferRange:
-                var lenght = attacks.Count;
-                for (int i = 0; i < lenght; i++) {
-                    //TODO
+                for (int i = 0; i < length; i++) {
+                    if (attacks[i].range > largest.value) {
+                        second = largest;
+                        largest = (attacks[i].range, i);
+                    } else if (attacks[i].range > second.value) {
+                        second = (attacks[i].range, i);
+                    }
+                }
+                if (attacks.Count >= 2) {
+                    if (largest.value >= 10) {
+                        attacks.SetWeightAtIndex(largest.index, 100 + preferenceAmount);
+                    }
+                    if (second.value >= 10) {
+                        attacks.SetWeightAtIndex(second.index, preferenceAmount / 2);
+                    }
                 }
                 break;
             case AttackUpdateTypes.PreferFast:
+                for (int i = 0; i < length; i++) {
+                    if (attacks[i].castTime > largest.value) {
+                        second = largest;
+                        largest = (attacks[i].castTime, i);
+                    } else if (attacks[i].castTime > second.value) {
+                        second = (attacks[i].castTime, i);
+                    }
+                }
+
+                if (attacks.Count >= 2) {
+                    attacks.SetWeightAtIndex(largest.index, 100 + preferenceAmount);
+                    attacks.SetWeightAtIndex(second.index, 100 + (preferenceAmount / 2));
+                }
+
                 break;
             case AttackUpdateTypes.PreferDamage:
+                for (int i = 0; i < length; i++) {
+                    var damageValue = attacks[i].scallingType == ScalingTypes.PHYSICAL ? stats.attackDamge * attacks[i].value : stats.magicDamage * attacks[i].value;
+                    if (damageValue > largest.value) {
+                        second = largest;
+                        largest = (damageValue, i);
+                    } else if (damageValue > second.value) {
+                        second = (damageValue, i);
+                    }
+                }
+
+                if (attacks.Count >= 2) {
+                    attacks.SetWeightAtIndex(largest.index, 100 + preferenceAmount);
+                    attacks.SetWeightAtIndex(second.index, 100 + (preferenceAmount / 2));
+                }
                 break;
             default:
                 break;
         }
-
-
-        // List<WeightedListItem<string>> attacksTemp = new List<WeightedListItem<string>>();
-        // if (behaviors.attacks.Length > 0) {
-        //     for (int i = 0; i < behaviors.attacks.Length; i++) {
-        //         var stringVal = behaviors.attacks[i].name;
-        //         attacksTemp.Add(new WeightedListItem<string>(stringVal, 1));
-        //     }
-        // }
-
-        // attacks = new(attacksTemp);
     }
 
-    public void UpdateBuffWeights(AttackUpdateTypes attackUpdate, float preferenceAmount)
+    public void UpdateBuffWeights(AttackUpdateTypes attackUpdate, int preferenceAmount)
     {
         throw new NotImplementedException();
     }
 
-    public void UpdateMovementWeights(AttackUpdateTypes attackUpdate, float preferenceAmount)
+    public void UpdateMovementWeights(AttackUpdateTypes attackUpdate, int preferenceAmount)
     {
         throw new NotImplementedException();
     }
@@ -152,9 +215,16 @@ public class FighterController : MonoBehaviour, BehaviorController
 
     }
 
-    public void setNextPreferedAction()
+    public void setNextPreferedAction(bool resetActionTypeWeights, bool resetWeights)
     {
         nextAction = getNextPreferedAction();
+
+        if (resetActionTypeWeights) {
+            ResetActionTypeWeights();
+        }
+        if (resetWeights) {
+            ResetWeights();
+        }
     }
 }
 
