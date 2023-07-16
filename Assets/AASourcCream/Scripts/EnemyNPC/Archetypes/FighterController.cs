@@ -32,7 +32,7 @@ public class FighterController : MonoBehaviour
             weightController.UpdateActionTypeWeights(Actions.ATTACK, 10000);
             shouldReset = true;
         }
-        weightController.setNextPreferedAction(shouldReset, false);
+        weightController.SetNextPreferedAction(shouldReset, false);
     }
     //Adjust weights based on stats
 }

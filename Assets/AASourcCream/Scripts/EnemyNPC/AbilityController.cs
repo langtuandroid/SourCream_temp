@@ -34,17 +34,17 @@ public class AbilityController : SerializedMonoBehaviour
 
     }
 
-    public void callCombatAction(EnemyCombatAction actionData, GameObject player)
+    public void CallCombatAction(EnemyCombatAction actionData, GameObject player)
     {
         currentCombatAction = actionData;
         abilityInProgress = true;
         if (actionData.target == TargetTypes.ALLY || actionData.target == TargetTypes.SELF) {
             switch (actionData.target) {
                 case TargetTypes.ALLY:
-                    buffAlly(actionData);
+                    BuffAlly(actionData);
                     break;
                 case TargetTypes.SELF:
-                    buffSelf(actionData);
+                    BuffSelf(actionData);
                     break;
                 default:
                     break;
@@ -53,16 +53,16 @@ public class AbilityController : SerializedMonoBehaviour
         } else {
             switch (actionData.attackType) {
                 case AttackType.INSTANT:
-                    instantAttack(actionData, player);
+                    InstantAttack(actionData, player);
                     break;
                 case AttackType.PROJECTILE:
-                    projectileAttack(actionData, player);
+                    ProjectileAttack(actionData, player);
                     break;
                 case AttackType.RANGEINSTANT:
-                    instantRangeAttack(actionData, player);
+                    InstantRangeAttack(actionData, player);
                     break;
                 case AttackType.CHANNEL:
-                    channelAttack(actionData, player);
+                    ChannelAttack(actionData, player);
                     break;
                 default:
                     break;
@@ -70,20 +70,20 @@ public class AbilityController : SerializedMonoBehaviour
         }
     }
 
-    public GameObject getIndicator(string abilityName)
+    public GameObject GetIndicator(string abilityName)
     {
         return attackIndicators?[abilityName];
     }
 
-    public GameObject getCollider(string abilityName)
+    public GameObject GetCollider(string abilityName)
     {
         return attackColliders?[abilityName];
     }
 
-    public void instantAttack(EnemyCombatAction actionData, GameObject player)
+    public void InstantAttack(EnemyCombatAction actionData, GameObject player)
     {
-        var indicator = getIndicator(actionData.name);
-        var calliderToUse = getCollider(actionData.name);
+        var indicator = GetIndicator(actionData.name);
+        var calliderToUse = GetCollider(actionData.name);
 
         Vector3 direction = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z).normalized;
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -105,14 +105,14 @@ public class AbilityController : SerializedMonoBehaviour
                 goCollider.transform.parent = gameObject.transform;
                 // TODO FIGURE OUT IF THIS VALUE CAN BE MINIMAL LIKE 0.1s
                 StartCoroutine(GenericMonoHelper.Instance.DestroyAfterDelay(0.3f, goCollider));
-                abilityFinished();
+                AbilityFinished();
             });
         }
     }
-    public void projectileAttack(EnemyCombatAction actionData, GameObject player)
+    public void ProjectileAttack(EnemyCombatAction actionData, GameObject player)
     {
-        var indicator = getIndicator(actionData.name);
-        var colliderToUse = getCollider(actionData.name);
+        var indicator = GetIndicator(actionData.name);
+        var colliderToUse = GetCollider(actionData.name);
 
         Vector3 indicatorDirection = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z).normalized;
         Quaternion indicatorRotation = Quaternion.LookRotation(indicatorDirection, Vector3.up);
@@ -134,7 +134,7 @@ public class AbilityController : SerializedMonoBehaviour
 
                 currentProjectile.transform.forward = direction.normalized;
                 //TODO: unsure when to destroy the projectile might need a function to check when it hits terrain/walls or reaches max range 
-                abilityFinished();
+                AbilityFinished();
 
                 var position = player.transform.position;
                 var direction2 = (player.transform.position - spawnerLocation).normalized;
@@ -148,14 +148,14 @@ public class AbilityController : SerializedMonoBehaviour
         }
     }
 
-    public void buffSelf(EnemyCombatAction actionData)
+    public void BuffSelf(EnemyCombatAction actionData)
     {
         Debug.Log("BUFF SELLF");
         StartCoroutine(CallMethodForDuration(actionData.castTime, (actionData.castTime / 2), () => statsComponent.Heal(100)));
-        CallMethodWithDelay(actionData.castTime + 0.2f, () => abilityFinished());
+        CallMethodWithDelay(actionData.castTime + 0.2f, () => AbilityFinished());
     }
 
-    public void buffAlly(EnemyCombatAction actionData)
+    public void BuffAlly(EnemyCombatAction actionData)
     {
         // TODO IMPLEMENT
     }
@@ -179,7 +179,7 @@ public class AbilityController : SerializedMonoBehaviour
     }
 
 
-    private void abilityFinished()
+    private void AbilityFinished()
     {
         Debug.Log("ABILITY FINISHED");
         fighterController.OnAbilityFinished();
@@ -234,17 +234,17 @@ public class AbilityController : SerializedMonoBehaviour
         yield return null;
     }
 
-    public void instantRangeAttack(EnemyCombatAction actionData, GameObject target)
+    public void InstantRangeAttack(EnemyCombatAction actionData, GameObject target)
     {
 
     }
-    public void channelAttack(EnemyCombatAction actionData, GameObject target)
+    public void ChannelAttack(EnemyCombatAction actionData, GameObject target)
     {
 
     }
 
 
-    public void callBuffAction(EnemyCombatAction actionData)
+    public void CallBuffAction(EnemyCombatAction actionData)
     {
 
     }

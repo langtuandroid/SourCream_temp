@@ -82,7 +82,7 @@ public class WeightController : MonoBehaviour
         };
         movementActions = new(movements);
 
-        setNextPreferedAction(false, false);
+        SetNextPreferedAction(false, false);
     }
 
     public void UpdateActionTypeWeights(Actions actionType, int preferenceAmount)
@@ -203,7 +203,7 @@ public class WeightController : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    public EnemyActions getNextPreferedAction()
+    public EnemyActions GetNextPreferedAction()
     {
         var actionTypeRoll = actionTypeWeightedList.Next();
         Debug.Log("ROLLING");
@@ -215,9 +215,9 @@ public class WeightController : MonoBehaviour
 
     }
 
-    public void setNextPreferedAction(bool resetActionTypeWeights, bool resetWeights)
+    public void SetNextPreferedAction(bool resetActionTypeWeights, bool resetWeights)
     {
-        nextAction = getNextPreferedAction();
+        nextAction = GetNextPreferedAction();
 
         if (resetActionTypeWeights) {
             ResetActionTypeWeights();

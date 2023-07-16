@@ -131,7 +131,7 @@ public class EnemyController : MonoBehaviour
         StartCoroutine(WaitForCondition(!abilityController.abilityInProgress, () => {
             //NEVER GETS CCALLED CRINGE
             Debug.Log("ConditionMet");
-            fighterController.getNextPreferedAction();
+            fighterController.GetNextPreferedAction();
             SetActionState(ActionState.Chasing);
         }));
 
@@ -261,7 +261,7 @@ public class EnemyController : MonoBehaviour
                     agent.isStopped = true;
 
                     // Call the method when destination is reached
-                    callBehavior();
+                    CallBehavior();
 
                     // Stop the coroutine
                     StopCoroutine(movementCoroutine);
@@ -278,16 +278,16 @@ public class EnemyController : MonoBehaviour
     }
 
     //GETS CALLED AFTER CHASING THE PLAYER WHEN IN RANGE
-    private void callBehavior()
+    private void CallBehavior()
     {
         var nextAction = fighterController.nextAction;
         if (nextAction.CombatAction != null) {
             var actionToCall = nextAction.CombatAction;
-            invokeCombatAction(actionToCall);
+            InvokeCombatAction(actionToCall);
             SetActionState(ActionState.inAbility);
         } else {
             var actionToCall = fighterController.attacks[0];
-            invokeCombatAction(actionToCall);
+            InvokeCombatAction(actionToCall);
             SetActionState(ActionState.inAbility);
             // var movementToCall = fighterController.nextAction.MovementAction;
             // invokeMovementAction(movementToCall);
@@ -295,7 +295,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void invokeMovementAction(EnemyMovementAction movementAction)
+    private void InvokeMovementAction(EnemyMovementAction movementAction)
     {
         Debug.Log(movementAction.direction);
         // abilityController.callBuffAction();
@@ -303,10 +303,10 @@ public class EnemyController : MonoBehaviour
 
     }
 
-    private void invokeCombatAction(EnemyCombatAction combatAction)
+    private void InvokeCombatAction(EnemyCombatAction combatAction)
     {
         Debug.Log(combatAction.name);
-        abilityController.callCombatAction(combatAction, player);
+        abilityController.CallCombatAction(combatAction, player);
     }
 }
 
