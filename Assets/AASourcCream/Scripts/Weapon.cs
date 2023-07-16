@@ -24,7 +24,7 @@ public class Weapon : MonoBehaviour
         if (collider.transform.gameObject.layer == 6) {
             Debug.Log("DO dmg");
             var statsComponent = collider.transform.gameObject.GetComponent<StatsComponent>();
-            statsComponent.Damage(new DamageInformation(DamageTypes.Physical, 20.0f));
+            statsComponent.Damage(new DamageInformation(ScalingTypes.PHYSICAL, 20.0f));
         }
     }
 

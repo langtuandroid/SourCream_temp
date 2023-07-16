@@ -186,7 +186,7 @@ public class Enemy : SerializedMonoBehaviour
         agent.SetDestination(transform.position);
         var targetUnrotated = player;
 
-        Attack();
+        MeeleAttack();
     }
 
     private void UpdateAlreadyAttacked()
@@ -195,7 +195,7 @@ public class Enemy : SerializedMonoBehaviour
     }
 
     //SET up weights for prefered attacks i.e only meele, prefers meele, only range, prefers rangee etc and then deeper for singulars
-    private void Attack()
+    private void MeeleAttack()
     {
         if (Time.time > nextActionTime) {
             nextActionTime += timeBetweenAttacks;
@@ -229,7 +229,7 @@ public class Enemy : SerializedMonoBehaviour
 
     private void CallCollider()
     {
-        var dmgInfo = new DamageInformation(DamageTypes.Physical, 20);
+        var dmgInfo = new DamageInformation(ScalingTypes.PHYSICAL, 20);
         GenericColliderHelper.Instance.EnemySpawnCollider(ColliderTypes.SimpleCapsule, collisionObject ? collisionObject.transform : transform, animationLength, dmgInfo);
     }
 

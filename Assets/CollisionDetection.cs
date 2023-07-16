@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CollisionDetection : MonoBehaviour
 {
-    public DamageInformation damageInfo { get; private set; }
+    public DamageInformation damageInfo { get; set; }
+
+    public StatsComponent statsComponent { get; set; }
 
     private bool collisionOccured = false;
     // Start is called before the first frame update
@@ -22,18 +24,15 @@ public class CollisionDetection : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         if (collisionOccured) return;
-        if (collider.transform.gameObject.layer == 7)
-        {
+        if (collider.transform.gameObject.layer == 7) {
             collisionOccured = true;
-            var statsComponent = collider.transform.gameObject.GetComponent<StatsComponent>();
             statsComponent.Damage(damageInfo);
         }
     }
 
     private void OnCollisionExit(Collision collider)
     {
-        if (collider.transform.gameObject.layer == 7 && collisionOccured == true)
-        {
+        if (collider.transform.gameObject.layer == 7 && collisionOccured == true) {
             collisionOccured = false;
         }
     }

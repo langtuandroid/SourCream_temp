@@ -14,7 +14,7 @@ TagManager:
   - Enemy
   - Player
   - Terrain
-  - 
+  - Indicator
   - 
   - 
   - 
@@ -40,4 +40,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Indicator
+    uniqueID: 3266731901
     locked: 0
