@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class AbilityController : SerializedMonoBehaviour
 {
-    [FolderPath]
-    public string dataLocation;
-
     public Dictionary<string, GameObject> attackColliders;
     public Dictionary<string, GameObject> attackIndicators;
 
@@ -71,7 +68,6 @@ public class AbilityController : SerializedMonoBehaviour
                     break;
             }
         }
-
     }
 
     public GameObject getIndicator(string abilityName)
@@ -186,18 +182,8 @@ public class AbilityController : SerializedMonoBehaviour
     private void abilityFinished()
     {
         Debug.Log("ABILITY FINISHED");
-        var shouldReset = false;
+        fighterController.OnAbilityFinished();
         abilityInProgress = false;
-        if (statsComponent.health.currentHealth < (statsComponent.health.maxHealth / 2)) {
-            fighterController.UpdateActionTypeWeights(Actions.BUFF, 1000);
-            shouldReset = true;
-        } else {
-            fighterController.UpdateActionTypeWeights(Actions.ATTACK, 10000);
-            shouldReset = true;
-        }
-        Debug.Log(fighterController.actionTypeWeightedList.GetWeightAtIndex(0));
-        Debug.Log(fighterController.actionTypeWeightedList.GetWeightAtIndex(1));
-        fighterController.setNextPreferedAction(shouldReset, false);
     }
 
     private void SetupCollisionDetection(EnemyCombatAction actionData, GameObject colliderToUse, GameObject target)

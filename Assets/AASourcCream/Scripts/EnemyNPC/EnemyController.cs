@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
     private float nextBehaviorRange;
 
     //needs to be generic
-    private FighterController fighterController;
+    private WeightController fighterController;
 
     private AbilityController abilityController;
 
@@ -72,7 +72,7 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fighterController = GetComponent<FighterController>();
+        fighterController = GetComponent<WeightController>();
         dashMovement = GetComponent<DashMovement>();
         abilityController = GetComponent<AbilityController>();
         currentState = ActionState.Default;

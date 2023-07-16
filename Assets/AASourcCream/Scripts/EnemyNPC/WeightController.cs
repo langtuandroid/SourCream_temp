@@ -22,7 +22,7 @@ public enum AttackUpdateTypes
     PreferDamage,
 }
 
-public class FighterController : MonoBehaviour, BehaviorController
+public class WeightController : MonoBehaviour
 {
     public StatsComponent stats { get; set; }
     public EnemyDataType behaviors { get; set; }
