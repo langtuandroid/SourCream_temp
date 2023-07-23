@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Button tabindex="-1" text="Set Skill 1" display-tooltip-when-elided="true" name="SetSkillOne" style="width: 93px;" />
+    <ui:Button tabindex="-1" text="Unset Skill 1" display-tooltip-when-elided="true" name="UnsetSkillOne" style="width: 93px;" />
+    <ui:IntegerField label="cooldown ms" value="5000" name="Cooldown" style="height: 41px; width: 248px;" />
+    <ui:TextField picking-mode="Ignore" label="name" value="Slash" text="Slash" name="Name" style="height: 41px; width: 251px;" />
+</ui:UXML>

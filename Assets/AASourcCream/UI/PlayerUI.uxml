@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Document" style="width: 100%; height: 150px; align-items: center; flex-direction: column; justify-content: center; bottom: 0; position: absolute;">
+        <ui:VisualElement name="Player">
+            <ui:VisualElement name="Resources" style="height: 30%; margin-left: 0; margin-right: 0; margin-top: 8px; margin-bottom: 8px;">
+                <ui:ProgressBar title="Health" name="Health" style="height: 50%; margin-left: 3px; margin-right: 3px;" />
+                <ui:ProgressBar title="Mana" name="Mana" style="height: 50%; margin-left: 3px; margin-right: 3px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Skills" style="align-items: center; flex-direction: row; justify-content: center; height: auto; margin-top: 8px;">
+                <ui:Button text="1" name="Skill01" style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 24px; padding-right: 24px; padding-top: 20px; padding-bottom: 20px; max-height: 100%;" />
+                <ui:Button text="1" name="Skill02" style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 24px; padding-right: 24px; padding-top: 20px; padding-bottom: 20px; max-height: 100%;" />
+                <ui:Button text="1" name="Skill03" style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 24px; padding-right: 24px; padding-top: 20px; padding-bottom: 20px; max-height: 100%;" />
+                <ui:Button text="1" name="Skill04" style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 24px; padding-right: 24px; padding-top: 20px; padding-bottom: 20px; max-height: 100%;" />
+                <ui:Button text="1" name="Skill05" style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; padding-left: 24px; padding-right: 24px; padding-top: 20px; padding-bottom: 20px; max-height: 100%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
