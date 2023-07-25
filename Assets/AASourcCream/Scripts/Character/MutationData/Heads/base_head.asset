@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c090b760d4869f1b3a5ba1963922f2, type: 3}
+  m_Name: base_head
+  m_EditorClassIdentifier: 
+  mutation:
+    mutationName: mutation name
+    slot: 0
+    bodyParts:
+    - {fileID: 1834962050171546856, guid: 435ad42196627a55fb2550d911c0fd89, type: 3}
+    walkStyle: -1
+    evolutions: []
+    levelThreshold: 1
+    unlocked: 0
+    modifier: {fileID: 0}
+  skill:
+    skillName: skill name
+    skillDescription: skill description

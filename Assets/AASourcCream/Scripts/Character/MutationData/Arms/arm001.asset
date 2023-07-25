@@ -18,7 +18,6 @@ MonoBehaviour:
     bodyParts:
     - {fileID: 6299643946810906639, guid: 58e3d9f5ee96c754e950db7223abfa37, type: 3}
     - {fileID: 706226789276925354, guid: a3ff9b0a37a5fc8de8c54daaf35a0236, type: 3}
-    ikBoneCount: 2
     walkStyle: -1
     evolutions: []
     levelThreshold: 1

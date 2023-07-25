@@ -6,20 +6,38 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/RigData", order = 1)]
 public class RigData : ScriptableObject
 {
-    /*** Bone placements & links ***/
-    // rig variable determines who is the puppet
-    // links variable determines which rig controls which bones
+    // Generic types cannot be serialized by Unity Editor directly
+    [Serializable]
+    public class DictBodyLinks : UnitySerializedDictionary<BodySlot, String> { }
+    [Serializable]
+    public struct TupleBones
+    {
+        public TupleBones(string tip, string root)
+        {
+            this.tip = tip;
+            this.root = root;
+        }
+        public string tip; public string root;
+    }
+    [Serializable]
+    public class DictIKSets : UnitySerializedDictionary<BodySlot, TupleBones> { }
 
-    // Body
-    public string rigBody = "rig_body";
-    public string[] linksBody = {
-        "rig_head;spine.004",       // Neck
-        "rig_arm_L;upper_arm.L",    // Left Arm
-        "rig_arm_R;upper_arm.R",    // Right Arm
-        "rig_legs;thigh.L",         // Left Leg
-        "rig_legs;thigh.R"          // Right Leg
+    /*** Bone placements & rig links to Torso ***/
+    public DictBodyLinks links = new DictBodyLinks {
+        { BodySlot.HEAD, "spine.004" },
+        { BodySlot.ARMS, "upper_arm.X" },
+        { BodySlot.LEGS, "thigh.X" },
     };
 
+    /*** IK Tips ***/
+    public DictIKSets tipsAndRoots = new DictIKSets {
+        { BodySlot.HEAD, new TupleBones("spine.006", "spine.004") },
+        { BodySlot.ARMS, new TupleBones("hand.X", "upper_arm.X") },
+        { BodySlot.LEGS, new TupleBones("foot.X", "thigh.X") },
+    };
+
+    // TODO - determine if this is needed anywhere/anymore
+    // Idea is to use these as core bones for animating whole rig
     /*** Rig target links ***/
     public string head = "head_target";
     public string body = "spine.003";
@@ -28,11 +46,4 @@ public class RigData : ScriptableObject
     public string hip = "spine";
     public string legRight = "leg_target.R";
     public string legLeft = "leg_target.L";
-
-    /*** IK Tips ***/
-    public Dictionary<BodySlot, Tuple<string, string>> tipsAndRoots = new Dictionary<BodySlot, Tuple<string, string>> {
-        { BodySlot.HEAD, Tuple.Create("face", "spine.004") },
-        { BodySlot.ARMS, Tuple.Create("hand.X", "upper_arm.X") },
-        { BodySlot.LEGS, Tuple.Create("foot.X", "thigh.X") },
-    };
 }

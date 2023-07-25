@@ -10,29 +10,42 @@ public class PartsManager : MonoBehaviour
     private RigData data;
 
     [SerializeField]
-    private List<BodyPart> parts = new List<BodyPart>();
-
-    [SerializeField]
     private PlayerMutations equippedMutations;
-    private Dictionary<BodySlot, GameObject> mutationParts;
 
     [SerializeField]
     private GameObject mutationPartsRoot;
     [SerializeField]
+    private GameObject joinedRig;
+    [SerializeField]
     private GameObject ikConstraintsRoot;
 
     public void Awake()
+    {
+        RebuildParts();
+    }
+
+    public void RebuildParts()
     {
         // Disable animator while assigning/changing rigs and IK constraints
         var animator = GetComponent<Animator>();
         animator.enabled = false;
 
         // Spawn body parts under root "Parts" object
-        BuildBody();
+        var height = BuildBody();
+
+        // Set "Parts" object height
+        // This is to account for the general origin being in the centre of the torso,
+        // while we want bottom of all parts combined to be the soles of the feet
+        var localPos = mutationPartsRoot.transform.localPosition;
+        localPos.y = height;
+        mutationPartsRoot.transform.localPosition = localPos;
+
+        // Build a single, joined, skeleton that can easily control all parts together
+        BuildJoined();
 
         // Assign IK tips & roots
         foreach (var tipAndRoot in data.tipsAndRoots) {
-            SetupChainIK(tipAndRoot.Key, tipAndRoot.Value.Item1, tipAndRoot.Value.Item2);
+            SetupChainIK(tipAndRoot.Key, tipAndRoot.Value.tip, tipAndRoot.Value.root);
         }
 
         // Assign walking style w/ targets - TODO - do crab walk, etc. Currently only biped implemented
@@ -53,23 +66,9 @@ public class PartsManager : MonoBehaviour
         // Rebuild rig and Rebind animator
         GetComponent<RigBuilder>().Build();
         animator.enabled = true;
-
-        // Attach body part links
-        parts.Add(new BodyPart(data.rigBody, data.linksBody));
-
-        foreach (var part in parts) {
-            part.SetLinks();
-        }
     }
 
-    public void FixedUpdate()
-    {
-        foreach (var part in parts) {
-            part.UpdateLinks();
-        }
-    }
-
-    private void BuildBody()
+    private float BuildBody()
     {
         // Destroy old body parts if exist
         var tmpParts = mutationPartsRoot.transform.Cast<Transform>().ToList();
@@ -77,7 +76,6 @@ public class PartsManager : MonoBehaviour
             part.parent = null;
             GameObject.Destroy(part.gameObject);
         }
-        this.parts.Clear();
 
         // Destroy old constraints if exist
         var tmpConst = ikConstraintsRoot.transform.Cast<Transform>().ToList();
@@ -86,28 +84,125 @@ public class PartsManager : MonoBehaviour
             GameObject.Destroy(constraint.gameObject);
         }
 
+        float originHeight = 0.0f;
         // Instantiate new body parts
         var muts = equippedMutations.mutations;
         if (muts.Keys.Count > 0) {
-            var head = new GameObject(BodySlot.HEAD.ToString());
-            head.transform.parent = mutationPartsRoot.transform;
-            GameObject.Instantiate(muts[BodySlot.HEAD].mutation.bodyParts[0], head.transform);
+            var playerHeight = GetComponent<CharacterController>().center.y;
+            // Torso
+            var torso = GameObject.Instantiate(muts[BodySlot.TORSO].mutation.bodyParts[0], mutationPartsRoot.transform);
+            // torso.transform.localPosition = new Vector3(0, playerHeight, 0);
+            torso.name = BodySlot.TORSO.ToString();
 
-            var torso = new GameObject(BodySlot.TORSO.ToString());
-            torso.transform.parent = mutationPartsRoot.transform;
-            GameObject.Instantiate(muts[BodySlot.TORSO].mutation.bodyParts[0], torso.transform);
+            // Following parts need to calculate their position based on positional slots on the torso prefab
+            // Head
+            var headSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.HEAD.ToString()).localPosition;
+            var head = GameObject.Instantiate(muts[BodySlot.HEAD].mutation.bodyParts[0], mutationPartsRoot.transform);
+            head.transform.localPosition = headSlotPosition;
+            head.name = BodySlot.HEAD.ToString();
 
-            var arms = new GameObject(BodySlot.ARMS.ToString());
-            arms.transform.parent = mutationPartsRoot.transform;
-            GameObject.Instantiate(muts[BodySlot.ARMS].mutation.bodyParts[0], arms.transform);
-            arms.transform.parent = mutationPartsRoot.transform;
-            GameObject.Instantiate(muts[BodySlot.ARMS].mutation.bodyParts[1], arms.transform);
+            // Arms
+            var armleftSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.ARMS.ToString() + "_L").localPosition;
+            var armLeft = GameObject.Instantiate(muts[BodySlot.ARMS].mutation.bodyParts[0], mutationPartsRoot.transform);
+            armLeft.transform.localPosition = armleftSlotPosition;
+            armLeft.name = BodySlot.ARMS.ToString() + "_L";
+            var armRightSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.ARMS.ToString() + "_R").localPosition;
+            var armRight = GameObject.Instantiate(muts[BodySlot.ARMS].mutation.bodyParts[1], mutationPartsRoot.transform);
+            armRight.transform.localPosition = armRightSlotPosition;
+            armRight.name = BodySlot.ARMS.ToString() + "_R";
 
-            var legs = new GameObject(BodySlot.LEGS.ToString());
-            legs.transform.parent = mutationPartsRoot.transform;
-            GameObject.Instantiate(muts[BodySlot.LEGS].mutation.bodyParts[0], legs.transform);
+            // Legs
+            var legleftSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.LEGS.ToString() + "_L").localPosition;
+            var legLeft = GameObject.Instantiate(muts[BodySlot.LEGS].mutation.bodyParts[0], mutationPartsRoot.transform);
+            legLeft.transform.localPosition = legleftSlotPosition;
+            legLeft.name = BodySlot.LEGS.ToString() + "_L";
+            var legRightSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.LEGS.ToString() + "_R").localPosition;
+            var legRight = GameObject.Instantiate(muts[BodySlot.LEGS].mutation.bodyParts[1], mutationPartsRoot.transform);
+            legRight.transform.localPosition = legRightSlotPosition;
+            legRight.name = BodySlot.LEGS.ToString() + "_R";
+
+            // Calculate origin height = distance between leg_L.ground.y and torso.y
+            var ground = legLeft.transform.Find("ground");
+            if (ground == null) {
+                Debug.LogError("Left leg requires a 'ground' object, to calculate the player's height");
+            } else {
+                originHeight = torso.transform.position.y - ground.position.y;
+            }
         } else {
             Debug.LogError("Player PartsManager.EquippedMutations.Keys must contain BodySlots HEAD, TORSO, ARMS, and LEGS");
+        }
+
+        return originHeight;
+    }
+
+    private void BuildJoined()
+    {
+        // Destroy old joined rig
+        var tmpRig = joinedRig.transform.Cast<Transform>().ToList();
+        foreach (Transform rig in tmpRig) {
+            rig.parent = null;
+            GameObject.Destroy(rig.gameObject);
+        }
+
+        // Create new rig, with torso rig as base
+        var torsoRig = mutationPartsRoot.transform.Find(BodySlot.TORSO.ToString())
+            .GetChild(0); // E.g. Parts -> TORSO -> rig_body
+        var newRig = GameObject.Instantiate(torsoRig);
+        newRig.name = "full_rig";
+        newRig.parent = joinedRig.transform;
+        newRig.transform.position = torsoRig.position;
+
+        // Duplicate and attach other part rigs to torso, and replace any duplicate bones
+        foreach (var link in data.links) {
+            if (link.Value.Contains("X")) {
+                ReplacePartRigs(newRig, link.Key + "_L", link.Value.Replace("X", "L"));
+                ReplacePartRigs(newRig, link.Key + "_R", link.Value.Replace("X", "R"));
+            } else {
+                ReplacePartRigs(newRig, link.Key.ToString(), link.Value);
+            }
+        }
+
+        // Override transforms of all bones in each part rig with the respective bones in the joined rig
+        AddOverrideTransforms(torsoRig);
+        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.HEAD.ToString()).GetChild(0));
+        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.ARMS.ToString() + "_L").GetChild(0));
+        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.ARMS.ToString() + "_R").GetChild(0));
+        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.LEGS.ToString() + "_L").GetChild(0));
+        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.LEGS.ToString() + "_R").GetChild(0));
+    }
+
+    private void ReplacePartRigs(Transform newRig, string slot, string bone)
+    {
+        var partRoot = mutationPartsRoot.transform.Find(slot);
+        var partRig = GenericHelper.RecursiveFindChild(partRoot, bone);
+
+        var torsoSlot = GenericHelper.RecursiveFindChild(newRig, bone);
+
+        var tmpSlotTransform = torsoSlot.transform.position;
+        var tmpSlotParent = torsoSlot.parent;
+
+        var partRigClone = GameObject.Instantiate(partRig, tmpSlotTransform, partRig.rotation);
+        partRigClone.parent = tmpSlotParent;
+        partRigClone.name = partRig.name;
+
+        torsoSlot.parent = null;
+        GameObject.Destroy(torsoSlot.gameObject);
+    }
+
+    private void AddOverrideTransforms(Transform parentBone)
+    {
+        foreach (Transform bone in parentBone) {
+            var overrideBone = GenericHelper.RecursiveFindChild(joinedRig.transform, bone.name);
+            if (overrideBone == null) continue;
+
+            var overrideComponent = bone.gameObject.AddComponent<OverrideTransform>();
+            overrideComponent.Reset();
+
+            overrideComponent.data.constrainedObject = bone;
+            overrideComponent.data.sourceObject = overrideBone;
+
+            // Loop through entire skeleton, until all bones are marked
+            AddOverrideTransforms(bone);
         }
     }
 
@@ -124,9 +219,8 @@ public class PartsManager : MonoBehaviour
 
     private void SpawnIkConstraint(string slot, string suffix, string tip, string root)
     {
-        var mutationPart = mutationPartsRoot.transform.Find(slot);
-        var tipTrans = GenericHelper.RecursiveFindChild(mutationPart, tip);
-        var rootTrans = GenericHelper.RecursiveFindChild(mutationPart, root);
+        var tipTrans = GenericHelper.RecursiveFindChild(joinedRig.transform, tip);
+        var rootTrans = GenericHelper.RecursiveFindChild(joinedRig.transform, root);
 
         var constraint = new GameObject(slot + suffix);
         constraint.transform.SetParent(ikConstraintsRoot.transform);

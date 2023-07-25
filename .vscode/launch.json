@@ -7,7 +7,7 @@
         {
             "name": "Unity Editor",
             "type": "unity",
-            "path": "/F:/Code/Unity Projects/SourCream_temp/Library/EditorInstance.json",
+            "path": "Library/EditorInstance.json",
             "request": "launch"
         },
         {
