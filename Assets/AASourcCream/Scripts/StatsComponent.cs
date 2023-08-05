@@ -14,6 +14,9 @@ public class StatsComponent : MonoBehaviour
 
     public DamageNumber damageNumber;
 
+    [SerializeField]
+    public bool isPlayer = false;
+
     private float armor = 10.0f;
 
     public float attackDamge = 20.0f;
@@ -22,6 +25,7 @@ public class StatsComponent : MonoBehaviour
 
     [InspectorButton("ApplyModifier")]
     public bool applyModifier;
+
     public void ApplyModifier()
     {
         Debug.Log("Clicked");
@@ -33,8 +37,11 @@ public class StatsComponent : MonoBehaviour
     {
         var amount = CalculateDamage(dmgInfo);
         damageNumber.enableCombination = true;
-        damageNumber.SetColor(Color.red);
-        damageNumber.Spawn(transform.position, amount);
+        //This is reversed because the owner of stats component technically does damage to itself
+        if (!isPlayer) {
+            damageNumber.SetColor(Color.red);
+            damageNumber.Spawn(transform.position, amount);
+        }
         health.UpdateHealth(-amount);
     }
 

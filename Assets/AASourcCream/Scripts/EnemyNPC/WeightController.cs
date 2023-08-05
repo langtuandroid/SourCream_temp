@@ -206,7 +206,6 @@ public class WeightController : MonoBehaviour
     public EnemyActions GetNextPreferedAction()
     {
         var actionTypeRoll = actionTypeWeightedList.Next();
-        Debug.Log("ROLLING");
         return actionTypeRoll switch {
             "attacks" => new EnemyActions { CombatAction = attacks.Next() },
             "buffs" => new EnemyActions { CombatAction = buffs.Next() },

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,13 +10,13 @@ public class PlayerUI : MonoBehaviour
     public class Skill : MonoBehaviour
     {
         public int index;
-        public int currentCooldown = 0;
-        public int cooldown;
+        public float currentCooldown = 0;
+        public float cooldown;
         public string name;
 
         private Button button;
 
-        public void SetValues(int index, string name, int cooldown, ref Button button)
+        public void SetValues(int index, string name, float cooldown, ref Button button)
         {
             this.index = index;
             this.name = name;
@@ -30,17 +31,16 @@ public class PlayerUI : MonoBehaviour
 
         public IEnumerator CallSkill()
         {
-            var callTime = DateTime.Now.AddMilliseconds(cooldown);
             button.SetEnabled(false);
-            currentCooldown = cooldown;
-            var now = DateTime.Now;
-            var isGreate = callTime > now;
-            while (callTime > DateTime.Now) {
-                currentCooldown -= (int)(Time.deltaTime * 1000);
-                button.text = ((float)currentCooldown / 1000).ToString("N2");
-                yield return null;
+            float cooldownManager = cooldown;
+            var a = cooldownManager;
+
+            while (cooldownManager > 0) {
+                var valueToTickBy = currentCooldown > 1 ? 1f : 0.1f;
+                button.text = currentCooldown > 1 ? Math.Ceiling(currentCooldown).ToString("N0") : currentCooldown.ToString("N1");
+                yield return new WaitForSeconds(valueToTickBy); // Wait for 0.1 second
+                currentCooldown -= valueToTickBy;
             }
-            currentCooldown = 0;
             button.text = this.name;
             button.SetEnabled(true);
         }
@@ -48,9 +48,10 @@ public class PlayerUI : MonoBehaviour
 
     [SerializeField]
     private StatsComponent stats;
+
     private VisualElement resourcesRoot;
     private VisualElement skillsRoot;
-    private Skill[] skills;
+    private List<Skill> skills;
 
     void Start()
     {
@@ -58,7 +59,7 @@ public class PlayerUI : MonoBehaviour
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
         skillsRoot = root.Query<VisualElement>("Skills").First();
         resourcesRoot = root.Query<VisualElement>("Resources").First();
-        skills = new Skill[skillsRoot.childCount];
+        skills = new List<Skill>(new Skill[skillsRoot.childCount]);
     }
 
     void Update()
@@ -71,14 +72,14 @@ public class PlayerUI : MonoBehaviour
         var manaBar = resourcesRoot.Query<ProgressBar>("Mana").First();
     }
 
-    public Skill[] GetSkills()
+    public List<Skill> GetSkills()
     {
         return skills;
     }
 
-    public void SetSkill(int index, string name, int cooldown)
+    public void SetSkill(int index, string name, float cooldown)
     {
-        if (index >= 0 && index < skills.Length) {
+        if (index >= 0 && index < skills.Count) {
             this.UnsetSkill(index);
 
             var skillButton = skillsRoot.Query<Button>().AtIndex(index);
@@ -93,7 +94,7 @@ public class PlayerUI : MonoBehaviour
 
     public void UnsetSkill(int index)
     {
-        if (index >= 0 && index < skills.Length && skills[index] != null) {
+        if (index >= 0 && index < skills.Count && skills[index] != null) {
             var skillButton = skillsRoot.Query<Button>().AtIndex(index);
             skillButton.SetEnabled(true);
             skillButton.text = "null";
@@ -109,6 +110,15 @@ public class PlayerUI : MonoBehaviour
     {
         if (skills[index] != null) {
             StartCoroutine(skills[index].CallSkill());
+        }
+    }
+
+    public void CallSkill(string name)
+    {
+        var skillToFind = skills.FindIndex(skill => skill.name == name);
+        Debug.Log(skillToFind);
+        if (skillToFind != -1) {
+            StartCoroutine(skills[skillToFind].CallSkill());
         }
     }
 }

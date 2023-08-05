@@ -98,11 +98,7 @@ public class EnemyController : MonoBehaviour
         } else if (!abilityController.abilityInProgress) {
             SetActionState(ActionState.Chasing);
         }
-        // if (patrollingHandler.isTravelingToDestination) {
-        //     if (patrollingHandler.checkIsDestinationReached(transform.position)) {
-        //         StartCoroutine(GenericMonoHelper.Instance.GenericWait(0.3f, () => PatrollingStateAction()));
-        //     }
-        // }
+
     }
 
 
@@ -126,11 +122,9 @@ public class EnemyController : MonoBehaviour
 
     void InvokeInAbilityAction()
     {
-        Debug.Log("INVOKE ABILTIY ACTION");
         agent.isStopped = true;
         StartCoroutine(WaitForCondition(!abilityController.abilityInProgress, () => {
             //NEVER GETS CCALLED CRINGE
-            Debug.Log("ConditionMet");
             fighterController.GetNextPreferedAction();
             SetActionState(ActionState.Chasing);
         }));
@@ -154,10 +148,8 @@ public class EnemyController : MonoBehaviour
                     eventListCtrl.GetEvent("patrollingEvent")?.InvokeEvent();
                     break;
                 case ActionState.Chasing:
-                    Debug.Log("CHASING CHASING CHASIN");
                     currentState = ActionState.Chasing;
                     if (fighterController.nextAction.CombatAction != null) {
-                        Debug.Log(fighterController.nextAction.CombatAction.range);
                         nextBehaviorRange = fighterController.nextAction.CombatAction.range;
                     } else {
                         //TODO Figure out what needs to be done with first attack range when it is a movement action
@@ -169,7 +161,6 @@ public class EnemyController : MonoBehaviour
                     break;
                 case ActionState.inAbility:
                     currentState = ActionState.inAbility;
-                    Debug.Log("INABILITy");
                     //I am a bit uncertain why I need to delete this event to use it twice, yet it can go to patrolling without the event getting deleted
                     eventListCtrl.DeleteEvent("chasingEvent");
                     var inAbilityEvent = new EventCustom("inAbilityEvent", InvokeInAbilityAction);
@@ -187,7 +178,6 @@ public class EnemyController : MonoBehaviour
     {
         // Keep looping until the condition is met
         while (!conditionMet) {
-            Debug.Log(conditionMet);
             yield return null; // Wait for the next frame
         }
 
@@ -197,7 +187,6 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator DestinationReached()
     {
-        Debug.Log("Destination started");
         yield return new WaitWhile(() => patrollingHandler.checkIsDestinationReached(transform.position, 5.0f) == true);
         EventCustom patrollingEvent = eventListCtrl.GetEvent("patrollingEvent");
         patrollingEvent?.ResetInvoken();
@@ -245,7 +234,6 @@ public class EnemyController : MonoBehaviour
 
     void InvokeChasingAction()
     {
-        Debug.Log("INVOKING CHASING ACTION");
         isChasing = true;
         movementCoroutine = MoveTowardsPlayer();
         StartCoroutine(movementCoroutine);
@@ -305,7 +293,6 @@ public class EnemyController : MonoBehaviour
 
     private void InvokeCombatAction(EnemyCombatAction combatAction)
     {
-        Debug.Log(combatAction.name);
         abilityController.CallCombatAction(combatAction, player);
     }
 }

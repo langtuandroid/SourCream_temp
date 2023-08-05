@@ -40,8 +40,7 @@ public class CharMovement : MonoBehaviour
 
     // ------------------------------- ANIMATION ------------------------------- //
     Animator animator;
-    int isWalkingHash;
-    int isRunningHash;
+
     int forward;
     int right;
     int inAir;
@@ -54,8 +53,6 @@ public class CharMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isWalkingHash = Animator.StringToHash("isWalking");
-        isRunningHash = Animator.StringToHash("isRunning");
         forward = Animator.StringToHash("forward");
         right = Animator.StringToHash("right");
         inAir = Animator.StringToHash("inAir");
@@ -73,19 +70,18 @@ public class CharMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleAttackAction();
         HandleMovementAnims();
     }
 
-    public void HandleAttackAction()
-    {
-        if (Time.time > nextActionTime) { //TODO: FEEL FREE TO UNDO THIS DUMB SHIT also remove nextActionTime += period; in OnFire
-            nextActionTime += period;
-            if (isAttacking) {
-                isAttacking = animator.GetCurrentAnimatorStateInfo(1).IsName("attack");
-            }
-        }
-    }
+    // public void HandleAttackAction()
+    // {
+    //     if (Time.time > nextActionTime) { //TODO: FEEL FREE TO UNDO THIS DUMB SHIT also remove nextActionTime += period; in OnFire
+    //         nextActionTime += period;
+    //         if (isAttacking) {
+    //             isAttacking = animator.GetCurrentAnimatorStateInfo(1).IsName("attack");
+    //         }
+    //     }
+    // }
 
     void HandleMovementAnims()
     {
@@ -101,57 +97,10 @@ public class CharMovement : MonoBehaviour
             animator.SetFloat(forward, tempForward);
             animator.SetFloat(right, tempRight);
         } else if (!movementController.movementInput) {
+            animator.SetFloat(forward, 0);
+            animator.SetFloat(right, 0);
             animator.SetBool(isMoving, false);
         }
-    }
-
-    void HandleRotation()
-    {
-        if (lookAtMouse) {
-            Vector3 mousePosition;
-            Vector3 objPosition;
-            Transform target = transform;
-            float angle;
-            mousePosition = Input.mousePosition;
-            mousePosition.z = 10.0f;
-            objPosition = Camera.main.WorldToScreenPoint(target.position);
-            mousePosition.x = mousePosition.x - objPosition.x;
-            mousePosition.y = mousePosition.y - objPosition.y;
-            angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
-            var roatation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, -angle + 90, 0)), Time.deltaTime * rotationSpeed);
-            target.rotation = roatation;
-        } else {
-
-        }
-    }
-
-    public void OnJump(InputAction.CallbackContext ctx)
-    {
-        if (ctx.started) {
-            isJumpPressed = true;
-        }
-        if (ctx.canceled) {
-            isJumpPressed = false;
-        }
-        if (ctx.performed && charController.isGrounded) {
-            // inputVelocity.y = jumpVelocity;
-        }
-    }
-
-    public void lookTowardCursor()
-    {
-        Vector3 mousePosition;
-        Vector3 objPosition;
-        Transform target = transform;
-        float angle;
-        mousePosition = Input.mousePosition;
-        mousePosition.z = 10.0f;
-        objPosition = Camera.main.WorldToScreenPoint(target.position);
-        mousePosition.x = mousePosition.x - objPosition.x;
-        mousePosition.y = mousePosition.y - objPosition.y;
-        angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
-        var roatation = Quaternion.Euler(new Vector3(0, -angle + 90, 0));
-        target.rotation = Quaternion.Lerp(transform.rotation, roatation, 5f * Time.deltaTime);
     }
 
     public void OnFire(InputAction.CallbackContext ctx)
@@ -164,32 +113,7 @@ public class CharMovement : MonoBehaviour
             }
         }
     }
-    //MOVE THIS to attack related
-    public void onMbR(InputAction.CallbackContext ctx)
-    {
-        if (ctx.started) {
-            Vector3 mousePosition = Input.mousePosition;
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            LayerMask mask = LayerMask.GetMask("Terrain");
-            if (Physics.Raycast(ray, out hit, mask)) {
-                float yPositon = hit.point.y + projectileStartLocation.localPosition.y + 1.0f;
-
-                if (yPositon > projectileStartLocation.transform.position.y + 1.0f) {
-                    yPositon = projectileStartLocation.transform.position.y + 1.0f;
-                } else if (yPositon < projectileStartLocation.transform.position.y - 1.0f) {
-                    yPositon = projectileStartLocation.transform.position.y - 2.0f;
-                }
-
-                var hitLocation = new Vector3(hit.point.x, yPositon, hit.point.z);
-                gizmoThing = hitLocation;
-                ProjectileSpawner.shootSimpleProjectile(hitLocation, projectileStartLocation.position, projectile, 10.0f);
-
-            }
-        }
-
-    }
     //MOVE THIS
     public void onColide(Collider colider)
     {
@@ -208,39 +132,6 @@ public class CharMovement : MonoBehaviour
         Gizmos.DrawSphere(gizmoThing, 0.2f);
     }
 
-    public void OnAbility1(InputAction.CallbackContext ctx)
-    {
-        CommonParams commonParams = new CommonParams();
 
-        var mousePos = GenericHelper.GetMousePostion();
-        var rotation = new Vector3(this.transform.rotation.x, this.transform.rotation.y, this.transform.rotation.z);
-        var mousePosWithY = new Vector3(mousePos.x, mousePos.y + 0.5f, mousePos.z);
-
-        //Setting the world parameters for the skill
-        commonParams.SetValues(IndicatorShape.Circle, new Vector3(10.0f, 10.0f, 10.0f), mousePosWithY, rotation);
-
-        //Currently being used in order to click and drag indicator, and do skill upon release rather than hold 
-        if (ctx.phase == InputActionPhase.Started) {
-            skillsController.UseAOESkill(commonParams, Phase.Start);
-        }
-        if (ctx.phase == InputActionPhase.Canceled) {
-            skillsController.UseAOESkill(commonParams, Phase.End);
-        }
-    }
-
-    public void Ability2(InputAction.CallbackContext ctx)
-    {
-        Debug.Log("2");
-    }
-
-    public void Ability3(InputAction.CallbackContext ctx)
-    {
-        Debug.Log("3");
-    }
-
-    public void Ability4(InputAction.CallbackContext ctx)
-    {
-        Debug.Log("4");
-    }
 }
 
