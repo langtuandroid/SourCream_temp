@@ -73,19 +73,8 @@ public class CharMovement : MonoBehaviour
         HandleMovementAnims();
     }
 
-    // public void HandleAttackAction()
-    // {
-    //     if (Time.time > nextActionTime) { //TODO: FEEL FREE TO UNDO THIS DUMB SHIT also remove nextActionTime += period; in OnFire
-    //         nextActionTime += period;
-    //         if (isAttacking) {
-    //             isAttacking = animator.GetCurrentAnimatorStateInfo(1).IsName("attack");
-    //         }
-    //     }
-    // }
-
     void HandleMovementAnims()
     {
-
         animator.SetBool(inAir, !movementController.trackedIsGrounded);
         if (charController.isGrounded && !movementController.inDash && movementController.movementInput) {
             animator.SetBool(isMoving, true);
@@ -131,7 +120,4 @@ public class CharMovement : MonoBehaviour
         Gizmos.color = new Color(246, 182, 215, 0.4f);
         Gizmos.DrawSphere(gizmoThing, 0.2f);
     }
-
-
 }
-
