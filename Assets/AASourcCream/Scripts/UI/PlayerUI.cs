@@ -32,15 +32,16 @@ public class PlayerUI : MonoBehaviour
         public IEnumerator CallSkill()
         {
             button.SetEnabled(false);
-            float cooldownManager = cooldown;
-            var a = cooldownManager;
+            currentCooldown = cooldown;
 
-            while (cooldownManager > 0) {
+            while (currentCooldown > 0) {
                 var valueToTickBy = currentCooldown > 1 ? 1f : 0.1f;
                 button.text = currentCooldown > 1 ? Math.Ceiling(currentCooldown).ToString("N0") : currentCooldown.ToString("N1");
                 yield return new WaitForSeconds(valueToTickBy); // Wait for 0.1 second
                 currentCooldown -= valueToTickBy;
             }
+
+            currentCooldown = 0;
             button.text = this.name;
             button.SetEnabled(true);
         }
