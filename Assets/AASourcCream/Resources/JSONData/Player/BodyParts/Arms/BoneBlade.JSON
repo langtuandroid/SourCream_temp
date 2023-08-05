@@ -1,0 +1,133 @@
+{
+  "name": "BoneBlade",
+  "power": 4,
+  "resistance": 1,
+  "health": 5,
+  "movementSpeed": 2,
+  "attackSpeed": 3,
+  "level": 1,
+  "skillTree": {
+    "abilities": [
+      {
+        "id": "slash",
+        "name": "Slash",
+        "powerScaling": 1.2,
+        "attackSpeedScaling": 1.0,
+        "attackType": "INSTANT",
+        "castType": "MELEE",
+        "castTime": 0.3,
+        "cooldown": 2.9,
+        "range": 1,
+        "unlocked": false,
+        "modifiers": [
+          {
+            "id": "frostSlash",
+            "name": "Frost slash",
+            "triggerType": "ABILITY",
+            "trigger": "Slash",
+            "target": "ENEMY",
+            "stat": "movementSpeed",
+            "value": 0.8,
+            "time": 1,
+            "modifierType": {
+              "name": "frostSlash_modType",
+              "type": "OVERTIME"
+            },
+            "unlocked": false,
+            "modifiers": [
+              {
+                "id": "frostSlashAoe",
+                "name": "Frost collateral",
+                "triggerType": "MODIFIER",
+                "trigger": "frostSlash",
+                "target": "LOCATION",
+                "stat": "movementSpeed",
+                "value": 0.8,
+                "time": 1,
+                "modifierType": {
+                  "name": "frostSlashAoe_modType",
+                  "type": "OVERTIME"
+                },
+                "unlocked": false,
+                "modifiers": []
+              }
+            ]
+          },
+          {
+            "id": "bleedSlash",
+            "name": "Bleeding slash",
+            "triggerType": "ABILITY",
+            "trigger": "Slash",
+            "target": "ENEMY",
+            "stat": "HEALTH",
+            "value": 0.8,
+            "time": 1,
+            "modifierType": {
+              "name": "bleedDebuffStack_modType",
+              "type": "STACK",
+              "stackAmount": 3,
+              "stackTime": 2
+            },
+            "unlocked": false,
+            "modifiers": []
+          },
+          {
+            "id": "boneLunge",
+            "name": "Bone lunge",
+            "powerScaling": 1.2,
+            "attackSpeedScaling": 1.0,
+            "attackType": "INSTANT",
+            "castTime": 0.4,
+            "cooldown": 0,
+            "range": 1,
+            "unlocked": false,
+            "modifiers": [
+              {
+                "id": "piercingLunge",
+                "name": "Armour piercing lunge",
+                "target": "ENEMY",
+                "stat": "RESISTANCE",
+                "value": 0.7,
+                "time": 5,
+                "modifierType": {
+                  "name": "piercingLunge_modType",
+                  "type": "OVERTIME"
+                },
+                "unlocked": false,
+                "modifiers": []
+              },
+              {
+                "id": "extendedLunge",
+                "name": "Extended lunge",
+                "triggerType": "ABILITY",
+                "trigger": "boneLunge",
+                "target": "ABILITY",
+                "stat": "RANGE",
+                "value": 1.5,
+                "modifierType": {
+                  "name": "extendedLunge_modType",
+                  "type": "INSTANT"
+                },
+                "unlocked": false,
+                "modifiers": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "rangeAttack",
+        "name": "Range",
+        "powerScaling": 1.2,
+        "attackSpeedScaling": 1.0,
+        "attackType": "PROJECTILE",
+        "castType": "RANGE",
+        "castTime": 0.3,
+        "cooldown": 2.9,
+        "range": 20,
+        "unlocked": false,
+        "modifiers": []
+      }
+    ]
+  }
+}

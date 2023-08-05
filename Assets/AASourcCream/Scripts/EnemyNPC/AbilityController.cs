@@ -138,8 +138,7 @@ public class AbilityController : SerializedMonoBehaviour
 
                 var position = player.transform.position;
                 var direction2 = (player.transform.position - spawnerLocation).normalized;
-                StartCoroutine(MoveTowardsTarget2(5.0f, direction2, 4.9f, currentProjectile));
-                //StartCoroutine(MoveTowardsTarget(position, 10f, currentProjectile, 4.9f, false));
+                StartCoroutine(MoveTowardsTarget(5.0f, direction2, 4.9f, currentProjectile));
                 if (currentProjectile) {
                     StartCoroutine(GenericMonoHelper.Instance.DestroyAfterDelay(5.0f, currentProjectile));
                 }
@@ -181,7 +180,6 @@ public class AbilityController : SerializedMonoBehaviour
 
     private void AbilityFinished()
     {
-        Debug.Log("ABILITY FINISHED");
         fighterController.OnAbilityFinished();
         abilityInProgress = false;
     }
@@ -193,33 +191,7 @@ public class AbilityController : SerializedMonoBehaviour
         collisionDetection.SetDamageInfo(new DamageInformation(actionData.scallingType, actionData.value));
     }
 
-    private IEnumerator MoveTowardsTarget(Vector3 target, float speed, GameObject particle, float duration, bool chase)
-    {
-        //isMoving = true;
-
-        float timer = 0f;
-        var setTarget = target;
-
-        while (timer < duration) {
-            if (target != null) {
-                var target2 = chase ? target : setTarget;
-                // Calculate the direction to the target location
-                Vector3 direction = target2 - particle.transform.position;
-
-                // Normalize the direction vector to get a consistent speed
-                direction.Normalize();
-
-                // Move towards the target location based on the speed and deltaTime
-                particle.transform.position += direction * speed * Time.deltaTime;
-
-            }
-
-            timer += Time.deltaTime;
-            yield return null;
-        }
-    }
-
-    private IEnumerator MoveTowardsTarget2(float speed, Vector3 direction, float duration, GameObject particle)
+    private IEnumerator MoveTowardsTarget(float speed, Vector3 direction, float duration, GameObject particle)
     {
         float timer = 0f;
         while (timer < duration) {
@@ -253,31 +225,6 @@ public class AbilityController : SerializedMonoBehaviour
     {
         StartCoroutine(DelayedMethod(delayInSeconds, methodToCall));
     }
-
-    // private void OnTriggerEnter(Collider collider)
-    // {
-    //     Debug.Log("HUHUHUHUHUHUHHUHUH");
-
-    //     if (collider.transform.gameObject.layer == 7) {
-    //         collisionOccured = true;
-
-    //         statsComponent.Damage(new DamageInformation(currentCombatAction.scallingType, currentCombatAction.value));
-    //         //Disabling to not do damage twice continuos dots might need a change here
-    //         collider.isTrigger = false;
-    //     }
-    // }
-
-    // private void OnCollisionEnter(Collision other)
-    // {
-    //     Debug.Log("WHAT");
-    // }
-
-    // private void OnCollisionExit(Collision collider)
-    // {
-    //     if (collider.transform.gameObject.layer == 7 && collisionOccured == true) {
-    //         collisionOccured = false;
-    //     }
-    // }
 
     private IEnumerator DelayedMethod(float delayInSeconds, System.Action methodToCall)
     {

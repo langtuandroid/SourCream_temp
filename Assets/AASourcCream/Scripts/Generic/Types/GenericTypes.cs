@@ -17,7 +17,13 @@ public enum TargetTypes
     ENEMY,
     ALLY,
     SELF,
-    LOCATION
+    LOCATION,
+}
+
+public enum CastType
+{
+    MELEE,
+    RANGE
 }
 
 public enum MovementDirections
