@@ -28,16 +28,17 @@ public class MagicAttacks_Projectile : MonoBehaviour
 
     private void Update()
     {
-        float moveSpeed = 60f;
-        transform.position += projectileDir * moveSpeed * Time.deltaTime;
-        Destroy(gameObject, 5f);
+        // float moveSpeed = 30f;
+        // transform.position += projectileDir * moveSpeed * Time.deltaTime;
+        // Destroy(gameObject, 5f);
     }
 
     private void OnTriggerEnter(Collider col)
     {
+        Debug.Log("TRIGER ENTER");
         if (col.transform.gameObject.layer != 7) {
             Instantiate(FX_Hit, col.transform.position, Quaternion.identity);
-            
+
             Destroy(FX_Projectile);
             FX_ProjectileTail.Stop();
             SFX_Projectile.Stop();

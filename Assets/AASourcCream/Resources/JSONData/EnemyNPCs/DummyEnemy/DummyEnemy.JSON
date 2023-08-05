@@ -8,7 +8,7 @@
             "name" : "RegularSwing",
             "scallingType" : "PHYSICAL",
             "attackType" : "INSTANT",
-            "range" : "2",
+            "range" : "4",
             "value" : "1.2",
             "castTime" : "0.9",
             "target" : "ENEMY"
