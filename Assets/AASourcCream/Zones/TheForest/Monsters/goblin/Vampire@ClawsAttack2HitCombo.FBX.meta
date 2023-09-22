@@ -1,0 +1,1091 @@
+fileFormatVersion: 2
+guid: ec7ec868064465247a1008e916bb34fc
+ModelImporter:
+  serializedVersion: 22103
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: VAMPIRE_
+  - first:
+      1: 100004
+    second: VAMPIRE_ Head
+  - first:
+      1: 100006
+    second: VAMPIRE_ L Calf
+  - first:
+      1: 100008
+    second: VAMPIRE_ L Clavicle
+  - first:
+      1: 100010
+    second: VAMPIRE_ L Finger0
+  - first:
+      1: 100012
+    second: VAMPIRE_ L Finger01
+  - first:
+      1: 100014
+    second: VAMPIRE_ L Finger02
+  - first:
+      1: 100016
+    second: VAMPIRE_ L Finger1
+  - first:
+      1: 100018
+    second: VAMPIRE_ L Finger11
+  - first:
+      1: 100020
+    second: VAMPIRE_ L Finger12
+  - first:
+      1: 100022
+    second: VAMPIRE_ L Finger2
+  - first:
+      1: 100024
+    second: VAMPIRE_ L Finger21
+  - first:
+      1: 100026
+    second: VAMPIRE_ L Finger22
+  - first:
+      1: 100028
+    second: VAMPIRE_ L Finger3
+  - first:
+      1: 100030
+    second: VAMPIRE_ L Finger31
+  - first:
+      1: 100032
+    second: VAMPIRE_ L Finger32
+  - first:
+      1: 100034
+    second: VAMPIRE_ L Finger4
+  - first:
+      1: 100036
+    second: VAMPIRE_ L Finger41
+  - first:
+      1: 100038
+    second: VAMPIRE_ L Finger42
+  - first:
+      1: 100040
+    second: VAMPIRE_ L Foot
+  - first:
+      1: 100042
+    second: VAMPIRE_ L Forearm
+  - first:
+      1: 100044
+    second: VAMPIRE_ L Hand
+  - first:
+      1: 100046
+    second: VAMPIRE_ L Thigh
+  - first:
+      1: 100048
+    second: VAMPIRE_ L Toe0
+  - first:
+      1: 100050
+    second: VAMPIRE_ L UpperArm
+  - first:
+      1: 100052
+    second: VAMPIRE_ Neck
+  - first:
+      1: 100054
+    second: VAMPIRE_ Neck1
+  - first:
+      1: 100056
+    second: VAMPIRE_ Pelvis
+  - first:
+      1: 100058
+    second: VAMPIRE_ Ponytail1
+  - first:
+      1: 100060
+    second: VAMPIRE_ R Calf
+  - first:
+      1: 100062
+    second: VAMPIRE_ R Clavicle
+  - first:
+      1: 100064
+    second: VAMPIRE_ R Finger0
+  - first:
+      1: 100066
+    second: VAMPIRE_ R Finger01
+  - first:
+      1: 100068
+    second: VAMPIRE_ R Finger02
+  - first:
+      1: 100070
+    second: VAMPIRE_ R Finger1
+  - first:
+      1: 100072
+    second: VAMPIRE_ R Finger11
+  - first:
+      1: 100074
+    second: VAMPIRE_ R Finger12
+  - first:
+      1: 100076
+    second: VAMPIRE_ R Finger2
+  - first:
+      1: 100078
+    second: VAMPIRE_ R Finger21
+  - first:
+      1: 100080
+    second: VAMPIRE_ R Finger22
+  - first:
+      1: 100082
+    second: VAMPIRE_ R Finger3
+  - first:
+      1: 100084
+    second: VAMPIRE_ R Finger31
+  - first:
+      1: 100086
+    second: VAMPIRE_ R Finger32
+  - first:
+      1: 100088
+    second: VAMPIRE_ R Finger4
+  - first:
+      1: 100090
+    second: VAMPIRE_ R Finger41
+  - first:
+      1: 100092
+    second: VAMPIRE_ R Finger42
+  - first:
+      1: 100094
+    second: VAMPIRE_ R Foot
+  - first:
+      1: 100096
+    second: VAMPIRE_ R Forearm
+  - first:
+      1: 100098
+    second: VAMPIRE_ R Hand
+  - first:
+      1: 100100
+    second: VAMPIRE_ R Thigh
+  - first:
+      1: 100102
+    second: VAMPIRE_ R Toe0
+  - first:
+      1: 100104
+    second: VAMPIRE_ R UpperArm
+  - first:
+      1: 100106
+    second: VAMPIRE_ Spine
+  - first:
+      1: 100108
+    second: VAMPIRE_ Spine1
+  - first:
+      1: 100110
+    second: root
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: VAMPIRE_
+  - first:
+      4: 400004
+    second: VAMPIRE_ Head
+  - first:
+      4: 400006
+    second: VAMPIRE_ L Calf
+  - first:
+      4: 400008
+    second: VAMPIRE_ L Clavicle
+  - first:
+      4: 400010
+    second: VAMPIRE_ L Finger0
+  - first:
+      4: 400012
+    second: VAMPIRE_ L Finger01
+  - first:
+      4: 400014
+    second: VAMPIRE_ L Finger02
+  - first:
+      4: 400016
+    second: VAMPIRE_ L Finger1
+  - first:
+      4: 400018
+    second: VAMPIRE_ L Finger11
+  - first:
+      4: 400020
+    second: VAMPIRE_ L Finger12
+  - first:
+      4: 400022
+    second: VAMPIRE_ L Finger2
+  - first:
+      4: 400024
+    second: VAMPIRE_ L Finger21
+  - first:
+      4: 400026
+    second: VAMPIRE_ L Finger22
+  - first:
+      4: 400028
+    second: VAMPIRE_ L Finger3
+  - first:
+      4: 400030
+    second: VAMPIRE_ L Finger31
+  - first:
+      4: 400032
+    second: VAMPIRE_ L Finger32
+  - first:
+      4: 400034
+    second: VAMPIRE_ L Finger4
+  - first:
+      4: 400036
+    second: VAMPIRE_ L Finger41
+  - first:
+      4: 400038
+    second: VAMPIRE_ L Finger42
+  - first:
+      4: 400040
+    second: VAMPIRE_ L Foot
+  - first:
+      4: 400042
+    second: VAMPIRE_ L Forearm
+  - first:
+      4: 400044
+    second: VAMPIRE_ L Hand
+  - first:
+      4: 400046
+    second: VAMPIRE_ L Thigh
+  - first:
+      4: 400048
+    second: VAMPIRE_ L Toe0
+  - first:
+      4: 400050
+    second: VAMPIRE_ L UpperArm
+  - first:
+      4: 400052
+    second: VAMPIRE_ Neck
+  - first:
+      4: 400054
+    second: VAMPIRE_ Neck1
+  - first:
+      4: 400056
+    second: VAMPIRE_ Pelvis
+  - first:
+      4: 400058
+    second: VAMPIRE_ Ponytail1
+  - first:
+      4: 400060
+    second: VAMPIRE_ R Calf
+  - first:
+      4: 400062
+    second: VAMPIRE_ R Clavicle
+  - first:
+      4: 400064
+    second: VAMPIRE_ R Finger0
+  - first:
+      4: 400066
+    second: VAMPIRE_ R Finger01
+  - first:
+      4: 400068
+    second: VAMPIRE_ R Finger02
+  - first:
+      4: 400070
+    second: VAMPIRE_ R Finger1
+  - first:
+      4: 400072
+    second: VAMPIRE_ R Finger11
+  - first:
+      4: 400074
+    second: VAMPIRE_ R Finger12
+  - first:
+      4: 400076
+    second: VAMPIRE_ R Finger2
+  - first:
+      4: 400078
+    second: VAMPIRE_ R Finger21
+  - first:
+      4: 400080
+    second: VAMPIRE_ R Finger22
+  - first:
+      4: 400082
+    second: VAMPIRE_ R Finger3
+  - first:
+      4: 400084
+    second: VAMPIRE_ R Finger31
+  - first:
+      4: 400086
+    second: VAMPIRE_ R Finger32
+  - first:
+      4: 400088
+    second: VAMPIRE_ R Finger4
+  - first:
+      4: 400090
+    second: VAMPIRE_ R Finger41
+  - first:
+      4: 400092
+    second: VAMPIRE_ R Finger42
+  - first:
+      4: 400094
+    second: VAMPIRE_ R Foot
+  - first:
+      4: 400096
+    second: VAMPIRE_ R Forearm
+  - first:
+      4: 400098
+    second: VAMPIRE_ R Hand
+  - first:
+      4: 400100
+    second: VAMPIRE_ R Thigh
+  - first:
+      4: 400102
+    second: VAMPIRE_ R Toe0
+  - first:
+      4: 400104
+    second: VAMPIRE_ R UpperArm
+  - first:
+      4: 400106
+    second: VAMPIRE_ Spine
+  - first:
+      4: 400108
+    second: VAMPIRE_ Spine1
+  - first:
+      4: 400110
+    second: root
+  - first:
+      74: 7400000
+    second: clawsAttack2HitCombo
+  - first:
+      95: 9500000
+    second: //RootNode
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\n\t'VAMPIRE_ Neck1' is inbetween humanoid
+      transforms and has rotation animation that will be discarded.\n"
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: clawsAttack2HitCombo
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/VAMPIRE_
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ L Thigh
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ L Thigh/VAMPIRE_ L Calf
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ L Thigh/VAMPIRE_ L Calf/VAMPIRE_
+          L Foot
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ L Thigh/VAMPIRE_ L Calf/VAMPIRE_
+          L Foot/VAMPIRE_ L Toe0
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ R Thigh
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ R Thigh/VAMPIRE_ R Calf
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ R Thigh/VAMPIRE_ R Calf/VAMPIRE_
+          R Foot
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ R Thigh/VAMPIRE_ R Calf/VAMPIRE_
+          R Foot/VAMPIRE_ R Toe0
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger0
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger0/VAMPIRE_ L Finger01
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger0/VAMPIRE_ L Finger01/VAMPIRE_ L Finger02
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger1
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger1/VAMPIRE_ L Finger11
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger1/VAMPIRE_ L Finger11/VAMPIRE_ L Finger12
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger2
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger2/VAMPIRE_ L Finger21
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger2/VAMPIRE_ L Finger21/VAMPIRE_ L Finger22
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger3
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger3/VAMPIRE_ L Finger31
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger3/VAMPIRE_ L Finger31/VAMPIRE_ L Finger32
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger4
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger4/VAMPIRE_ L Finger41
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          L Clavicle/VAMPIRE_ L UpperArm/VAMPIRE_ L Forearm/VAMPIRE_ L Hand/VAMPIRE_
+          L Finger4/VAMPIRE_ L Finger41/VAMPIRE_ L Finger42
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          Neck
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          Neck/VAMPIRE_ Neck1
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          Neck/VAMPIRE_ Neck1/VAMPIRE_ Head
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          Neck/VAMPIRE_ Neck1/VAMPIRE_ Head/VAMPIRE_ Ponytail1
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger0
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger0/VAMPIRE_ R Finger01
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger0/VAMPIRE_ R Finger01/VAMPIRE_ R Finger02
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger1
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger1/VAMPIRE_ R Finger11
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger1/VAMPIRE_ R Finger11/VAMPIRE_ R Finger12
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger2
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger2/VAMPIRE_ R Finger21
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger2/VAMPIRE_ R Finger21/VAMPIRE_ R Finger22
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger3
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger3/VAMPIRE_ R Finger31
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger3/VAMPIRE_ R Finger31/VAMPIRE_ R Finger32
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger4
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger4/VAMPIRE_ R Finger41
+        weight: 1
+      - path: root/VAMPIRE_/VAMPIRE_ Pelvis/VAMPIRE_ Spine/VAMPIRE_ Spine1/VAMPIRE_
+          R Clavicle/VAMPIRE_ R UpperArm/VAMPIRE_ R Forearm/VAMPIRE_ R Hand/VAMPIRE_
+          R Finger4/VAMPIRE_ R Finger41/VAMPIRE_ R Finger42
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 1
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human:
+    - boneName: spine
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: thigh.L
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: thigh.R
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: shin.L
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: shin.R
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: foot.L
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: foot.R
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: spine.001
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: spine.002
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: spine.005
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: spine.006
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: shoulder.L
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: shoulder.R
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: upper_arm.L
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: upper_arm.R
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: forearm.L
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: forearm.R
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: hand.L
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: hand.R
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: toe.L
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: toe.R
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: spine.003
+      humanName: UpperChest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: goblinRig(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: body_low
+      parentName: goblinRig(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: clothes_1_low
+      parentName: goblinRig(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: clothes_2_low
+      parentName: goblinRig(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: clothes_3_low
+      parentName: goblinRig(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: clothes_4_low
+      parentName: goblinRig(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: eyes_low
+      parentName: goblinRig(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: rig
+      parentName: goblinRig(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: spine
+      parentName: rig
+      position: {x: -5.3099964e-20, y: 0.00008025885, z: 0.008984023}
+      rotation: {x: 0.8448892, y: 0.00000013242824, z: 0.00000020915785, w: 0.5349413}
+      scale: {x: 1, y: 0.9999999, z: 0.9999997}
+    - name: pelvis.L
+      parentName: spine
+      position: {x: -5.32907e-16, y: 0.000000001117587, z: -2.9802322e-10}
+      rotation: {x: -0.24158841, y: 0.8077584, z: 0.2359572, w: 0.48320347}
+      scale: {x: 0.9999998, y: 0.9999995, z: 0.99999994}
+    - name: pelvis.L_end
+      parentName: pelvis.L
+      position: {x: -0, y: 0.0010441166, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: pelvis.R
+      parentName: spine
+      position: {x: -4.6185276e-16, y: 0.000000001117587, z: -2.9802322e-10}
+      rotation: {x: 0.24158832, y: 0.8077587, z: 0.23595732, w: -0.48320293}
+      scale: {x: 0.9999999, y: 0.9999995, z: 0.99999994}
+    - name: pelvis.R_end
+      parentName: pelvis.R
+      position: {x: -0, y: 0.0010441164, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: spine.001
+      parentName: spine
+      position: {x: -5.308287e-16, y: 0.0012436778, z: 0}
+      rotation: {x: 0.0027788093, y: -0.000000058481877, z: 0.0000000012133258, w: 0.9999961}
+      scale: {x: 1, y: 1, z: 1}
+    - name: spine.002
+      parentName: spine.001
+      position: {x: 7.5803804e-17, y: 0.0010310193, z: -7.4505804e-11}
+      rotation: {x: -0.06135712, y: -0.000000037041932, z: -0.000000020925043, w: 0.9981159}
+      scale: {x: 1, y: 1, z: 1}
+    - name: spine.003
+      parentName: spine.002
+      position: {x: 1.04508957e-16, y: 0.0014137144, z: -7.4505804e-11}
+      rotation: {x: -0.15974094, y: -0.0000000029131475, z: -0.00000004807786, w: 0.987159}
+      scale: {x: 1, y: 1, z: 1}
+    - name: breast.L
+      parentName: spine.003
+      position: {x: -0.0012251697, y: 0.0011846627, z: 0.0017892539}
+      rotation: {x: -0.0000002943061, y: 0.72061884, z: 0.6933314, w: -0.00000001296729}
+      scale: {x: 1, y: 0.9999996, z: 0.9999999}
+    - name: breast.L_end
+      parentName: breast.L
+      position: {x: -0, y: 0.0017906177, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: breast.R
+      parentName: spine.003
+      position: {x: 0.0012251687, y: 0.0011846628, z: 0.0017892546}
+      rotation: {x: -0.0000000138957015, y: 0.7206189, z: 0.69333136, w: 0.00000025682488}
+      scale: {x: 1, y: 0.9999995, z: 0.9999999}
+    - name: breast.R_end
+      parentName: breast.R
+      position: {x: -0, y: 0.0017906177, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: shoulder.L
+      parentName: spine.003
+      position: {x: -0.00013879017, y: 0.0018219256, z: 0.0000651008}
+      rotation: {x: -0.49094436, y: 0.7319897, z: 0.3806849, w: 0.27972087}
+      scale: {x: 0.99999994, y: 1.0000001, z: 1}
+    - name: upper_arm.L
+      parentName: shoulder.L
+      position: {x: 0.00010359436, y: 0.0026416345, z: -0.00016479156}
+      rotation: {x: -0.1383389, y: -0.6024447, z: -0.122668795, w: 0.7764504}
+      scale: {x: 0.99999976, y: 0.9999998, z: 0.99999994}
+    - name: forearm.L
+      parentName: upper_arm.L
+      position: {x: 1.3038516e-10, y: 0.0044293203, z: 1.11758706e-10}
+      rotation: {x: 0.026337266, y: -0.17931622, z: -0.011005916, w: 0.98337734}
+      scale: {x: 0.99999994, y: 0.9999998, z: 1}
+    - name: hand.L
+      parentName: forearm.L
+      position: {x: -5.9604643e-10, y: 0.0041574705, z: -7.45058e-10}
+      rotation: {x: -0.0042567654, y: -0.0030979656, z: 0.085536346, w: 0.99632114}
+      scale: {x: 1.0000002, y: 1.0000001, z: 1.0000001}
+    - name: hand.L_end
+      parentName: hand.L
+      position: {x: -0, y: 0.0041574608, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: shoulder.R
+      parentName: spine.003
+      position: {x: 0.00013879014, y: 0.0018219256, z: 0.000065100925}
+      rotation: {x: 0.49094436, y: 0.7319897, z: 0.3806851, w: -0.27972084}
+      scale: {x: 0.9999999, y: 0.99999994, z: 0.9999999}
+    - name: upper_arm.R
+      parentName: shoulder.R
+      position: {x: -0.00010359444, y: 0.002641634, z: -0.0001647918}
+      rotation: {x: -0.1383388, y: 0.6024444, z: 0.1226687, w: 0.7764506}
+      scale: {x: 0.9999998, y: 0.9999997, z: 0.99999964}
+    - name: forearm.R
+      parentName: upper_arm.R
+      position: {x: -2.0489097e-10, y: 0.004429319, z: 2.6077032e-10}
+      rotation: {x: 0.026337633, y: 0.17931657, z: 0.01100592, w: 0.9833772}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: hand.R
+      parentName: forearm.R
+      position: {x: 5.2154064e-10, y: 0.0041574687, z: -0.0000000010430813}
+      rotation: {x: -0.004256931, y: 0.0030980252, z: -0.08553678, w: 0.99632114}
+      scale: {x: 1, y: 1.0000002, z: 1}
+    - name: hand.R_end
+      parentName: hand.R
+      position: {x: -0, y: 0.0041574617, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: spine.004
+      parentName: spine.003
+      position: {x: -1.4625725e-16, y: 0.0017906193, z: -9.313225e-11}
+      rotation: {x: 0.44273788, y: 0.00000050828123, z: 0.00000038291918, w: 0.8966511}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+    - name: spine.005
+      parentName: spine.004
+      position: {x: 9.517876e-16, y: 0.0018214829, z: -2.2351741e-10}
+      rotation: {x: -0.5372039, y: -0.0000013469466, z: 0.000000088741075, w: 0.84345245}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: spine.006
+      parentName: spine.005
+      position: {x: 1.8947657e-15, y: 0.0010185236, z: -4.4703483e-10}
+      rotation: {x: -0.29501155, y: 0.0000013088954, z: 0.000000115724966, w: 0.9554937}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: spine.006_end
+      parentName: spine.006
+      position: {x: -0, y: 0.0010185227, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: thigh.L
+      parentName: spine
+      position: {x: -0.0010377708, y: 0.00010870471, z: 0.000037358783}
+      rotation: {x: 0.9424082, y: -0.082870536, z: -0.077829875, w: 0.3145502}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999999}
+    - name: shin.L
+      parentName: thigh.L
+      position: {x: 1.3737007e-10, y: 0.0038670537, z: 1.11758706e-10}
+      rotation: {x: 0.31785545, y: 0.03824021, z: -0.07805628, w: 0.94414663}
+      scale: {x: 1.0000002, y: 1, z: 0.9999999}
+    - name: foot.L
+      parentName: shin.L
+      position: {x: 2.1420418e-10, y: 0.004971291, z: 5.5879353e-11}
+      rotation: {x: -0.6469449, y: 0.038487304, z: 0.009621921, w: 0.7615041}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+    - name: heel.02.L
+      parentName: foot.L
+      position: {x: 0.00028819835, y: 0.0005278147, z: 0.0005976641}
+      rotation: {x: 0.67391837, y: -0.6739178, z: 0.21408938, w: 0.21409011}
+      scale: {x: 1, y: 0.99999964, z: 1}
+    - name: heel.02.L_end
+      parentName: heel.02.L
+      position: {x: -0, y: 0.00084784866, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: toe.L
+      parentName: foot.L
+      position: {x: -1.7778283e-10, y: 0.000995405, z: -5.861324e-11}
+      rotation: {x: -0.00000009609872, y: 0.9632658, z: -0.26854986, w: -0.0000006703623}
+      scale: {x: 1, y: 0.9999999, z: 1.0000001}
+    - name: toe.L_end
+      parentName: toe.L
+      position: {x: -0, y: 0.00084784883, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: thigh.R
+      parentName: spine
+      position: {x: 0.0010377708, y: 0.00010870471, z: 0.000037359812}
+      rotation: {x: 0.94240814, y: 0.08287034, z: 0.07783051, w: 0.31455022}
+      scale: {x: 1, y: 0.9999999, z: 1}
+    - name: shin.R
+      parentName: thigh.R
+      position: {x: 6.658956e-10, y: 0.003867053, z: -3.72529e-10}
+      rotation: {x: 0.31785542, y: -0.038240384, z: 0.0780563, w: 0.94414663}
+      scale: {x: 1, y: 0.99999994, z: 0.9999999}
+    - name: foot.R
+      parentName: shin.R
+      position: {x: 1.2572854e-10, y: 0.0049712923, z: -4.6566126e-11}
+      rotation: {x: -0.6469447, y: -0.038487453, z: -0.009622007, w: 0.7615043}
+      scale: {x: 0.9999998, y: 0.99999994, z: 1.0000001}
+    - name: heel.02.R
+      parentName: foot.R
+      position: {x: -0.00028819774, y: 0.0005278148, z: 0.00059766433}
+      rotation: {x: 0.6739182, y: 0.673918, z: -0.21408941, w: 0.21409027}
+      scale: {x: 0.9999998, y: 1, z: 0.9999999}
+    - name: heel.02.R_end
+      parentName: heel.02.R
+      position: {x: -0, y: 0.0008478488, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: toe.R
+      parentName: foot.R
+      position: {x: 3.421467e-10, y: 0.0009954053, z: -1.4553194e-11}
+      rotation: {x: -0.00000009397219, y: 0.9632658, z: -0.2685499, w: 0.000000599597}
+      scale: {x: 1, y: 1.0000001, z: 0.9999998}
+    - name: toe.R_end
+      parentName: toe.R
+      position: {x: -0, y: 0.00084784883, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: teeth_low
+      parentName: goblinRig(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 49231400021cbd743a07ac2e1b9d56a2,
+    type: 3}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 3
+  humanoidOversampling: 1
+  avatarSetup: 2
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
