@@ -54,12 +54,13 @@ public class PlayerUI : MonoBehaviour
     private VisualElement skillsRoot;
     private List<Skill> skills;
 
-    void Start()
+    void Awake()
     {
         // Skills
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
         skillsRoot = root.Query<VisualElement>("Skills").First();
         resourcesRoot = root.Query<VisualElement>("Resources").First();
+        //GOOD LUCK BUDDY!
         skills = new List<Skill>(new Skill[skillsRoot.childCount]);
     }
 
@@ -80,9 +81,10 @@ public class PlayerUI : MonoBehaviour
 
     public void SetSkill(int index, string name, float cooldown)
     {
-        if (index >= 0 && index < skills.Count) {
+        Debug.Log(skills?.Count);
+        if (index >= 0 && index < skills?.Count) {
             this.UnsetSkill(index);
-
+            Debug.Log(name);
             var skillButton = skillsRoot.Query<Button>().AtIndex(index);
             var skillComponent = this.gameObject.AddComponent<Skill>();
             skillComponent.SetValues(index, name, cooldown, ref skillButton);
@@ -95,7 +97,7 @@ public class PlayerUI : MonoBehaviour
 
     public void UnsetSkill(int index)
     {
-        if (index >= 0 && index < skills.Count && skills[index] != null) {
+        if (index >= 0 && index < skills?.Capacity && skills[index] != null) {
             var skillButton = skillsRoot.Query<Button>().AtIndex(index);
             skillButton.SetEnabled(true);
             skillButton.text = "null";

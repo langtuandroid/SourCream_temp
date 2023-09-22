@@ -9,7 +9,7 @@ public class PlayerAbilityController : MonoBehaviour
     public Dictionary<string, GameObject> attackColliders;
     public Dictionary<string, GameObject> attackIndicators;
 
-    private (AbilityDataSerialize serialized, BodyPartAbility ability) currentCombatAction;
+    public (AbilityDataSerialize serialized, BodyPartAbility ability) currentCombatAction;
 
     public bool abilityInProgress = false;
     //this is supposed to be adaptable rather than hardset
@@ -21,7 +21,7 @@ public class PlayerAbilityController : MonoBehaviour
     [SerializeField]
     private PlayerUI playerUi;
 
-    private CooldownManager cooldownManger;
+    public CooldownManager cooldownManger;
 
 
     // Start is called before the first frame update
@@ -41,11 +41,17 @@ public class PlayerAbilityController : MonoBehaviour
     public void CallAbility(int index)
     {
         var abilityData = dataController.GetAbilityTuple(index);
+        Debug.Log("asdasdas");
         CallCombatAction(abilityData);
     }
 
     public void CallCombatAction((AbilityDataSerialize serialized, BodyPartAbility ability) actionData)
     {
+        if (actionData.serialized.abilityImplementation != null) {
+            Debug.Log("going into custom");
+            actionData.serialized.abilityImplementation.StartingSkill(actionData, this);
+            return;
+        }
         if (cooldownManger.IsCooldownRunning(actionData.ability.name) || abilityInProgress) {
             return;
         }
@@ -212,17 +218,19 @@ public class PlayerAbilityController : MonoBehaviour
     }
 
 
-    private void AbilityFinished()
+    public void AbilityFinished()
     {
         Debug.Log("ABILITY FINISHED");
         abilityInProgress = false;
     }
 
-    private void SetupCollisionDetection(float value, GameObject colliderToUse)
+    public CollisionDetection SetupCollisionDetection(float value, GameObject colliderToUse, Action<GameObject> optionalCallback = null)
     {
         CollisionDetection collisionDetection = colliderToUse.GetComponent<CollisionDetection>();
         collisionDetection.caster = Caster.PLAYER;
+        collisionDetection.SetOnCollide(optionalCallback);
         collisionDetection.SetDamageInfo(new DamageInformation(ScalingTypes.PHYSICAL, value));
+        return collisionDetection;
     }
 
     private IEnumerator MoveTowardsTarget(float speed, Vector3 direction, float duration, GameObject particle)

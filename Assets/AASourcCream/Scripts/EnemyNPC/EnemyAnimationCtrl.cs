@@ -15,6 +15,8 @@ public class EnemyAnimationCtrl : SerializedMonoBehaviour
     [DictionaryDrawerSettings(DisplayMode = DictionaryDisplayOptions.Foldout)]
     public Dictionary<string, string> extra;
 
+    private bool once = false;
+
     [SerializeField]
     public string RunAnimation;
     [SerializeField]
@@ -31,7 +33,8 @@ public class EnemyAnimationCtrl : SerializedMonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _animator.Play("idleDaggers");
+        _animator.Play("jumpBackwawrds");
+        Debug.Log(LayerMask.NameToLayer("asd"));
     }
 
     private void Awake()
@@ -42,7 +45,12 @@ public class EnemyAnimationCtrl : SerializedMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (!once) {
+            _animator.Play("Goblin_slash", -1);
+            //_animator.Play("death", -1);
+            Debug.Log(LayerMask.NameToLayer("Base Layer"));
+            once = true;
+        }
     }
 
     public void changeAnimationState(string newState)

@@ -7,6 +7,9 @@ using UnityEngine.UIElements;
 
 public class PlayerDataController : MonoBehaviour
 {
+
+
+
     public List<(AbilityDataSerialize serialized, BodyPartAbility ability)> abilityData = new List<(AbilityDataSerialize serialized, BodyPartAbility ability)>();
 
     [FilePath]
@@ -46,7 +49,6 @@ public class PlayerDataController : MonoBehaviour
         abilityData.Add((TableWithPaging[0], ability1));
         ability2.onCooldown = false;
         abilityData.Add((TableWithPaging[1], ability2));
-
         SetUpSkills(abilityData);
         return data;
     }
@@ -79,12 +81,13 @@ public class AbilityDataSerialize
     [VerticalGroup("Prefabs"), LabelWidth(80)]
     public GameObject Indicator, Collider, VFX, SFX;
 
-    [TableColumnWidth(80, Resizable = true)]
-    public string customScriptClass;
+    [SerializeField]
+    public IAbilityImplementation abilityImplementation;
 
     [OnInspectorInit]
     private void CreateData()
     {
+        Debug.Log(abilityImplementation);
         abilityIcon = null;
     }
 }
