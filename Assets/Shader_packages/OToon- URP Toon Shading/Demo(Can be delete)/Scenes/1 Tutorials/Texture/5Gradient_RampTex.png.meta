@@ -3,7 +3,7 @@ guid: 5733e66a9ccdc0c4ea8c937df7acd59c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -20,10 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -62,9 +64,35 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -88,9 +116,9 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable: {}
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
-  userData: '{"mode":0,"colorKeys":[{"color":{"r":0.0,"g":0.0,"b":0.0,"a":1.0},"time":0.0},{"color":{"r":0.02707892283797264,"g":0.02707892283797264,"b":0.02707892283797264,"a":1.0},"time":0.19761958718299867},{"color":{"r":0.40392157435417178,"g":0.40392157435417178,"b":0.40392157435417178,"a":1.0},"time":0.4261844754219055},{"color":{"r":0.40566039085388186,"g":0.40566039085388186,"b":0.40566039085388186,"a":1.0},"time":0.6976119875907898},{"color":{"r":0.6037735939025879,"g":0.6037735939025879,"b":0.6037735939025879,"a":1.0},"time":0.7190508842468262},{"color":{"r":0.6676781177520752,"g":0.6676781177520752,"b":0.6676781177520752,"a":1.0},"time":0.8500038385391235},{"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"time":0.8738079071044922},{"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}]}'
+  userData: '{"mode":0,"colorKeys":[{"color":{"r":0.0,"g":0.0,"b":0.0,"a":1.0},"time":0.0},{"color":{"r":0.02707892283797264,"g":0.02707892283797264,"b":0.02707892283797264,"a":1.0},"time":0.21470969915390016},{"color":{"r":0.40392157435417178,"g":0.40392157435417178,"b":0.40392157435417178,"a":1.0},"time":0.4117647111415863},{"color":{"r":0.40566039085388186,"g":0.40566039085388186,"b":0.40566039085388186,"a":1.0},"time":0.5529412031173706},{"color":{"r":0.6037735939025879,"g":0.6037735939025879,"b":0.6037735939025879,"a":1.0},"time":0.6911726593971252},{"color":{"r":0.6676781177520752,"g":0.6676781177520752,"b":0.6676781177520752,"a":1.0},"time":0.800000011920929},{"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"time":0.9353017210960388},{"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}]}'
   assetBundleName: 
   assetBundleVariant: 

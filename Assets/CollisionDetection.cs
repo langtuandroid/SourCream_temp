@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum Caster
 {
@@ -17,6 +18,8 @@ public class CollisionDetection : MonoBehaviour
     private bool collisionOccured = false;
 
     public Caster caster = Caster.ENEMY;
+
+    private Action<GameObject> onCollide;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +32,7 @@ public class CollisionDetection : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider collider)
+    public void OnTriggerEnter(Collider collider)
     {
 
         if (collisionOccured) return;
@@ -38,12 +41,18 @@ public class CollisionDetection : MonoBehaviour
             collisionOccured = true;
             StatsComponent targetStats = collider.gameObject.GetComponent<StatsComponent>();
             targetStats.Damage(damageInfo);
+            if (onCollide != null) {
+                onCollide(collider.gameObject);
+            }
         }
         if (caster == Caster.PLAYER && collider.transform.gameObject.layer == 6) {
             collisionOccured = true;
             StatsComponent targetStats = collider.gameObject.GetComponent<StatsComponent>();
             Debug.Log(targetStats.health.currentHealth);
             targetStats.Damage(damageInfo);
+            if (onCollide != null) {
+                onCollide(collider.gameObject);
+            }
         }
     }
 
@@ -55,6 +64,11 @@ public class CollisionDetection : MonoBehaviour
         if (collider.transform.gameObject.layer == 6 && collisionOccured == true) {
             collisionOccured = false;
         }
+    }
+
+    public void SetOnCollide(Action<GameObject> callback = null)
+    {
+        onCollide = callback;
     }
 
     public void SetDamageInfo(DamageInformation dmgInfo)
