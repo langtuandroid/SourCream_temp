@@ -8,7 +8,7 @@ public class RigData : ScriptableObject
 {
     // Generic types cannot be serialized by Unity Editor directly
     [Serializable]
-    public class DictBodyLinks : UnitySerializedDictionary<BodySlot, String> { }
+    public class DictBodyLinks : UnitySerializedDictionary<string, string> { }
     [Serializable]
     public struct TupleBones
     {
@@ -20,20 +20,22 @@ public class RigData : ScriptableObject
         public string tip; public string root;
     }
     [Serializable]
-    public class DictIKSets : UnitySerializedDictionary<BodySlot, TupleBones> { }
+    public class DictIKSets : UnitySerializedDictionary<string, TupleBones> { }
 
     /*** Bone placements & rig links to Torso ***/
     public DictBodyLinks links = new DictBodyLinks {
-        { BodySlot.HEAD, "spine.004" },
-        { BodySlot.ARMS, "upper_arm.X" },
-        { BodySlot.LEGS, "thigh.X" },
+        { BodySlot.HEAD.ToString(), "spine.004" },
+        { BodySlot.ARMS.ToString() + ".L", "upper_arm.L" },
+        { BodySlot.ARMS.ToString() + ".R", "upper_arm.R" },
+        { BodySlot.LEGS.ToString() + ".L", "thigh.L" },
+        { BodySlot.LEGS.ToString() + ".R", "thigh.R" },
     };
 
     /*** IK Tips ***/
     public DictIKSets tipsAndRoots = new DictIKSets {
-        { BodySlot.HEAD, new TupleBones("spine.006", "spine.004") },
-        { BodySlot.ARMS, new TupleBones("hand.X", "upper_arm.X") },
-        { BodySlot.LEGS, new TupleBones("foot.X", "thigh.X") },
+        { BodySlot.HEAD.ToString(), new TupleBones("spine.006", "spine.004") },
+        { BodySlot.ARMS.ToString() + ".L", new TupleBones("hand.L", "upper_arm.L") },
+        { BodySlot.ARMS.ToString() + ".R", new TupleBones("hand.R", "upper_arm.R") },
     };
 
     // TODO - determine if this is needed anywhere/anymore

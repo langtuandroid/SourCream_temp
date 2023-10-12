@@ -1,44 +1,9 @@
 fileFormatVersion: 2
-guid: f07d6b9e2cce35e47ab5df34f5ad3f1a
+guid: 8d8637ee0ec9afaf39552cd52bc5cad0
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: body_low
-    second: {fileID: 2100000, guid: 3d8cc2080c9037943aff3b68227a1b91, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: clothes_1_low
-    second: {fileID: 2100000, guid: 02f5f0bf06e175942bab991ec0dfe2e2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: clothes_2_low
-    second: {fileID: 2100000, guid: 147bb3ca5ac5144478f91a205b44986a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: clothes_3_low
-    second: {fileID: 2100000, guid: ada01b4722b38f5499322dbfee881957, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: clothes_4_low
-    second: {fileID: 2100000, guid: fce0471b6c5d4cc44858579fc83fc437, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: eyes_low
-    second: {fileID: 2100000, guid: 35a10e1d20b4c3b48aa02c6a91fbe711, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: teeth_low
-    second: {fileID: 2100000, guid: ca6bfce9f0f5d2e4ea9ca757dcafb94f, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

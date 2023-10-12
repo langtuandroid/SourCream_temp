@@ -33,7 +33,6 @@ public class PlayerUI : MonoBehaviour
         {
             button.SetEnabled(false);
             currentCooldown = cooldown;
-
             while (currentCooldown > 0) {
                 var valueToTickBy = currentCooldown > 1 ? 1f : 0.1f;
                 button.text = currentCooldown > 1 ? Math.Ceiling(currentCooldown).ToString("N0") : currentCooldown.ToString("N1");
@@ -81,7 +80,6 @@ public class PlayerUI : MonoBehaviour
 
     public void SetSkill(int index, string name, float cooldown)
     {
-        Debug.Log(skills?.Count);
         if (index >= 0 && index < skills?.Count) {
             this.UnsetSkill(index);
             Debug.Log(name);
@@ -111,7 +109,8 @@ public class PlayerUI : MonoBehaviour
 
     public void CallSkill(int index)
     {
-        if (skills[index] != null) {
+        if (skills[index] != null)
+        {
             StartCoroutine(skills[index].CallSkill());
         }
     }
