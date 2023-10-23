@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using FIMSpace.FProceduralAnimation;
 
 public class PartsManager : MonoBehaviour
 {
@@ -19,9 +20,16 @@ public class PartsManager : MonoBehaviour
     [SerializeField]
     private GameObject ikConstraintsRoot;
 
+    private OverrideHierarchy overrideHierarchy;
+
     public void Awake()
     {
         RebuildParts();
+    }
+
+    public void LateUpdate()
+    {
+        this.overrideHierarchy?.Update();
     }
 
     public void RebuildParts()
@@ -45,23 +53,11 @@ public class PartsManager : MonoBehaviour
 
         // Assign IK tips & roots
         foreach (var tipAndRoot in data.tipsAndRoots) {
-            SetupChainIK(tipAndRoot.Key, tipAndRoot.Value.tip, tipAndRoot.Value.root);
+            SpawnIkConstraint(tipAndRoot.Key, tipAndRoot.Value.tip, tipAndRoot.Value.root);
         }
 
-        // Assign walking style w/ targets - TODO - do crab walk, etc. Currently only biped implemented
-        if (equippedMutations.mutations.ContainsKey(BodySlot.LEGS)) {
-            if (equippedMutations.mutations[BodySlot.LEGS].mutation.walkStyle == WalkStyle.BIPED) {
-                var biped = GetComponent<BipedIK>();
-                biped.enabled = true;
-
-                var targetL = GenericHelper.RecursiveFindChild(ikConstraintsRoot.transform, "target_LEGS.L");
-                var targetR = GenericHelper.RecursiveFindChild(ikConstraintsRoot.transform, "target_LEGS.R");
-                biped.leftFootTargetRig = targetL;
-                biped.rightFootTargetRig = targetR;
-            }
-        } else {
-            Debug.LogError("No leg mutation equipped. Cannot set IK Targets.");
-        }
+        // Setup LegsAnimator component
+        AttachLegsAnimator();
 
         // Rebuild rig and Rebind animator
         GetComponent<RigBuilder>().Build();
@@ -91,7 +87,6 @@ public class PartsManager : MonoBehaviour
             var playerHeight = GetComponent<CharacterController>().center.y;
             // Torso
             var torso = GameObject.Instantiate(muts[BodySlot.TORSO].mutation.bodyParts[0], mutationPartsRoot.transform);
-            // torso.transform.localPosition = new Vector3(0, playerHeight, 0);
             torso.name = BodySlot.TORSO.ToString();
 
             // Following parts need to calculate their position based on positional slots on the torso prefab
@@ -102,26 +97,26 @@ public class PartsManager : MonoBehaviour
             head.name = BodySlot.HEAD.ToString();
 
             // Arms
-            var armleftSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.ARMS.ToString() + "_L").localPosition;
+            var armleftSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.ARMS.ToString() + ".L").localPosition;
             var armLeft = GameObject.Instantiate(muts[BodySlot.ARMS].mutation.bodyParts[0], mutationPartsRoot.transform);
             armLeft.transform.localPosition = armleftSlotPosition;
-            armLeft.name = BodySlot.ARMS.ToString() + "_L";
-            var armRightSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.ARMS.ToString() + "_R").localPosition;
+            armLeft.name = BodySlot.ARMS.ToString() + ".L";
+            var armRightSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.ARMS.ToString() + ".R").localPosition;
             var armRight = GameObject.Instantiate(muts[BodySlot.ARMS].mutation.bodyParts[1], mutationPartsRoot.transform);
             armRight.transform.localPosition = armRightSlotPosition;
-            armRight.name = BodySlot.ARMS.ToString() + "_R";
+            armRight.name = BodySlot.ARMS.ToString() + ".R";
 
             // Legs
-            var legleftSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.LEGS.ToString() + "_L").localPosition;
+            var legleftSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.LEGS.ToString() + ".L").localPosition;
             var legLeft = GameObject.Instantiate(muts[BodySlot.LEGS].mutation.bodyParts[0], mutationPartsRoot.transform);
             legLeft.transform.localPosition = legleftSlotPosition;
-            legLeft.name = BodySlot.LEGS.ToString() + "_L";
-            var legRightSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.LEGS.ToString() + "_R").localPosition;
+            legLeft.name = BodySlot.LEGS.ToString() + ".L";
+            var legRightSlotPosition = torso.transform.localPosition + torso.transform.Find(BodySlot.LEGS.ToString() + ".R").localPosition;
             var legRight = GameObject.Instantiate(muts[BodySlot.LEGS].mutation.bodyParts[1], mutationPartsRoot.transform);
             legRight.transform.localPosition = legRightSlotPosition;
-            legRight.name = BodySlot.LEGS.ToString() + "_R";
+            legRight.name = BodySlot.LEGS.ToString() + ".R";
 
-            // Calculate origin height = distance between leg_L.ground.y and torso.y
+            // Calculate origin height = distance between leg.L.ground.y and torso.y
             var ground = legLeft.transform.Find("ground");
             if (ground == null) {
                 Debug.LogError("Left leg requires a 'ground' object, to calculate the player's height");
@@ -148,27 +143,35 @@ public class PartsManager : MonoBehaviour
         var torsoRig = mutationPartsRoot.transform.Find(BodySlot.TORSO.ToString())
             .GetChild(0); // E.g. Parts -> TORSO -> rig_body
         var newRig = GameObject.Instantiate(torsoRig);
-        newRig.name = "full_rig";
+        newRig.name = "full.Rig";
         newRig.parent = joinedRig.transform;
         newRig.transform.position = torsoRig.position;
 
         // Duplicate and attach other part rigs to torso, and replace any duplicate bones
         foreach (var link in data.links) {
-            if (link.Value.Contains("X")) {
-                ReplacePartRigs(newRig, link.Key + "_L", link.Value.Replace("X", "L"));
-                ReplacePartRigs(newRig, link.Key + "_R", link.Value.Replace("X", "R"));
-            } else {
-                ReplacePartRigs(newRig, link.Key.ToString(), link.Value);
-            }
+            ReplacePartRigs(newRig, link.Key, link.Value);
         }
 
         // Override transforms of all bones in each part rig with the respective bones in the joined rig
-        AddOverrideTransforms(torsoRig);
-        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.HEAD.ToString()).GetChild(0));
-        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.ARMS.ToString() + "_L").GetChild(0));
-        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.ARMS.ToString() + "_R").GetChild(0));
-        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.LEGS.ToString() + "_L").GetChild(0));
-        AddOverrideTransforms(mutationPartsRoot.transform.Find(BodySlot.LEGS.ToString() + "_R").GetChild(0));
+        Transform[] partTransforms = {
+            torsoRig,
+            GenericHelper.RecursiveFindChild(
+                mutationPartsRoot.transform.Find(BodySlot.HEAD.ToString()),
+                data.links[BodySlot.HEAD.ToString()]),
+            GenericHelper.RecursiveFindChild(
+                mutationPartsRoot.transform.Find(BodySlot.ARMS.ToString() + ".L"),
+                data.links[BodySlot.ARMS.ToString() + ".L"]),
+            GenericHelper.RecursiveFindChild(
+                mutationPartsRoot.transform.Find(BodySlot.ARMS.ToString() + ".R"),
+                data.links[BodySlot.ARMS.ToString() + ".R"]),
+            GenericHelper.RecursiveFindChild(
+                mutationPartsRoot.transform.Find(BodySlot.LEGS.ToString() + ".L"),
+                data.links[BodySlot.LEGS.ToString() + ".L"]),
+            GenericHelper.RecursiveFindChild(
+                mutationPartsRoot.transform.Find(BodySlot.LEGS.ToString() + ".R"),
+                data.links[BodySlot.LEGS.ToString() + ".R"]),
+        };
+        this.overrideHierarchy = new OverrideHierarchy(partTransforms, this.joinedRig.transform);
     }
 
     private void ReplacePartRigs(Transform newRig, string slot, string bone)
@@ -206,27 +209,16 @@ public class PartsManager : MonoBehaviour
         }
     }
 
-    private void SetupChainIK(BodySlot slot, string tip, string root)
-    {
-        // Assume X = polarity (e.g. hand.X == hand.L)
-        if (tip.Contains("X") || root.Contains("X")) {
-            SpawnIkConstraint(slot.ToString(), ".L", tip.Replace("X", "L"), root.Replace("X", "L"));
-            SpawnIkConstraint(slot.ToString(), ".R", tip.Replace("X", "R"), root.Replace("X", "R"));
-        } else {
-            SpawnIkConstraint(slot.ToString(), "", tip, root);
-        }
-    }
-
-    private void SpawnIkConstraint(string slot, string suffix, string tip, string root)
+    private void SpawnIkConstraint(string slot, string tip, string root)
     {
         var tipTrans = GenericHelper.RecursiveFindChild(joinedRig.transform, tip);
         var rootTrans = GenericHelper.RecursiveFindChild(joinedRig.transform, root);
 
-        var constraint = new GameObject(slot + suffix);
+        var constraint = new GameObject(slot);
         constraint.transform.SetParent(ikConstraintsRoot.transform);
         constraint.transform.localPosition = new Vector3(0, 0, 0);
 
-        var target = new GameObject("target_" + slot + suffix);
+        var target = new GameObject("target_" + slot);
         target.transform.SetParent(constraint.transform);
 
         var chain = constraint.AddComponent<ChainIKConstraint>();
@@ -236,8 +228,56 @@ public class PartsManager : MonoBehaviour
         chain.data.root = rootTrans;
         chain.data.target = target.transform;
 
-        target.transform.position = tipTrans.position;
-        target.transform.rotation = tipTrans.rotation;
+        target.transform.SetPositionAndRotation(tipTrans.position, tipTrans.rotation);
+    }
+
+    private void AttachLegsAnimator()
+    {
+        LegsAnimator legsAnimator = this.gameObject.AddComponent<LegsAnimator>();
+        legsAnimator.MotionInfluence = new MotionInfluenceProcessor(); // Will not be required to call in next update
+        legsAnimator.HipsSetup = new LegsAnimator.HipsReference(); // Will not be required to call in next update
+        legsAnimator.Event_OnStep = new UnityEngine.Events.UnityEvent(); // Will not be required to call in next update
+        legsAnimator.BaseLegAnimating = new LegsAnimator.LegStepAnimatingParameters(); // Will not be required to call in next update
+
+        legsAnimator.Hips = this.joinedRig.transform.GetChild(0).GetChild(0);
+
+        // Initialize legs
+        LegsAnimator.LegStepAnimatingParameters stepParams = new();
+        stepParams.RefreshDefaultCurves();
+        LegMotionSettingsPreset legSettings = (LegMotionSettingsPreset)ScriptableObject.CreateInstance("LegMotionSettingsPreset");
+        legSettings.Settings = stepParams;
+
+        Transform leftLegStart = GenericHelper.RecursiveFindChild(joinedRig.transform, "thigh.L");
+        LegsAnimator.Leg leftLeg = new() {
+            BoneStart = leftLegStart,
+            BoneMid = leftLegStart.GetChild(0),
+            BoneEnd = leftLegStart.GetChild(0).GetChild(0),
+            Side = LegsAnimator.ELegSide.Left,
+            OppositeLegIndex = 1,
+            CustomLegAnimating = legSettings,
+            Owner = legsAnimator,
+        };
+        Transform rightlegStart = GenericHelper.RecursiveFindChild(joinedRig.transform, "thigh.R");
+        LegsAnimator.Leg rightLeg = new() {
+            BoneStart = rightlegStart,
+            BoneMid = rightlegStart.GetChild(0),
+            BoneEnd = rightlegStart.GetChild(0).GetChild(0),
+            Side = LegsAnimator.ELegSide.Right,
+            OppositeLegIndex = 0,
+            CustomLegAnimating = legSettings,
+            Owner = legsAnimator,
+        };
+        legsAnimator.Legs = new List<LegsAnimator.Leg> { leftLeg, rightLeg };
+
+        leftLeg.InitLegBasics(legsAnimator, 0, rightLeg);
+        rightLeg.InitLegBasics(legsAnimator, 1, null);
+
+        legsAnimator.Finders_RefreshAllLegsAnkleAxes();
+        legsAnimator.BaseLegAnimating.RefreshDefaultCurves();
+
+        // Set terrain layer
+        LayerMask terrain = LayerMask.GetMask("Terrain");
+        legsAnimator.GroundMask = terrain;
     }
 
     private void SaveData()

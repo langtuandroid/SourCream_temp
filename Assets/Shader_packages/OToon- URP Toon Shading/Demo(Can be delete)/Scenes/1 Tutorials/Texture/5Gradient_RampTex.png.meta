@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5733e66a9ccdc0c4ea8c937df7acd59c
+guid: 57ea22f92aa346887ac6673cc81185f0
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -37,9 +37,9 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
@@ -65,14 +65,14 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -84,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -96,7 +96,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -119,6 +119,6 @@ TextureImporter:
     nameFileIdTable: {}
   spritePackingTag: 
   pSDRemoveMatte: 0
-  userData: '{"mode":0,"colorKeys":[{"color":{"r":0.0,"g":0.0,"b":0.0,"a":1.0},"time":0.0},{"color":{"r":0.02707892283797264,"g":0.02707892283797264,"b":0.02707892283797264,"a":1.0},"time":0.21470969915390016},{"color":{"r":0.40392157435417178,"g":0.40392157435417178,"b":0.40392157435417178,"a":1.0},"time":0.4117647111415863},{"color":{"r":0.40566039085388186,"g":0.40566039085388186,"b":0.40566039085388186,"a":1.0},"time":0.5529412031173706},{"color":{"r":0.6037735939025879,"g":0.6037735939025879,"b":0.6037735939025879,"a":1.0},"time":0.6911726593971252},{"color":{"r":0.6676781177520752,"g":0.6676781177520752,"b":0.6676781177520752,"a":1.0},"time":0.800000011920929},{"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"time":0.9353017210960388},{"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}]}'
+  userData: 
   assetBundleName: 
   assetBundleVariant: 

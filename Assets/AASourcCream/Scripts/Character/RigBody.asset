@@ -13,20 +13,30 @@ MonoBehaviour:
   m_Name: RigBody
   m_EditorClassIdentifier: 
   links:
-    keyData: 000000000200000003000000
+    keyData:
+    - HEAD
+    - ARMS.L
+    - ARMS.R
+    - LEGS.L
+    - LEGS.R
     valueData:
     - spine.004
-    - upper_arm.X
-    - thigh.X
+    - upper_arm.L
+    - upper_arm.R
+    - thigh.L
+    - thigh.R
   tipsAndRoots:
-    keyData: 000000000200000003000000
+    keyData:
+    - HEAD
+    - ARMS.L
+    - ARMS.R
     valueData:
     - tip: spine.006
       root: spine.004
-    - tip: hand.X
-      root: upper_arm.X
-    - tip: foot.X
-      root: thigh.X
+    - tip: hand.L
+      root: upper_arm.L
+    - tip: hand.R
+      root: upper_arm.R
   head: head_target
   body: spine.003
   armRight: arm_target.R
