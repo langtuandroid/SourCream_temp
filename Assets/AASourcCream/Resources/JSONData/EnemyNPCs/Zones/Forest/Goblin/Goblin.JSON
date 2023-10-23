@@ -1,0 +1,38 @@
+{
+    "name": "Goblin",
+    "healthPoints": "1000",
+    "manaPoints": "200",
+    "attackDamage": "10",
+    "attacks": [
+        {
+            "name": "RegularSwing",
+            "scallingType": "PHYSICAL",
+            "attackType": "INSTANT",
+            "range": "2",
+            "value": "1.2",
+            "castTime": "1.3",
+            "target": "ENEMY"
+        },
+        {
+            "name": "ThrowSand",
+            "scallingType": "PHYSICAL",
+            "attackType": "Projectile",
+            "range": "9",
+            "value": "2",
+            "castTime": "1.2",
+            "target": "ENEMY"
+        }
+    ],
+    "buffs": [
+        {
+            "name": "DrinkPotion",
+            "scallingType": "MAGICAL",
+            "attackType": "CHANNEL",
+            "range": "1000",
+            "value": "1.5",
+            "castTime": "2",
+            "target": "SELF"
+        }
+    ],
+    "movementActions": []
+}

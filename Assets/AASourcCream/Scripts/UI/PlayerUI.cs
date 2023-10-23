@@ -81,7 +81,6 @@ public class PlayerUI : MonoBehaviour
 
     public void SetSkill(int index, string name, float cooldown)
     {
-        Debug.Log(skills?.Count);
         if (index >= 0 && index < skills?.Count) {
             this.UnsetSkill(index);
             Debug.Log(name);

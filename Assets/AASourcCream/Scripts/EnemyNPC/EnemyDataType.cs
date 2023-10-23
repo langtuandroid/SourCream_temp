@@ -22,8 +22,8 @@ public class EnemyDataType
 
 }
 
-[MessagePackObject]
-[Serializable]
+// [MessagePackObject]
+// [Serializable]
 public class EnemyCombatAction
 {
     [Key(0)]

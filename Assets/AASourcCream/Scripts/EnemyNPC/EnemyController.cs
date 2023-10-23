@@ -1,467 +1,379 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum ActionState
-{
-    Default,
-    Patrolling,
-    Chasing,
-    inAbility,
 
-}
-
-public enum PatrollingBehaviors
-{
-    InvokeMoveEveryXSeconds,
-    StandStill
-}
+/* Note: animations are called via the controller for both the character and capsule using animator null checks
+*/
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(EnemyAnimationCtrl))]
 
 public class EnemyController : MonoBehaviour
 {
+
+    private StateGraph stateGraph;
+
     [SerializeField]
-    private PatrollingBehaviors patrollingBehaviorPref;
+    private string currentState;
+    private NavMeshAgent navMeshAgent;
+
+    private Animator animator;
+    private Vector2 velocity;
+
     [SerializeField]
-    private float middlePointAdjustment;
+    bool overrideRootRotations = false;
+    private Vector2 smoothDeltaPosition;
+
     [SerializeField]
-    private LayerMask whatIsPlayer;
-    [SerializeField]
-    private float walkPointRange;
-    [SerializeField]
-    private GameObject player;
+    LayerMask layerMask;
+
+    /* Variables To handle enemy detection*/
     [SerializeField]
     private float sightRange;
+    [SerializeField]
+    private float middlePointAdjustment;
     private float middlePoint;
-    private bool playerInSightRange, playerInAttackRange;
-    private PatrollingHandler patrollingHandler;
-    private Vector3 spawnLocation;
-    public NavMeshAgent agent;
+    private bool playerInSightRange;
 
-    public ActionState currentState;
+    [SerializeField]
+    private LayerMask attackMask;
 
-    private EventListCtrl eventListCtrl;
+    /* Variables to help for walking points*/
+    private Vector3 startingPoint;
 
-    private EventCustom currentEvent;
+    private Vector3 distanceFromStartingPoint;
 
-    private float nextBehaviorRange;
+    [SerializeField]
+    private float maxDistanceFromStartingPoint;
 
-    //needs to be generic
-    private WeightController fighterController;
+    [SerializeField]
+    private float maxWalkDistance;
+
+    private Vector3 randomWalkablePoint;
+
+    [SerializeField]
+    private float IdlingTimeSeconds;
+
+    [SerializeField]
+    private float walkSpeed;
+    [SerializeField]
+    private float runSpeed;
+
+
+    /*Variables for chasing and attacking*/
+    private WeightController weightController;
 
     private AbilityController abilityController;
 
-    private DashMovement dashMovement;
-
-    private IEnumerator movementCoroutine;
-
-    public float destinationUpdateDelay = 1.0f; // Delay between SetDestination calls
-
     [SerializeField]
-    public float chaseDistance = 10.0f;
+    private GameObject player;
+    private EnemyActions nextAction;
 
-    [SerializeField]
-    public float maxDistanceFromSpawn = 20.0f; // Maximum allowed distance from spawning position
-
-    private Vector3 initialPosition;
-    private bool isChasing = false;
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        fighterController = GetComponent<WeightController>();
-        dashMovement = GetComponent<DashMovement>();
-        abilityController = GetComponent<AbilityController>();
-        currentState = ActionState.Default;
-        patrollingHandler = new PatrollingHandler();
-        eventListCtrl = new EventListCtrl();
-        // Initialize the position using NavMeshAgent.Warp
-        agent.Warp(transform.position);
-    }
+    private bool isCasting;
 
     private void Awake()
     {
-        spawnLocation = transform.position;
-        agent = GetComponent<NavMeshAgent>();
-        if (agent) {
-            agent.autoBraking = true;
+        animator = GetComponent<Animator>();
+        animator.applyRootMotion = true;
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.updatePosition = false;
+
+        if (overrideRootRotations) {
+            navMeshAgent.updateRotation = false;
         }
+
+        startingPoint = transform.position;
+        SetUpStateGraph();
     }
 
-    void FixedUpdate()
+    private void Start()
     {
-        if (!IsEnemyInSight()) {
-            SetActionState(ActionState.Patrolling);
-        } else if (!abilityController.abilityInProgress) {
-            SetActionState(ActionState.Chasing);
-        }
+        weightController = GetComponent<WeightController>();
+        abilityController = GetComponent<AbilityController>();
 
     }
 
+    private void Update()
+    {
+        SyncAnimatorAndAgent();
+        currentState = stateGraph?.currentState?.id;
+    }
 
-    bool IsEnemyInSight()
+    private void FixedUpdate()
+    {
+        UpdatePlayerInSight();
+        UpdateDistanceFromStartingPoint();
+    }
+
+    ///<summary>
+    ///Manages the relation between navMeshAgent(saying where can go) and animations (moving throuhg root motion)
+    ///I thought this would be good, but it still sucks ass
+    ///</summary>
+    private void SyncAnimatorAndAgent()
+    {
+        Vector3 worldDeltaPosition = navMeshAgent.nextPosition - transform.position;
+        worldDeltaPosition.y = 0;
+
+        float deltaX = Vector3.Dot(transform.right, worldDeltaPosition);
+        float deltaY = Vector3.Dot(transform.forward, worldDeltaPosition);
+        Vector2 deltaPosition = new Vector2(deltaX, deltaY);
+
+        float smooth = Mathf.Min(1, Time.deltaTime / 0.1f);
+        smoothDeltaPosition = Vector2.Lerp(smoothDeltaPosition, deltaPosition, smooth);
+        velocity = smoothDeltaPosition / Time.deltaTime;
+        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance) {
+            velocity = Vector2.Lerp(
+                Vector2.zero,
+                velocity,
+                navMeshAgent.remainingDistance / navMeshAgent.stoppingDistance
+            );
+        }
+
+        bool movementState = stateGraph.currentState.id == "walkState"
+            || stateGraph.currentState.id == "retreatState"
+            || stateGraph.currentState.id == "chaseState";
+
+        bool shouldMove = velocity.magnitude > 0.5f
+            && navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance
+            && movementState;
+
+
+        animator.SetBool("move", shouldMove);
+        animator.SetBool("run", stateGraph.currentState?.id == "walkState" ? false : true);
+        float fakeVal = velocity.magnitude == float.NaN ? 0.0f : velocity.magnitude;
+
+        animator.SetFloat("velocity", fakeVal);
+
+        float deltaMagnitude = worldDeltaPosition.magnitude;
+        if (deltaMagnitude > navMeshAgent.radius / 2.5f) {
+            transform.position = Vector3.Lerp(
+                animator.rootPosition,
+                navMeshAgent.nextPosition,
+                smooth
+            );
+        }
+    }
+    ///<summary>
+    ///Overrides a method from animator that happens when an animation play to move the NPC
+    ///Part of syncing navMesh and animator 
+    ///</summary>
+    private void OnAnimtorMove()
+    {
+        Vector3 rootPosition = animator.rootPosition;
+        rootPosition.y = navMeshAgent.nextPosition.y;
+
+        if (overrideRootRotations) {
+            transform.rotation = animator.rootRotation;
+        }
+
+        navMeshAgent.nextPosition = rootPosition;
+    }
+
+    private void UpdatePlayerInSight()
     {
         middlePoint = transform.position.y + middlePointAdjustment;
         Vector3 heightAdjustedPosition = new Vector3(transform.position.x, middlePoint, transform.position.z);
-        playerInSightRange = Physics.CheckSphere(heightAdjustedPosition, sightRange, whatIsPlayer);
-        return playerInSightRange;
-    }
+        playerInSightRange = Physics.CheckSphere(heightAdjustedPosition, sightRange, attackMask);
 
-
-    void InvokePatrollingAction()
-    {
-        if (GetPatrollingBehavior() == PatrollingBehaviors.InvokeMoveEveryXSeconds) {
-            patrollingHandler.SearchWalkPoint(walkPointRange, spawnLocation);
-            walkTowards(patrollingHandler.currentDestination);
-            StartCoroutine(DestinationReached());
+        if (playerInSightRange && (stateGraph.currentState.id == "walkState" || stateGraph.currentState.id == "idleState")) {
+            stateGraph.currentState.enterConnectedState("chaseState");
         }
     }
 
-    void InvokeInAbilityAction()
+    private void UpdateDistanceFromStartingPoint()
     {
-        agent.isStopped = true;
-        StartCoroutine(WaitForCondition(!abilityController.abilityInProgress, () => {
-            //NEVER GETS CCALLED CRINGE
-            fighterController.GetNextPreferedAction();
-            SetActionState(ActionState.Chasing);
-        }));
+        var distance = Vector3.Distance(startingPoint, transform.position);
 
+        if (distance > maxDistanceFromStartingPoint && stateGraph.currentState.id == "chaseState") {
+            stateGraph.currentState.enterConnectedState("retreatState");
+        }
     }
 
-
-    void SetActionState(ActionState value)
+    private void SetUpStateGraph()
     {
-        if (value != currentState) {
-            //Coroutines here are actions specific to a state i.e moving to a patroll destination thus on change stop them
-            //TODO Check if this messes up the variables used for them when just stoping in the middle. Perhaps needs a full on cleanup function too
-            StopAllCoroutines();
-            switch (value) {
-                case ActionState.Patrolling:
-                    currentState = ActionState.Patrolling;
-                    //I am a bit uncertain why I need to delete this event to use it twice, yet it can go to patrolling without the event getting deleted
-                    eventListCtrl.DeleteEvent("chasingEvent");
-                    var patrollingEvent = new EventCustom("patrollingEvent", InvokePatrollingAction);
-                    eventListCtrl.AddEvent(patrollingEvent);
-                    eventListCtrl.GetEvent("patrollingEvent")?.InvokeEvent();
-                    break;
-                case ActionState.Chasing:
-                    currentState = ActionState.Chasing;
-                    if (fighterController.nextAction.CombatAction != null) {
-                        nextBehaviorRange = fighterController.nextAction.CombatAction.range;
-                    } else {
-                        //TODO Figure out what needs to be done with first attack range when it is a movement action
-                        nextBehaviorRange = 1;
-                    }
-                    var chasingEvent = new EventCustom("chasingEvent", InvokeChasingAction);
-                    eventListCtrl.AddEvent(chasingEvent);
-                    eventListCtrl.GetEvent("chasingEvent")?.InvokeEvent();
-                    break;
-                case ActionState.inAbility:
-                    currentState = ActionState.inAbility;
-                    //I am a bit uncertain why I need to delete this event to use it twice, yet it can go to patrolling without the event getting deleted
-                    eventListCtrl.DeleteEvent("chasingEvent");
-                    var inAbilityEvent = new EventCustom("inAbilityEvent", InvokeInAbilityAction);
-                    eventListCtrl.AddEvent(inAbilityEvent);
-                    eventListCtrl.GetEvent("inAbilityEventnt")?.InvokeEvent();
-                    break;
-                default:
-                    break;
+        //ON spawn set up state graph
+        stateGraph = new StateGraph();
+
+        var idleState = new State("idleState", onIdleStateEnter, onIdleStateExit, stateGraph);
+        var walkState = new State("walkState", onWalkStateEnter, onWalkStateExit, stateGraph);
+        var chaseState = new State("chaseState", onChaseStateEnter, onChaseStateExit, stateGraph);
+        var retreatState = new State("retreatState", onRetreatStateEnter, onRetreatStateExit, stateGraph);
+        var attackState = new State("attackState", onAttackStateEnter, onAttackStateExit, stateGraph);
+
+        idleState.setConnectedStates(walkState, chaseState);
+        walkState.setConnectedStates(idleState, chaseState);
+        chaseState.setConnectedStates(retreatState, attackState);
+        retreatState.setConnectedStates(idleState);
+        attackState.setConnectedStates(chaseState);
+
+        idleState.enterInitialState();
+    }
+
+    private void onChaseStateEnter()
+    {
+        navMeshAgent.speed = runSpeed;
+        nextAction = weightController.nextAction;
+        var playerLocation = player.transform.position;
+        navMeshAgent.SetDestination(playerLocation);
+        StartCoroutine(continueslyChase());
+    }
+
+    IEnumerator continueslyChase()
+    {
+        for (; ; ) {
+            if (proximityCheck()) {
+                stateGraph.currentState.enterConnectedState("attackState");
+                yield break;
+            };
+            yield return new WaitForSeconds(.2f);
+        }
+    }
+
+    bool proximityCheck()
+    {
+        var distance = Vector3.Distance(transform.position, player.transform.position);
+        //Debug.Log(distance);
+        navMeshAgent.SetDestination(player.transform.position);
+        if (distance < nextAction.CombatAction.range) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void onChaseStateExit()
+    {
+        StopCoroutine(continueslyChase());
+    }
+
+    private void onAttackStateEnter()
+    {
+        navMeshAgent.updateRotation = false;
+        transform.LookAt(player.transform);
+        navMeshAgent.isStopped = true;
+        navMeshAgent.ResetPath();
+        abilityController.CallCombatAction(nextAction.CombatAction, player);
+        isCasting = true;
+        nextAction = weightController.GetNextPreferedAction();
+        GenericMonoHelper.Instance.CallMethodWithDelay(nextAction.CombatAction.castTime, () => {
+            isCasting = false;
+            if (nextAction.CombatAction.range >= Vector3.Distance(transform.position, player.transform.position)) {
+                stateGraph.currentState.enterConnectedState("attackState");
+            } else {
+                navMeshAgent.updateRotation = true;
+                navMeshAgent.isStopped = false;
+                stateGraph.currentState.enterConnectedState("chaseState");
             }
+        });
+    }
 
+    private void onAttackStateExit()
+    {
+
+    }
+
+    private void onRetreatStateEnter()
+    {
+        navMeshAgent.speed = runSpeed;
+        navMeshAgent.SetDestination(startingPoint);
+        StartCoroutine("checkIfDestinationReached", checkIfDestinationReached());
+
+    }
+
+    private void onRetreatStateExit()
+    {
+        StopCoroutine("checkIfDestinationReached");
+    }
+
+    private void onWalkStateEnter()
+    {
+        navMeshAgent.SetDestination(randomWalkablePoint);
+        navMeshAgent.speed = walkSpeed;
+        StartCoroutine("checkIfDestinationReached", checkIfDestinationReached());
+    }
+
+
+    private void onWalkStateExit()
+    {
+        StopCoroutine(checkIfDestinationReached());
+
+    }
+
+    IEnumerator checkIfDestinationReached()
+    {
+        yield return new WaitUntil(() => destinationReached() || stateGraph.currentState.id != "walkState");
+        if (stateGraph.currentState.id != "walkState" || stateGraph.currentState.id != "idleState") {
+            stateGraph.currentState.enterConnectedState("idleState");
         }
     }
 
-    private IEnumerator WaitForCondition(bool conditionMet, Action methodToExecute)
+    private bool destinationReached()
     {
-        // Keep looping until the condition is met
-        while (!conditionMet) {
-            yield return null; // Wait for the next frame
-        }
-
-        // Condition is met, execute the method
-        methodToExecute();
-    }
-
-    private IEnumerator DestinationReached()
-    {
-        yield return new WaitWhile(() => patrollingHandler.checkIsDestinationReached(transform.position, 5.0f) == true);
-        EventCustom patrollingEvent = eventListCtrl.GetEvent("patrollingEvent");
-        patrollingEvent?.ResetInvoken();
-        yield return new WaitForSeconds(patrollingHandler.waitTimer);
-        patrollingEvent?.InvokeEvent();
-
-    }
-
-
-    private PatrollingBehaviors GetPatrollingBehavior()
-    {
-        return patrollingBehaviorPref;
-    }
-
-    Vector3 CheckForPatrollingDestination()
-    {
-        if (patrollingHandler.currentDestination == null) {
-            patrollingHandler.SearchWalkPoint(walkPointRange, spawnLocation);
-            CheckForPatrollingDestination();
-            return Vector3.zero;
-        } else {
-            return patrollingHandler.currentDestination;
-        }
-    }
-
-    void walkTowards(Vector3 location)
-    {
-        var walkpointEvent = new EventCustom("walkingtoPoint", () => { });
-        agent.SetDestination(location);
-    }
-
-    void OnDrawGizmos()
-    {
-        Vector3 heightAdjustedPosition = new Vector3(transform.position.x, middlePoint, transform.position.z);
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = new Color(246, 182, 215, 0.4f);
-        Gizmos.DrawWireSphere(heightAdjustedPosition, sightRange);
-        Gizmos.color = new Color(100, 100, 100, 0.4f);
-        // Gizmos.DrawWireSphere(heightAdjustedPosition, 5.0f); //attackRange
-        //Gizmos.DrawSphere(patrollingHandler.currentDestination, 2.0f);
-    }
-
-    // CHASING
-
-
-    void InvokeChasingAction()
-    {
-        isChasing = true;
-        movementCoroutine = MoveTowardsPlayer();
-        StartCoroutine(movementCoroutine);
-    }
-
-    private IEnumerator MoveTowardsPlayer()
-    {
-        while (true) {
-            float distance = Vector3.Distance(transform.position, player.transform.position);
-            if (isChasing) {
-                if (distance < nextBehaviorRange) {
-                    // Distance is below threshold, stop moving
-                    agent.isStopped = true;
-
-                    // Call the method when destination is reached
-                    CallBehavior();
-
-                    // Stop the coroutine
-                    StopCoroutine(movementCoroutine);
-                    yield break;
-                } else {
-                    // Continue chasing the player
-                    agent.isStopped = false;
-                    agent.SetDestination(player.transform.position);
-
+        if (!navMeshAgent.pathPending) {
+            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance) {
+                if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f) {
+                    return true;// Done
                 }
             }
-            yield return null;
         }
+        return false;
     }
 
-    //GETS CALLED AFTER CHASING THE PLAYER WHEN IN RANGE
-    private void CallBehavior()
+    private void onIdleStateEnter()
     {
-        var nextAction = fighterController.nextAction;
-        if (nextAction.CombatAction != null) {
-            var actionToCall = nextAction.CombatAction;
-            InvokeCombatAction(actionToCall);
-            SetActionState(ActionState.inAbility);
+        randomWalkablePoint = GetRandomPoint(startingPoint, maxWalkDistance);
+
+        StartCoroutine(DelayedMethod(IdlingTimeSeconds, () => { if (stateGraph.currentState.id == "idleState") startWalkState("walkState"); }));
+    }
+
+    private void onIdleStateExit()
+    {
+
+    }
+
+    private void startWalkState(string stateId)
+    {
+        if (stateGraph.currentState.id == "idleState") {
+            stateGraph.currentState.enterConnectedState(stateId);
         } else {
-            var actionToCall = fighterController.attacks[0];
-            InvokeCombatAction(actionToCall);
-            SetActionState(ActionState.inAbility);
-            // var movementToCall = fighterController.nextAction.MovementAction;
-            // invokeMovementAction(movementToCall);
-            // SetActionState(ActionState.inAbility);
+            StopCoroutine("DelayedMethod");
         }
     }
 
-    private void InvokeMovementAction(EnemyMovementAction movementAction)
+    public Vector3 GetRandomPoint(Vector3 center, float maxDistance)
     {
-        Debug.Log(movementAction.direction);
-        // abilityController.callBuffAction();
-        dashMovement.Dash(movementAction.direction, movementAction.distance);
+        // Get Random Point inside Sphere which position is center, radius is maxDistance
+        Vector3 randomPos = UnityEngine.Random.insideUnitSphere * maxDistance + center;
 
-    }
+        NavMeshHit hit; // NavMesh Sampling Info Container
 
-    private void InvokeCombatAction(EnemyCombatAction combatAction)
-    {
-        abilityController.CallCombatAction(combatAction, player);
-    }
-}
+        bool foundPosition = NavMesh.SamplePosition(
+            randomPos,
+            out hit,
+            maxDistance,
+            NavMesh.AllAreas
+        );
 
-public class PatrollingHandler
-{
-    public Vector3 currentDestination;
-
-    public bool isDestinationReached;
-
-    public bool isResting;
-
-    public bool isTravelingToDestination;
-
-    public float waitTimer;
-
-    public PatrollingHandler()
-    {
-        //Constructor
-    }
-
-
-    public void SearchWalkPoint(float walkPointRange, Vector3 spawnLocation)
-    {
-        isDestinationReached = false;
-        isResting = false;
-        isTravelingToDestination = false;
-        float randomZ = UnityEngine.Random.Range(-walkPointRange, walkPointRange);
-        float randomX = UnityEngine.Random.Range(-walkPointRange, walkPointRange);
-        waitTimer = UnityEngine.Random.Range(1.5f, 6.0f);
-
-        currentDestination = new Vector3(spawnLocation.x + randomX, spawnLocation.y, spawnLocation.z + randomZ);
-
-    }
-
-    public bool checkIsDestinationReached(Vector3 currentPosition, float acceptableDistancee)
-    {
-        float dist = Vector3.Distance(currentPosition, currentDestination);
-        if (dist <= acceptableDistancee && isDestinationReached == false) {
-            isDestinationReached = true;
-            isResting = true;
-            currentDestination = Vector3.zero;
-            return isDestinationReached;
+        if (!foundPosition) {
+            //TODO should try again, but that can create infinite loop?
+            return Vector3.zero;
         } else {
-            isDestinationReached = false;
-            return isDestinationReached;
+            NavMeshPath path = new NavMeshPath();
+            navMeshAgent.CalculatePath(hit.position, path);
+            var canReachPoint = path.status == NavMeshPathStatus.PathComplete;
+            if (canReachPoint) {
+                return hit.position;
+            }
         }
+        return Vector3.zero;
     }
 
-    void PatrollingDestinationReachedEvent()
+    private IEnumerator DelayedMethod(float delayInSeconds, System.Action methodToCall)
     {
-
+        yield return new WaitForSeconds(delayInSeconds);
+        methodToCall.Invoke();
     }
-
-
-}
-
-public class EventListCtrl
-{
-    public EventListCtrl()
-    {
-        eventList = new List<EventCustom>();
-    }
-    private List<EventCustom> eventList;
-
-    public void InvokeEvent(string eventName)
-    {
-        eventList.Find(o => o.eventName == eventName)?.InvokeEvent();
-    }
-
-    public void CleanupEvent(string eventName, bool remove)
-    {
-        var eventItem = eventList.Find(o => o.eventName == eventName);
-        eventItem?.CleanupMethod();
-        if (remove) {
-            eventList.Remove(eventItem);
-        }
-
-    }
-
-    public void ResetInvokation(string eventName)
-    {
-        eventList.Find(o => o.eventName == eventName).ResetInvoken();
-    }
-
-    public void AddEvent(EventCustom eventItem)
-    {
-        if (eventList.Find(o => o.eventName == eventItem.eventName) == null) {
-            eventList.Add(eventItem);
-        }
-    }
-
-    public void DeleteEvent(string eventName)
-    {
-        eventList.Remove(eventList.Find(o => o.eventName == eventName));
-    }
-
-    public EventCustom GetEvent(string eventName)
-    {
-        return eventList.Find(o => o.eventName == eventName);
-    }
-
-}
-
-public class EventCustom// : MonoBehaviour
-{
-
-    public EventCustom() { }
-    public string eventName;
-
-    public Action InvokenMethod;
-    // <summary>
-    // Not Implemented
-    // </summary>
-    public Action CleanupMethod;
-
-    //I made thihs fuckin confusing rename
-    public WhileInvokeSettings whileInvokeSettings;
-
-    public bool invoken;
-
-    public EventCustom(string nameVal, Action invokationMethod, Action cleanupMethod = null, WhileInvokeSettings awaitInvokeSettings = null)
-    {
-        eventName = nameVal;
-        invoken = false;
-        InvokenMethod = invokationMethod;
-        whileInvokeSettings = awaitInvokeSettings;
-        CleanupMethod = cleanupMethod;
-    }
-
-    public void InvokeEvent()
-    {
-        if (invoken == false) {
-            invoken = true;
-            //Debug.Log(InvokenMethod);
-            InvokenMethod();
-        }
-    }
-
-    //Am I retarded?
-    public void ResetInvoken()
-    {
-        if (invoken == true) {
-            invoken = false;
-        }
-    }
-
-    // <summary>
-    // Not Implemented
-    // </summary>
-    public void InvokeCleanup()
-    {
-        //invoken = false;
-        //CleanupMethod?.Invoke();
-    }
-
-    IEnumerator Example()
-    {
-        yield return new WaitWhile(() => whileInvokeSettings.conditionWith == whileInvokeSettings.conditionAgainst);
-        InvokeEvent();
-    }
-}
-
-
-public record WhileInvokeSettings
-{
-    public bool conditionWith;
-    public bool conditionAgainst;
-
-    //public Action conditionInvoke;
-
 }

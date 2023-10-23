@@ -24,15 +24,15 @@ public class FighterController : MonoBehaviour
 
     public void OnAbilityFinished()
     {
-        var shouldReset = false;
-        if (statsComponent.health.currentHealth < (statsComponent.health.maxHealth / 2)) {
-            weightController.UpdateActionTypeWeights(Actions.BUFF, 1000);
-            shouldReset = true;
-        } else {
-            weightController.UpdateActionTypeWeights(Actions.ATTACK, 10000);
-            shouldReset = true;
-        }
-        weightController.SetNextPreferedAction(shouldReset, false);
+        // var shouldReset = false;
+        // if (statsComponent.health.currentHealth < (statsComponent.health.maxHealth / 2)) {
+        //     weightController.UpdateActionTypeWeights(Actions.BUFF, 1000);
+        //     shouldReset = true;
+        // } else {
+        //     weightController.UpdateActionTypeWeights(Actions.ATTACK, 10000);
+        //     shouldReset = true;
+        // }
+        // weightController.SetNextPreferedAction(shouldReset, false);
     }
     //Adjust weights based on stats
 }
