@@ -44,4 +44,16 @@ public class GenericMonoHelper : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         callBack();
     }
+
+    public void CallMethodWithDelay(float delayInSeconds, Action methodToCall)
+    {
+        StartCoroutine(DelayedMethod(delayInSeconds, methodToCall));
+    }
+
+    private IEnumerator DelayedMethod(float delayInSeconds, Action methodToCall)
+    {
+
+        yield return new WaitForSeconds(delayInSeconds);
+        methodToCall.Invoke();
+    }
 }

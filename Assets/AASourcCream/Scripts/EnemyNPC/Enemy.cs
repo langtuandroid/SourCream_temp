@@ -208,7 +208,7 @@ public class Enemy : SerializedMonoBehaviour
 
             var chosenAttack = weightedList.Next();
             //Debug.Log(chosenAttack);
-            animationLength = animationCtrl.PlayAnimation(chosenAttack) - 0.3f;
+            animationLength = 0.1f;//animationCtrl.PlayAnimation(chosenAttack) - 0.3f;
 
             Debug.Log(GenericColliderHelper.Instance);
             StartCoroutine(GenericMonoHelper.Instance.GenericWait(0.3f, () => CallCollider()));

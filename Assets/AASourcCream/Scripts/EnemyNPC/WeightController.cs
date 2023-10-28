@@ -44,9 +44,9 @@ public class WeightController : MonoBehaviour
     public void InitializeWeights()
     {
         List<WeightedListItem<string>> actionTypes = new() {
-            new WeightedListItem<string>("attacks", 100),
-            new WeightedListItem<string>("buffs", 100),
-            new WeightedListItem<string>("movementActions", 100),
+            new WeightedListItem<string>("attacks", 10000),
+            new WeightedListItem<string>("buffs", 1),
+            new WeightedListItem<string>("movementActions", 1),
 
         };
         actionTypeWeightedList = new(actionTypes);
@@ -206,11 +206,20 @@ public class WeightController : MonoBehaviour
     public EnemyActions GetNextPreferedAction()
     {
         var actionTypeRoll = actionTypeWeightedList.Next();
-        return actionTypeRoll switch {
-            "attacks" => new EnemyActions { CombatAction = attacks.Next() },
-            "buffs" => new EnemyActions { CombatAction = buffs.Next() },
-            "movementActions" => new EnemyActions { MovementAction = movementActions.Next() }
-        };
+        EnemyActions actionRoll = new EnemyActions();
+        switch (actionTypeRoll) {
+            case "attacks":
+                actionRoll.CombatAction = attacks.Next();
+                break;
+            case "buffs":
+                actionRoll.CombatAction = buffs.Next();
+                break;
+            case "movementActions":
+                actionRoll.MovementAction = movementActions.Next();
+                break;
+        }
+        nextAction = actionRoll;
+        return actionRoll;
 
     }
 
