@@ -17,7 +17,8 @@ public class AbilityController : SerializedMonoBehaviour
     public bool abilityInProgress = false;
     //this is supposed to be adaptable rather than hardset
     public FighterController fighterController;
-    //TODO this shouldn't be here and instead be in archType classes like Fighter controller etc.
+    //TODO this shouldn't be here and instead be in archType classes like Fighter controller etc.\
+    //https://github.com/Reggie1998/SourCream_temp/issues/44
     public StatsComponent statsComponent;
 
     private EnemyAnimationCtrl animController;
@@ -39,7 +40,6 @@ public class AbilityController : SerializedMonoBehaviour
 
     public void CallCombatAction(EnemyCombatAction actionData, GameObject player)
     {
-        Debug.Log(actionData.name);
         currentCombatAction = actionData;
         abilityInProgress = true;
         if (actionData.target == TargetTypes.ALLY || actionData.target == TargetTypes.SELF) {
@@ -77,7 +77,7 @@ public class AbilityController : SerializedMonoBehaviour
     public GameObject GetIndicator(string abilityName)
     {
         if (attackIndicators.ContainsKey(abilityName)) {
-            return attackIndicators?[abilityName];
+            return attackIndicators[abilityName];
         } else {
             return null;
         }
@@ -86,7 +86,7 @@ public class AbilityController : SerializedMonoBehaviour
     public GameObject GetCollider(string abilityName)
     {
         if (attackColliders.ContainsKey(abilityName)) {
-            return attackColliders?[abilityName];
+            return attackColliders[abilityName];
         } else {
             return null;
         }
@@ -141,6 +141,7 @@ public class AbilityController : SerializedMonoBehaviour
 
         if (colliderToUse != null) {
             //TODO spawner should be setable i.e bow for an arrow 
+            //https://github.com/Reggie1998/SourCream_temp/issues/45
             var spawnerLocation = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.5f, transform.position.z);
             Vector3 direction = player.transform.position - spawnerLocation;
 
@@ -166,6 +167,7 @@ public class AbilityController : SerializedMonoBehaviour
 
             CallMethodWithDelay(actionData.castTime, () => {
                 //TODO: unsure when to destroy the projectile might need a function to check when it hits terrain/walls or reaches max range 
+                //https://github.com/Reggie1998/SourCream_temp/issues/46
                 AbilityFinished(actionData?.name);
             });
         }
@@ -173,7 +175,6 @@ public class AbilityController : SerializedMonoBehaviour
 
     public void BuffSelf(EnemyCombatAction actionData)
     {
-        Debug.Log("BUFF SELLF");
         StartCoroutine(CallMethodForDuration(actionData.castTime, (actionData.castTime / 2), () => statsComponent.Heal(100)));
         CallMethodWithDelay(actionData.castTime + 0.2f, () => AbilityFinished(actionData?.name));
     }
